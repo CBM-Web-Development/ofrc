@@ -115,6 +115,15 @@
 		height:inherit;
 	}
 }
+
+.page-hero--no-image{
+	background-color:lightgrey;
+	min-height:100px;
+}
+
+#breadcrumbs a{
+	color:inherit;
+}
 .has-gutters{
 	margin-left:1.5rem !important;
 	margin-right:1.5rem !important;

@@ -30,3 +30,12 @@
 		height:inherit;
 	}
 }
+
+.page-hero--no-image{
+	background-color:lightgrey;
+	min-height:100px;
+}
+
+#breadcrumbs a{
+	color:inherit;
+}
