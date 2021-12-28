@@ -1,4 +1,5 @@
 <?php 
+/* Template Name: Full Width Template */
 get_header();
 ?>
 <div class="container-fluid g-0">
@@ -18,8 +19,8 @@ get_header();
 					<?php } ?>
 					</div>
 				</div>
-				<div class="row has-gutters">
-					<div class="col-10 mx-auto">
+				<div class="row g-0">
+					<div class="col-12">
 						<?php the_content(); ?>
 					</div>
 				</div>
