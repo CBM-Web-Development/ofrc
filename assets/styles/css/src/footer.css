@@ -1,0 +1,11 @@
+.footer{
+	width:100%;
+	min-height:300px;
+	background-color:#000000;
+	
+}
+
+.footer ul{
+	list-style-type:none;
+	padding-left:0px !important;
+}

@@ -62,9 +62,30 @@
 .wp-block-cover a:hover{
 	color:inherit;
 }
+
+.wp-block-group img{
+	height: auto !important;
+}
+
+@media(max-width:786px){
+	.wp-block-column{
+		margin-bottom:1.5rem;
+	}
+}
+.footer{
+	width:100%;
+	min-height:300px;
+	background-color:#000000;
+	
+}
+
+.footer ul{
+	list-style-type:none;
+	padding-left:0px !important;
+}
 .has-gutters{
-	margin-left:1.5rem;
-	margin-right:1.5rem;
+	margin-left:1.5rem !important;
+	margin-right:1.5rem !important;
 }
 @charset "UTF-8";
 /*!

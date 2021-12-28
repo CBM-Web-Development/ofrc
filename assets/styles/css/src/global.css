@@ -6,3 +6,13 @@
 .wp-block-cover a:hover{
 	color:inherit;
 }
+
+.wp-block-group img{
+	height: auto !important;
+}
+
+@media(max-width:786px){
+	.wp-block-column{
+		margin-bottom:1.5rem;
+	}
+}
