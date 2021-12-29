@@ -1,35 +1,32 @@
 <?php get_header() ?>
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-10">
-		<?php if(have_posts()){ ?>
-			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
-				<?php while(have_posts()){
-					the_post(); ?>
-					<div class="col d-flex align-items-stretch">
-						<div class="card">
-							
-							<?php if(has_post_thumbnail()){ ?>
-								<img src="<?php echo get_the_post_thumbnail_url(); ?>" class="card-img-top" alt="<?php echo get_the_title(); ?>">
-							
-							<?php } ?>
-							
-							<div class="card-body">
-								
-							  <h5 class="card-title"><?php the_title(); ?></h5>					  <p class="card-text"><small class="text-muted"><?php the_date(); ?></small></p>
-							  <p class="card-text"><?php  the_excerpt(); ?></p>
-
-							</div>
-							<div class="card-footer">												  
-								  <a class="btn btn-outline-dark" href="<?php the_permalink();?>">Read More</a>
-							</div>
-						</div>	
-					</div>	
-				<?php } ?>
+<div class="container-fluid gy-2 gx-0 archives-page">
+	<div class="page-hero--no-image">
+		<?php if(function_exists('yoast_breadcrumb')){ ?>
+			<div class="row has-gutters">
+				<div class="col-md-10 mx-auto">
+					<?php yoast_breadcrumb('<p id="breadcrumbs">', '</p>'); ?>
 				</div>
 			</div>
 		<?php } ?>
+		<div class="row has-gutters">
+			<div class="col-md-10 col-12 mx-auto">
+				<h1 class="page-title"><?php the_archive_title(); ?></h1>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-10">
+			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center cards-section" data-archive = "4" data-page="1"></div>
+		</div>
+	</div>
+	<div class="row gy-4 ">
+		<div class="col-md-10 mx-auto">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+				</ul>
+			</nav>
+		</div>
 	</div>
 </div>
 
