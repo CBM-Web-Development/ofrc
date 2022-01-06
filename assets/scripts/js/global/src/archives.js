@@ -3,6 +3,7 @@ var $ = require('jquery');
 $(document).ready(function(){
 
 	if($('.archives-page')[0]){
+		console.log('archive');
 		get_archive_posts();	
 	}
 });
@@ -17,9 +18,7 @@ window.get_archive_posts = function(page_number = null){
 		"page" : page, 
 		"category" : archive,
 	};
-	$.post(localize.rest_archives, data, function(success){
-		console.log(success);
-	})
+	$.post(localize.rest_archives, data, function(success){})
 	.fail(function(error){
 		console.log(error);
 	}).done(function(results){

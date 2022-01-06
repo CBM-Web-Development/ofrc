@@ -6,5 +6,9 @@ function ofrc_localize_scripts(){
 		'ajax_url'	=> admin_url( 'admin-ajax.php' ),
 		'rest'	=> get_rest_url(),
 		'rest_archives'	=> get_rest_url(get_bloginfo('ID'), 'ofrc/v1/archives'),
+		'rest_member_directory'	=> get_rest_url(get_bloginfo('ID'), 'ofrc/v1/member-directory/members'),
+		'rest_member_upload_profile_image'	=> get_rest_url(get_bloginfo('ID'), 'ofrc/v1/member-directory/members/member-profile/image-upload'),
+		'rest_member_save_profile'	=> get_rest_url(get_bloginfo('ID'), 'ofrc/v1/member-directory/members/member-profile/save-profile'),
+		'current_user_id'	=> get_current_user_id(),
 	));
 }

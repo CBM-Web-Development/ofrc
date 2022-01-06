@@ -13,3 +13,4 @@ const mix = require('laravel-mix');
 
 mix.js('scripts/js/global/allscripts.js', 'scripts/js/global/dist')
    .sass('styles/allstyles.scss', 'styles/dist');
+   

@@ -11,7 +11,8 @@ class OFRC_REST{
 	public function endpoints_init(){
 		register_rest_route('ofrc/v1', '/archives', array(
 			'methods'	=> array('GET', 'POST'),
-			'callback'	=> array($this, 'get_archives')
+			'callback'	=> array($this, 'get_archives'),
+			'permission_callback'	=> '__return_true'
 		));	
 	}
 	

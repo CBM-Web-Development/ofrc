@@ -7,7 +7,7 @@ get_header();
 				the_post(); ?>
 				<div class="row g-0">
 					<div class="col-12">
-					<?php if(false){ ?>
+					<?php if(has_post_thumbnail()){ ?>
 						<div class="page-hero" style="background-image: url('<?php the_post_thumbnail_url( 'full' ); ?>');">
 						
 							<div class="page-hero--title-section">
