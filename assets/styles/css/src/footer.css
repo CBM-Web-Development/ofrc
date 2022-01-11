@@ -9,3 +9,8 @@
 	list-style-type:none;
 	padding-left:0px !important;
 }
+
+.footer-credit, .footer-credit a{
+	color:#ffffff;
+	text-align: center;
+}

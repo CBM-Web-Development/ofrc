@@ -5,31 +5,42 @@
 	min-height:75px;
 }
 
-.navbar-brand img{
-	width:300px;
-	max-width: 100%;
-}
-
-@media(min-width:787px){
-.navbar-brand img{
-	width:300px;
-	max-width: 100%;
-	position:absolute;
-	top:-25%;
-	transform: translate(-50%, -25%);
-}
+@media(min-width:786px){
+	.navbar-brand img{
+		width:100%;
+		max-width:300px;
+		position:absolute;
+		top:-25%;
+		transform: translateY(-25%);
+	}
+	
+	.navbar-brand h1{
+		text-align: center;
+	}
+	
+	.navbar-brand{
+		margin-right:0px !important;
+	}
+	
 }
 
 @media(max-width:786px){
 	.navbar-brand{
 		max-width:75%;
+		margin-right:0px !important;
 	}
 	
 	.navbar-brand h1{
 		font-size:1em;
 	}
 	
+	.navbar-brand img{
+		width:100%;
+		max-width:50vw;
+	}
+	
 }
+
 
 /* Secondary Navigation Styles */
 
@@ -41,6 +52,11 @@
 .secondary-nav-list{
 	list-style-type: none;
 	padding-left:0px !important;
+}
+
+.secondary-nav-list li a{
+	color:#ffffff;
+	text-decoration: none !important;
 }
 
 .secondary-nav-list li{
@@ -82,6 +98,11 @@
 .footer ul{
 	list-style-type:none;
 	padding-left:0px !important;
+}
+
+.footer-credit, .footer-credit a{
+	color:#ffffff;
+	text-align: center;
 }
 .page-hero{
 	width:100%;
@@ -158,17 +179,28 @@
 	width:100%;
 }
 
+#member-profile-list svg{
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	position:relative;
+	
+}
+
+#member-profile-list, #member-profile-list .form-floating{
+	width:100%;
+}
+
 /* Account Styles */
 .profile-picture-form-display{
 	width:300px;
 	height:300px;
-	background-color:lightgrey;
+	margin-bottom:24px;
 }
 
 .profile-picture-form-display--img{
-	width:100%;
 	height:100%;
-	max-width:inherit;
+	max-width:100%;
 	max-height:inherit;
 }
 .has-gutters{

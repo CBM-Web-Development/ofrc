@@ -50,13 +50,13 @@ $profile_image = get_field('profile_picture', 'user_' . $user_id);
 							</div>
 							<div class="col">
 								<div class="form-floating">
-									<input type="text" class="form-control" id="lastNameInput" placeholder="Last name" value="<?php echo $last_name; ?>">
+									<input type="text" class="form-control" id="lastNameInput" placeholder="Last name" value="<?php echo $last_name; ?>" name="last_name">
 									<label for="lastNameInput">Last Name</label>
 								</div>
 							</div>
 							<div class="col">
 								<div class="form-floating mb-3">
-									<select name="prefix" id="suffixSelect" placeholder="Prefix" class="form-control">
+									<select name="suffix" id="suffixSelect" placeholder="Prefix" class="form-control">
 										<option></option>
 										<option value="Jr."<?php echo $suffix  == 'Jr.' ? ' selected' : '' ?>>Jr.</option>
 										<option value="M.D."<?php echo $suffix  == 'M.D.' ? ' selected' : '' ?>>M.D.</option>

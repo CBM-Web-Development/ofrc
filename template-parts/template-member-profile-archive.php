@@ -9,18 +9,19 @@
 		<?php } ?>
 		<div class="row has-gutters">
 			<div class="col-md-10 col-12 mx-auto">
-				<h1 class="page-title"><?php the_archive_title(); ?></h1>
+				<h1 class="page-title"><?php the_title(); ?></h1>
 			</div>
 		</div>
 	</div>
 	<div class="member-profile-list-section">
 		<div class="row has-gutters">
-			<div class="col-md-10 col-12 mx-auto d-flex justify-content-center">
+			<div class="col-md-8 col-lg-6 col-12 mx-auto d-flex justify-content-center">
 				<div id="member-profile-list">
 					<div class="form-floating mb-3">
 						<input class="search form-control"  id="directorySearch" type="text" placeholder="Search"/>
 						<label for="directorySearch">Search</label>
 					</div>
+					<i class="fas fa-spinner fa-pulse fa-5x"></i>
 					<ul class="list"></ul>
 					<ul class="pagination justify-content-center"></ul>
 				</div>

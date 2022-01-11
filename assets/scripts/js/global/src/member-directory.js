@@ -98,7 +98,7 @@ function get_member_directory(){
 }
 
 function build_directory_html(members){
-		
+	console.log(members);	
 	var options = {
 		page: 10, 
 		pagination: {
@@ -106,15 +106,17 @@ function build_directory_html(members){
 		},
 		valueNames: [
 			'name',
-			{attr: 'href', name: 'permalink'},
+			'biography',
 			{attr: 'src', name: 'profile_picture'},
 			{attr: 'href', name: 'phone_number_link'},
 			{attr: 'href', name: 'email_link'},
 			'phone_number', 
-			'email'
+			'email',
+			'phone_number_display',
 		],
-		item: '<li class="member-profile--item"><img class="profile_picture" alt=""><div class="directory-body"><h3 class="name"></h3><a class="phone_number_link"><span class="phone_number"></span></a><a class="email_link"><span class="email"></span></a><a class="btn btn-outline-secondary permalink">View Profile</a></div></li>'
+		item: '<li class="member-profile--item"><img class="profile_picture" alt="" src=""><div class="directory-body"><h3 class="name"></h3><a class="phone_number_link"><span class="phone_number_display"></span></a><a class="email_link" href=""><span class="email"></span></a><p class="biography"></p></div></li>'
 	};
 		
 	var directoryList = new List('member-profile-list', options, members);
+	$('.fa-spinner').hide();
 }

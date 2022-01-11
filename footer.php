@@ -17,6 +17,11 @@
 				</ul>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-12 mx-auto">
+				<p class="footer-credit">Site developed by <a href="https://www.cbmwebdevelopment.com/" target="blank"> CBM Web Development</a> &copy;<?php echo date('Y'); ?></p>
+			</div>
+		</div>
 	</div>
 </footer>
 	

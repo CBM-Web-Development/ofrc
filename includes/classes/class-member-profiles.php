@@ -42,88 +42,38 @@ class OFRC_Member_Profiles{
 		$work_phone = filter_input(INPUT_POST, 'work_phone');
 		$email_address = filter_input(INPUT_POST, 'email');
 		$biography = filter_input(INPUT_POST, 'biography');
-		$user_id = filter_input(INPUT_POST, 'user_id');
+		$user_id = filter_input(INPUT_POST, 'current_user');
 		
+		$response = array(
+			'success'	=> true, 
+		);
+				
 		// Set the ACF field values 
 		if(!update_field('prefix', $prefix, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'prefix', 
-				'value'		=> $prefix,
-			);
+			
+			$response['success'] = false;
+			$response['field'] = 'prefix';
+			$response['value'] = $prefix;
+			
 		}
 		if(!update_field('first_name', $first_name, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'first_name', 
-				'value'		=> $first_name,
-			);	
+			
+			$response['success'] = false;
+			$response['field'] = 'prefix';
+			$response['value'] = $prefix;
+			
 		}
-		if(!update_field('last_name', $last_name, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'last_name', 
-				'value'		=> $last_name,
-			);
-		}
-		if(!update_field('suffix', $suffix, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'suffix', 
-				'value'		=> $suffix,
-			);	
-		}
-		if(!update_field('birthday', $birthday, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'birthday', 
-				'value'		=> $birthday,
-			);
-		}
-		if(!update_field('gender', $gender, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'gender', 
-				'value'		=> $gender,
-			);
-		}
-		if(!update_field('mobile_phone', $mobile_phone, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'mobile_phone', 
-				'value'		=> $mobile_phone,
-			);	
-		}
-		if(!update_field('home_phone', $home_phone, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'home_phone', 
-				'value'		=> $home_phone,
-			);
-		}
-		if(!update_field('work_phone', $work_phone, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'work_phone', 
-				'value'		=> $work_phone,
-			);
-		}
-		if(!update_field('email_address', $email_address, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'email_address', 
-				'value'		=> $email_address,
-			);	
-		}
-		if(!update_field('biography', $biography, 'user_' . $user_id)){
-			return array(
-				'success'	=> false, 
-				'field'		=> 'biography', 
-				'value'		=> $biography,
-			);	
-		}
+		update_field('last_name', $last_name, 'user_' . $user_id);
+		update_field('suffix', $suffix, 'user_' . $user_id);
+		update_field('birthday', $birthday, 'user_' . $user_id);
+		update_field('gender', $gender, 'user_' . $user_id);
+		update_field('mobile_phone', $mobile_phone, 'user_' . $user_id);
+		update_field('home_phone', $home_phone, 'user_' . $user_id);
+		update_field('work_phone', $work_phone, 'user_' . $user_id);
+		update_field('email_address', $email_address, 'user_' . $user_id);
+		update_field('biography', $biography, 'user_' . $user_id);
 		
-		return array('success'	=> true);
+		return $response;
 	}
 	
 	/**
@@ -233,15 +183,18 @@ class OFRC_Member_Profiles{
 					$phone_number = get_field('work_phone', 'user_' . $ID);
 				}
 				
+				$phone_number_display = preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $phone_number);
+				
 				$directory[] = array(
 					'post_id'	=> $ID,
 					'name'		=> $name,
-					'profile_picture'	=> get_field('profile_picture',  'user_' . $ID ),
+					'profile_picture'	=> get_field('profile_picture',  'user_' . $ID )['url'],
 					'phone_number'	=> $phone_number,
+					'phone_number_display'	=> $phone_number_display,
 					'phone_number_link'	=> 'tel:' . $phone_number,
 					'email_link'	=> 'mailto:' . get_field('email_address', 'user_' . $ID),
 					'email'		=> get_field('email_address', 'user_' . $ID),
-					'permalink'	=> ''//get_the_permalink( $ID )
+					'biography'	=> get_field('biography', 'user_' . $ID),
 				);
 			}
 		}
