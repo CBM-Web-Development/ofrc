@@ -6,11 +6,12 @@
 			the_post(); ?>
 			<div class="row content-section">
 				<div clsas="col-lg-10 col-md-10 col-sm-12">
+					index
 					<?php the_content(); ?>
 				</div>
 			</div>
-		}
-	}
+		<?php }
+	} ?>
 </div>
 
 <?php get_footer(); ?>

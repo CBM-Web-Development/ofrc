@@ -7,6 +7,16 @@ define('OFRC_VERSION', '0.0.1');
 
 
 // Functions - REQUIRED
+include(OFRC_PATH . '/includes/functions/functions-assets.php');
+include(OFRC_PATH . '/includes/functions/functions-localize.php');
+include(OFRC_PATH . '/includes/functions/functions-menus.php');
+include(OFRC_PATH . '/includes/functions/functions-posts.php');
+include(OFRC_PATH . '/includes/functions/functions-sidebars.php');
+include(OFRC_PATH . '/includes/functions/functions-supports.php');
+
+// Classes
+include(OFRC_PATH . '/includes/classes/class-rest.php');
+include(OFRC_PATH . '/includes/classes/class-member-profiles.php');
 
 // Walkers - REQUIRED
 include(OFRC_PATH . '/includes/walkers/class-bootstrap-5-walker.php');

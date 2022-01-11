@@ -7,5 +7,5 @@ function ofrc_styles(){
 
 add_action('wp_enqueue_scripts', 'ofrc_scripts');
 function ofrc_scripts(){
-	wp_enqueue_script('allscripts', OFRC_URI . '/scripts/js/dist/allscripts.js', array(), OFRC_VERSION, true);
+	wp_enqueue_script('allscripts', OFRC_URI . '/assets/scripts/js/global/dist/allscripts.js', array(), OFRC_VERSION, true);
 }
