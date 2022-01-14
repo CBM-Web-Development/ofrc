@@ -1,7 +1,6 @@
 <?php 
 class OFRC_Member_Profiles{
 	function __construct(){
-		add_action( 'init', array($this, 'member_profile_post_type'));
 		add_action('init', array($this, 'member_profile_admin_page'));
 		add_action('init', array($this, 'custom_member_role'));		
 		add_action('rest_api_init', array($this,'endpoints_init'));
@@ -220,62 +219,6 @@ class OFRC_Member_Profiles{
 		}
 	}
 	
-	// Register Custom Post Type
-	public function member_profile_post_type() {
-	
-		$labels = array(
-			'name'                  => _x( 'Member Profiles', 'Post Type General Name', OFRC_TEXTDOMAIN ),
-			'singular_name'         => _x( 'Member Profile', 'Post Type Singular Name', OFRC_TEXTDOMAIN ),
-			'menu_name'             => __( 'Member Profiles', OFRC_TEXTDOMAIN ),
-			'name_admin_bar'        => __( 'Member Profile', OFRC_TEXTDOMAIN ),
-			'archives'              => __( 'Member Profile Archives', OFRC_TEXTDOMAIN ),
-			'attributes'            => __( 'Member Profile Attributes', OFRC_TEXTDOMAIN ),
-			'parent_item_colon'     => __( 'Parent Profile:', OFRC_TEXTDOMAIN ),
-			'all_items'             => __( 'All Member Profiles', OFRC_TEXTDOMAIN ),
-			'add_new_item'          => __( 'Add New Member', OFRC_TEXTDOMAIN ),
-			'add_new'               => __( 'Add New', OFRC_TEXTDOMAIN ),
-			'new_item'              => __( 'New Member', OFRC_TEXTDOMAIN ),
-			'edit_item'             => __( 'Edit Member', OFRC_TEXTDOMAIN ),
-			'update_item'           => __( 'Update Member', OFRC_TEXTDOMAIN ),
-			'view_item'             => __( 'View Member', OFRC_TEXTDOMAIN ),
-			'view_items'            => __( 'View Members', OFRC_TEXTDOMAIN ),
-			'search_items'          => __( 'Search Member', OFRC_TEXTDOMAIN ),
-			'not_found'             => __( 'Not found', OFRC_TEXTDOMAIN ),
-			'not_found_in_trash'    => __( 'Not found in Trash', OFRC_TEXTDOMAIN ),
-			'featured_image'        => __( 'Featured Image', OFRC_TEXTDOMAIN ),
-			'set_featured_image'    => __( 'Set featured image', OFRC_TEXTDOMAIN ),
-			'remove_featured_image' => __( 'Remove featured image', OFRC_TEXTDOMAIN ),
-			'use_featured_image'    => __( 'Use as featured image', OFRC_TEXTDOMAIN ),
-			'insert_into_item'      => __( 'Insert into item', OFRC_TEXTDOMAIN ),
-			'uploaded_to_this_item' => __( 'Uploaded to this item', OFRC_TEXTDOMAIN ),
-			'items_list'            => __( 'Items list', OFRC_TEXTDOMAIN ),
-			'items_list_navigation' => __( 'Items list navigation', OFRC_TEXTDOMAIN ),
-			'filter_items_list'     => __( 'Filter items list', OFRC_TEXTDOMAIN ),
-		);
-		$args = array(
-			'label'                 => __( 'Member Profile', OFRC_TEXTDOMAIN ),
-			'description'           => __( 'Post Type Description', OFRC_TEXTDOMAIN ),
-			'labels'                => $labels,
-			'supports'              => array( 'title', 'editor', 'thumbnail', 'trackbacks', 'custom-fields' ),
-			'hierarchical'          => false,
-			'public'                => true,
-			'show_ui'               => true,
-			'show_in_menu'          => true,
-			'menu_position'         => 5,
-			'menu_icon'             => 'dashicons-groups',
-			'show_in_admin_bar'     => true,
-			'show_in_nav_menus'     => true,
-			'can_export'            => true,
-			'has_archive'           => true,
-			'exclude_from_search'   => false,
-			'publicly_queryable'    => true,
-			'capability_type'       => 'page',
-			'show_in_rest'          => false,
-			'rewrite'				=> array('slug' => 'member-profiles'),
-		);
-		register_post_type( 'member_profile', $args );
-	
-	}
 }
 
 new OFRC_Member_Profiles();

@@ -78,3 +78,11 @@
 			
 		</nav>
 		
+		<?php if(get_field( 'notification_banner_activate', 'options' )){?>
+			
+			<div class="notification-banner notification-banner--<?php echo get_field('notification_banner_status', 'options'); ?>">
+				<?php echo get_field('notification_banner_message', 'options'); ?>
+			</div>
+			
+		<?php } ?>
+		
