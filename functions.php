@@ -17,6 +17,7 @@ include(OFRC_PATH . '/includes/functions/functions-supports.php');
 // Classes
 include(OFRC_PATH . '/includes/classes/class-rest.php');
 include(OFRC_PATH . '/includes/classes/class-member-profiles.php');
+include(OFRC_PATH . '/includes/classes/class-notifications-banner.php');
 
 // Walkers - REQUIRED
 include(OFRC_PATH . '/includes/walkers/class-bootstrap-5-walker.php');
