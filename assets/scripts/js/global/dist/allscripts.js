@@ -7243,6 +7243,16 @@ var List = __webpack_require__(/*! list.js */ "./node_modules/list.js/src/index.
 var bootstrap = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
 
 $(document).ready(function () {
+  if ($('.member-login--form')[0]) {
+    if (location.search) {
+      var params = new URLSearchParams(window.location.search);
+
+      if (params.get('login') && params.get('login') == 'failed') {
+        $('.login-alert').removeClass('d-none');
+      }
+    }
+  }
+
   if ($('.member-profile-archives-page')[0]) {
     get_member_directory();
   } // Display the profile picture sample
