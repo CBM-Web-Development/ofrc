@@ -21,3 +21,7 @@ include(OFRC_PATH . '/includes/classes/class-notifications-banner.php');
 
 // Walkers - REQUIRED
 include(OFRC_PATH . '/includes/walkers/class-bootstrap-5-walker.php');
+
+foreach(glob(OFRC_PATH . '/includes/acf/groups/*_active.php') as $file){
+	include($file);
+}

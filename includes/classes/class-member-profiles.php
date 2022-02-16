@@ -4,6 +4,28 @@ class OFRC_Member_Profiles{
 		add_action('init', array($this, 'member_profile_admin_page'));
 		add_action('init', array($this, 'custom_member_role'));		
 		add_action('rest_api_init', array($this,'endpoints_init'));
+		//add_action('login_redirect', array($this, 'member_login_redirect'), 10, 3);
+		add_action('wp_login_failed', array($this, 'member_failed_login'));
+	}
+	
+	public function member_failed_login($username){
+		$referrer = $_SERVER['HTTP_REFERER'];
+		if ( !empty($referrer) && !strstr($referrer,'wp-login') && !strstr($referrer,'wp-admin')     ) {
+			wp_redirect( $referrer . '?login=failed&username=' . $username );
+			exit;
+		}
+	}
+	
+	public function member_login_redirect($redirect_to, $request,$user){	
+		if(isset($user->roles) && is_array($user->roles)){
+			if(in_array('member', $user->roles)){
+				//die($redirect_to);
+				return $redirect_to;
+				//return 'https://www.google.com';
+			}
+		}
+		
+		return $redirect_to;
 	}
 	
 	public function endpoints_init(){
