@@ -1,5 +1,4 @@
-<?php get_header(); 
-
+<?php
 global $wp;
 
 $redirect_to = home_url(add_query_arg(array(), $wp->request));
@@ -29,5 +28,3 @@ $redirect_to = home_url(add_query_arg(array(), $wp->request));
 		</div>
 	</div>
 </div>
-
-<?php get_footer(); 

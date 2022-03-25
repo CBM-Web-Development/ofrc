@@ -6,6 +6,9 @@ get_header();
 if(!is_user_logged_in()){
 	get_template_part( 'template-parts/template', 'member-login' );
 }else{ ?>
+
+<div class="member-internal d-flex flex-md-row flex-column">
+	<?php get_template_part('template-parts/template', 'member-navigation');?>
 	<div class="container-fluid g-0">
 		<?php if(have_posts()){
 			while(have_posts()){
@@ -38,35 +41,13 @@ if(!is_user_logged_in()){
 					<?php } ?>
 					</div>
 				</div>
-				<div class="row has-gutters">
-								<div class="col-md-2 mx-auto order-sm-2 order-md-1 order-2 d-flex flex-column align-items-center justify-content-start">
-									<div class="members-menu">
-										<h3 class="members-menu--title">Members Menu</h3>                
-										<?php 
-										$left_navigation_args = array(
-											'menu_class'		=> 'members-menu--menu', 
-											'menu_id'			=> '', 
-											'container'			=> '', 
-											'container_class'	=> '',
-											'container_id'		=> '',
-											'theme_location'	=> 'member-menu',
-										);
-										wp_nav_menu($left_navigation_args);
-										?>
-									</div>
-								</div>
-								<div class="col-md-10 mx-auto order-sm-1 order-md-2 order-1">
-									<?php the_content(); ?>
-								</div>
-							</div>
-					</div>
-				</div>
 				
 			<?php	
 			} // end while
 		} // end if
 		?>
 	</div>
+</div>
 
 <?php }
 

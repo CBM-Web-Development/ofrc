@@ -1,26 +1,31 @@
-<div class="d-flex flex-column flex-shrink-0 bg-light">
+
+<div class="d-flex flex-column flex-sm-row flex-shrink-0 bg-light">
 	<div class="members-menu">
-		<?php if(has_custom_logo()){
-	
-			$custom_logo_id = get_theme_mod('custom_logo');
-			$logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+		<div class="members-menu--header d-none d-md-block">
+			<?php if(get_field('member_menu_logo', 'option')){
 			
-			echo '<img src="' . esc_url($logo[0]) . '" alt="' . get_bloginfo('name') . '" class="members-menu--logo">';
-			
-		}else{ ?>
-			<h3 class="members-menu--title">Members Menu</h3>   
-		<?php } ?>             
+				$logo = get_field('member_menu_logo', 'option');
+								
+				echo '<img src="' . esc_url($logo['url']) . '" alt="Member Menu Logo" class="members-menu--logo">';
+				
+			}else{ ?>
+				<h3 class="members-menu--title"><?php the_field('member_menu_title', 'option');?></h3>   
+			<?php } ?>   
+		</div>          
 		<?php 
+		
 		$left_navigation_args = array(
-			'menu_class'		=> 'nav nav-pills nav-flush flex-column mb-auto text-center members-nav', 
+			'menu_class'		=> 'nav nav-pills nav-flush flex-md-column flex-row justify-content-center align-items-center align-items-md-stretch mb-auto text-left members-nav', 
 			'menu_id'			=> '', 
 			'container'			=> '', 
 			'container_class'	=> '',
 			'container_id'		=> '',
 			'theme_location'	=> 'member-menu',
-			'walker'			=> new bootstrap_5_wp_nav_menu_walker(),
+			'walker'			=> new bootstrap_5_wp_nav_menu_sidebar_walker(),
 		);
+		
 		wp_nav_menu($left_navigation_args);
+
 		?>
 	</div>
 </div>

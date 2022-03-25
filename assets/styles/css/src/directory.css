@@ -42,6 +42,7 @@
 	width:100%;
 }
 
+
 /* Account Styles */
 .profile-picture-form-display{
 	width:300px;
@@ -56,6 +57,19 @@
 }
 
 /* Members Menu */
+@media(max-width:786px){
+	.members-menu{
+		position:fixed;
+		bottom: 0;
+		left:0;
+		right:0;
+		z-index:1030;
+	}
+}
+.members-menu{
+	background:darkgrey !important;
+}
+
 .members-nav li a{
 	border-radius: 0px !important;
 }
@@ -72,4 +86,20 @@
 .members-menu--logo{
 	width:100%;
 	max-width:300px;
+}
+
+.toggle-sidebar-nav{
+	position:fixed;
+	top:0;
+	left:0;
+	background: none !important;
+	color:#f3f3f3;
+}
+/* Loading */
+.loading-indicator{
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	display:none;
 }

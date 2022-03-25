@@ -8,8 +8,42 @@ class OFRC_Member_Profiles{
 		add_action('wp_login_failed', array($this, 'member_failed_login'));
 		add_action('wp_ajax_member_login', array($this, 'member_login'));
 		add_action('wp_ajax_nopriv_member_login', array($this, 'member_login'));
+		add_action('wp_ajax_signout', array($this, 'member_signout'));
+		add_action('wp_ajax_nopriv_signout', array($this, 'member_signout'));
 	}
 	
+		
+	public function endpoints_init(){
+				
+		register_rest_route('ofrc/v1', '/member-directory/members', array(
+			'methods'	=> array('GET', 'POST'),
+			'callback'	=> array($this, 'get_member_directory'),
+			'permission_callback'	=> '__return_true'
+		));
+		
+		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/image-upload', array(
+			'methods' 	=> array('GET', 'POST'),
+			'callback'	=> array($this, 'upload_member_profile_picture'),
+			'permission_callback'	=> '__return_true',
+		));
+		
+		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/save-profile', array(
+			'methods' 	=> array('GET', 'POST'),
+			'callback'	=> array($this, 'save_member_profile'),
+			'permission_callback'	=> '__return_true',
+		));
+		
+		
+	}
+	
+	/**
+	 * Sign the current user out 
+	 */ 
+	public function member_signout(){
+		wp_logout();
+		
+		return wp_send_json_success();
+	}
 	
 	
 	/**
@@ -72,63 +106,39 @@ class OFRC_Member_Profiles{
 		
 		return $redirect_to;
 	}
-	
-	public function endpoints_init(){
-				
-		register_rest_route('ofrc/v1', '/member-directory/members', array(
-			'methods'	=> array('GET', 'POST'),
-			'callback'	=> array($this, 'get_member_directory'),
-			'permission_callback'	=> '__return_true'
-		));
+
+	/*
+	 * Save the member profile fields 
+	 * 
+	 * @params WP_Rest_Request
+	 * 
+	 * @returns json
+	 */
+	public function save_member_profile(WP_REST_Request $request){
 		
-		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/image-upload', array(
-			'methods' 	=> array('GET', 'POST'),
-			'callback'	=> array($this, 'upload_member_profile_picture'),
-			'permission_callback'	=> '__return_true',
-		));
-		
-		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/save-profile', array(
-			'methods' 	=> array('GET', 'POST'),
-			'callback'	=> array($this, 'save_member_profile'),
-			'permission_callback'	=> '__return_true',
-		));
-		
-		
-	}
-	
-	public function save_member_profile(){
-		$prefix = filter_input(INPUT_POST, 'prefix');
-		$first_name = filter_input(INPUT_POST, 'first_name');
-		$last_name = filter_input(INPUT_POST, 'last_name');
-		$suffix = filter_input(INPUT_POST, 'suffix');
-		$birthday = filter_input(INPUT_POST, 'birthday');
-		$gender = filter_input(INPUT_POST, 'gender');
-		$mobile_phone = filter_input(INPUT_POST, 'mobile_phone');
-		$home_phone = filter_input(INPUT_POST, 'home_phone');
-		$work_phone = filter_input(INPUT_POST, 'work_phone');
-		$email_address = filter_input(INPUT_POST, 'email');
-		$biography = filter_input(INPUT_POST, 'biography');
-		$user_id = filter_input(INPUT_POST, 'current_user');
-		
-		$response = array(
-			'success'	=> true, 
-		);
-				
-		// Set the ACF field values 
-		if(!update_field('prefix', $prefix, 'user_' . $user_id)){
-			
-			$response['success'] = false;
-			$response['field'] = 'prefix';
-			$response['value'] = $prefix;
-			
+		if(!$request->get_params()){
+			return wp_send_json_error();
 		}
-		if(!update_field('first_name', $first_name, 'user_' . $user_id)){
-			
-			$response['success'] = false;
-			$response['field'] = 'prefix';
-			$response['value'] = $prefix;
-			
-		}
+		
+		$prefix = $request->get_param('prefix');
+		$first_name = $request->get_param('first_name');
+		$last_name = $request->get_param('last_name');
+		$suffix = $request->get_param('suffix');
+		$birthday = $request->get_param('birthday');
+		$gender = $request->get_param('gender');
+		$mobile_phone = $request->get_param('mobile_phone');
+		$home_phone = $request->get_param('home_phone');
+		$work_phone = $request->get_param('work_phone');
+		$email_address = $request->get_param('email');
+		$biography = $request->get_param('biography');
+		$user_id = $request->get_param('current_user');
+		
+		$response = array();
+		
+		$has_error = false;
+		
+		update_field('prefix', $prefix, 'user_' . $user_id);
+		update_field('first_name', $first_name, 'user_' . $user_id);
 		update_field('last_name', $last_name, 'user_' . $user_id);
 		update_field('suffix', $suffix, 'user_' . $user_id);
 		update_field('birthday', $birthday, 'user_' . $user_id);
@@ -139,7 +149,8 @@ class OFRC_Member_Profiles{
 		update_field('email_address', $email_address, 'user_' . $user_id);
 		update_field('biography', $biography, 'user_' . $user_id);
 		
-		return $response;
+		
+		return wp_send_json_success();	
 	}
 	
 	/**

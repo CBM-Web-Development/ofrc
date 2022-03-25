@@ -18,8 +18,9 @@ $profile_image = get_field('profile_picture', 'user_' . $user_id);
 
 ?>
 
-<div class="member-internal d-flex">
+<div class="member-internal d-flex flex-md-row flex-column">
 	<?php get_template_part('template-parts/template', 'member-navigation');?>
+	
 	<div class="container-fluid gy-2 gx-0">
 			
 		<div class="row gx-0">
@@ -60,10 +61,10 @@ $profile_image = get_field('profile_picture', 'user_' . $user_id);
 										<div class="form-floating mb-3">
 											<select name="prefix" id="prefixSelect" placeholder="Prefix" class="form-control">								
 												<option ></option>
-												<option value="Mr.">Mr.</option>
-												<option value="Mrs.">Mrs.</option>
-												<option value="Mrs.">Ms.</option>
-												<option value="Mrs.">Dr.</option>
+												<option value="Mr." <?php echo $prefix == 'Mr.' ? 'selected' : '' ?>>Mr.</option>
+												<option value="Mrs." <?php echo $prefix == 'Mrs.' ? 'selected' : '' ?>>Mrs.</option>
+												<option value="Ms." <?php echo $prefix == 'Ms.' ? 'selected' : '' ?>>Ms.</option>
+												<option value="Dr." <?php echo $prefix == 'Dr.' ? 'selected' : '' ?>>Dr.</option>
 											</select>
 											<label for="prefixSelect">Prefix</label>
 										</div>
@@ -144,7 +145,7 @@ $profile_image = get_field('profile_picture', 'user_' . $user_id);
 								<div class="row">
 									<div class="col gy-3">								
 										<label for="biographyTextarea">Biography</label>
-										<textarea class="form-control" id="biographyTextarea" name="biography" rows="5" value="<?php echo $biography;?>"></textarea>
+										<textarea class="form-control" id="biographyTextarea" name="biography" rows="5"><?php echo $biography;?></textarea>
 									</div>
 								</div>
 								<div class="row">
