@@ -54,3 +54,22 @@
 	max-width:100%;
 	max-height:inherit;
 }
+
+/* Members Menu */
+.members-nav li a{
+	border-radius: 0px !important;
+}
+
+.members-nav li a.active{
+	background-color: #014421 !important;
+	color: #ffffff;
+}
+
+.members-nav li a{
+	color:#000000;
+}
+
+.members-menu--logo{
+	width:100%;
+	max-width:300px;
+}

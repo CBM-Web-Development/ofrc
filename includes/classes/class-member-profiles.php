@@ -6,7 +6,52 @@ class OFRC_Member_Profiles{
 		add_action('rest_api_init', array($this,'endpoints_init'));
 		//add_action('login_redirect', array($this, 'member_login_redirect'), 10, 3);
 		add_action('wp_login_failed', array($this, 'member_failed_login'));
+		add_action('wp_ajax_member_login', array($this, 'member_login'));
+		add_action('wp_ajax_nopriv_member_login', array($this, 'member_login'));
 	}
+	
+	
+	
+	/**
+	 * Handle the member login request 
+	 * 
+	 * @params void 
+	 * @returns boolean 
+	 */
+	public function member_login(){
+		$user_login = filter_input(INPUT_POST, 'user_login');
+		$user_password = filter_input(INPUT_POST, 'user_password');
+		$remember = filter_input(INPUT_POST, 'rememberme');
+		
+		$is_logged_in = array('success' => false);
+		
+		if($user_login && $user_password){
+			
+			$user = get_user_by('login', $user_login);
+						
+			if($user && wp_check_password( $user_password, $user->data->user_pass, $user->ID )){ // If the user and password are both correct 
+				// Authenticate the user
+				$is_logged_in['success'] = $this->authenticate_user($user_login, $user_password, $remember);
+			}elseif(!$user){ // If the user doesn't exist 
+				$is_logged_in['error'] = 'user';
+			}else{ // If the password is wrong 
+				$is_logged_in['error'] = 'password';
+			}
+		}
+		
+		wp_send_json_success( $is_logged_in );
+	}
+	
+	private function authenticate_user($username, $password, $remember){
+		$user = wp_signon( array(
+			'user_login' 	=> $username, 
+			'user_password'	=> $password, 
+			'remember'		=> $remember, 
+		) );
+		
+		return set_current_user($user->ID);
+	}
+	
 	
 	public function member_failed_login($username){
 		$referrer = $_SERVER['HTTP_REFERER'];

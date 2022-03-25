@@ -7243,15 +7243,7 @@ var List = __webpack_require__(/*! list.js */ "./node_modules/list.js/src/index.
 var bootstrap = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
 
 $(document).ready(function () {
-  if ($('.member-login--form')[0]) {
-    if (location.search) {
-      var params = new URLSearchParams(window.location.search);
-
-      if (params.get('login') && params.get('login') == 'failed') {
-        $('.login-alert').removeClass('d-none');
-      }
-    }
-  }
+  $('.member-login--form').on('submit', signUserIn);
 
   if ($('.member-profile-archives-page')[0]) {
     get_member_directory();
@@ -7279,6 +7271,25 @@ $(document).ready(function () {
     }
   });
 });
+
+function signUserIn() {
+  var data = $('.member-login--form').serialize();
+  data += '&action=member_login';
+  $.post(localize.ajax_url, data, function (success) {}, 'json').fail(function (error) {
+    console.log("Error: " + error);
+  }).done(function (response) {
+    if (response.data.success === false) {
+      if (response.data.error === 'password') {
+        $('input[name=user_password]').addClass('is-invalid');
+      } else {
+        $('input[name=user_login]').addClass('is-invalid');
+      }
+    } else {
+      location.reload();
+    }
+  });
+  return false;
+}
 
 function upload_member_profile_image(file) {
   var form_data = new FormData();
