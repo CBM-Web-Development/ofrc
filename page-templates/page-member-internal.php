@@ -27,18 +27,23 @@ if(!is_user_logged_in()){
 						<div class="page-hero--no-image">
 							<?php if(function_exists('yoast_breadcrumb')){ ?>
 								<div class="row has-gutters">
-									<div class="col-md-10 mx-auto">
+									<div class="col-12 mx-auto">
 										<?php yoast_breadcrumb('<p id="breadcrumbs">', '</p>'); ?>
 									</div>
 								</div>
 							<?php } ?>
 							<div class="row has-gutters">
-								<div class="col-md-10 col-12 mx-auto">
+								<div class="col-12 mx-auto">
 									<h1 class="page-title"><?php the_title(); ?></h1>
 								</div>
 							</div>
 						</div>
 					<?php } ?>
+					</div>
+				</div>
+				<div class="row gy-5 has-gutters">
+					<div class="col-12 mx-auto">
+						<?php the_content(); ?>
 					</div>
 				</div>
 				

@@ -37,13 +37,13 @@ $profile_image = get_field('profile_picture', 'user_' . $user_id);
 				<div class="page-hero--no-image">
 					<?php if(function_exists('yoast_breadcrumb')){ ?>
 						<div class="row has-gutters">
-							<div class="col-md-10 mx-auto">
+							<div class="col-12 mx-auto">
 								<?php yoast_breadcrumb('<p id="breadcrumbs">', '</p>'); ?>
 							</div>
 						</div>
 					<?php } ?>
 					<div class="row has-gutters">
-						<div class="col-md-10 col-12 mx-auto">
+						<div class="col-12 mx-auto">
 							<h1 class="page-title"><?php the_title(); ?></h1>
 						</div>
 					</div>
@@ -52,7 +52,7 @@ $profile_image = get_field('profile_picture', 'user_' . $user_id);
 			</div>
 		</div>
 			<div class="row has-gutters">
-				<div class="col-md-10 mx-auto order-sm-1 order-md-2 order-1">
+				<div class="col-12 mx-auto order-sm-1 order-md-2 order-1">
 					<div class="row">
 						<div class="col order-lg-2 order-sm-1 gy-3">
 							<form class="member-profile" name="member-profile-form" action="" onsubmit="return update_member_profile();">
