@@ -6,6 +6,9 @@ get_header();
 if(!is_user_logged_in()){
 	get_template_part( 'template-parts/template', 'member-login' );
 }else{ ?>
+
+<div class="member-internal d-flex flex-md-row flex-column">
+	<?php get_template_part('template-parts/template', 'member-navigation');?>
 	<div class="container-fluid g-0">
 		<?php if(have_posts()){
 			while(have_posts()){
@@ -24,13 +27,13 @@ if(!is_user_logged_in()){
 						<div class="page-hero--no-image">
 							<?php if(function_exists('yoast_breadcrumb')){ ?>
 								<div class="row has-gutters">
-									<div class="col-md-10 mx-auto">
+									<div class="col-12 mx-auto">
 										<?php yoast_breadcrumb('<p id="breadcrumbs">', '</p>'); ?>
 									</div>
 								</div>
 							<?php } ?>
 							<div class="row has-gutters">
-								<div class="col-md-10 col-12 mx-auto">
+								<div class="col-12 mx-auto">
 									<h1 class="page-title"><?php the_title(); ?></h1>
 								</div>
 							</div>
@@ -38,8 +41,8 @@ if(!is_user_logged_in()){
 					<?php } ?>
 					</div>
 				</div>
-				<div class="row has-gutters">
-					<div class="col-md-10 col-12 mx-auto">
+				<div class="row gy-5 has-gutters">
+					<div class="col-12 mx-auto">
 						<?php the_content(); ?>
 					</div>
 				</div>
@@ -49,6 +52,7 @@ if(!is_user_logged_in()){
 		} // end if
 		?>
 	</div>
+</div>
 
 <?php }
 

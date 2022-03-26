@@ -9,19 +9,13 @@
 	.navbar-brand img{
 		width:100%;
 		max-width:300px;
-		position:absolute;
-		top:-25%;
-		transform: translateY(-25%);
+		max-height:150px;
 	}
 	
 	.navbar-brand h1{
 		text-align: center;
 	}
-	
-	.navbar-brand{
-		margin-right:0px !important;
-	}
-	
+		
 }
 
 @media(max-width:786px){
@@ -216,6 +210,7 @@
 	width:100%;
 }
 
+
 /* Account Styles */
 .profile-picture-form-display{
 	width:300px;
@@ -228,6 +223,55 @@
 	max-width:100%;
 	max-height:inherit;
 }
+
+/* Members Menu */
+@media(max-width:786px){
+	.members-menu{
+		position:fixed;
+		bottom: 0;
+		left:0;
+		right:0;
+		z-index:1030;
+	}
+}
+.members-menu{
+	background:darkgrey !important;
+}
+
+.members-nav li a{
+	border-radius: 0px !important;
+}
+
+.members-nav li a.active{
+	background-color: #014421 !important;
+	color: #ffffff;
+}
+
+.members-nav li a{
+	color:#000000;
+}
+
+.members-menu--logo{
+	width:100%;
+	max-width:300px;
+}
+
+.toggle-sidebar-nav{
+	position:fixed;
+	top:0;
+	left:0;
+	background: none !important;
+	color:#f3f3f3;
+}
+/* Loading */
+.loading-indicator{
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	display:none;
+}
+
 .has-gutters{
 	margin-left:1.5rem !important;
 	margin-right:1.5rem !important;

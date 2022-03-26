@@ -6,28 +6,13 @@ class OFRC_Member_Profiles{
 		add_action('rest_api_init', array($this,'endpoints_init'));
 		//add_action('login_redirect', array($this, 'member_login_redirect'), 10, 3);
 		add_action('wp_login_failed', array($this, 'member_failed_login'));
+		add_action('wp_ajax_member_login', array($this, 'member_login'));
+		add_action('wp_ajax_nopriv_member_login', array($this, 'member_login'));
+		add_action('wp_ajax_signout', array($this, 'member_signout'));
+		add_action('wp_ajax_nopriv_signout', array($this, 'member_signout'));
 	}
 	
-	public function member_failed_login($username){
-		$referrer = $_SERVER['HTTP_REFERER'];
-		if ( !empty($referrer) && !strstr($referrer,'wp-login') && !strstr($referrer,'wp-admin')     ) {
-			wp_redirect( $referrer . '?login=failed&username=' . $username );
-			exit;
-		}
-	}
-	
-	public function member_login_redirect($redirect_to, $request,$user){	
-		if(isset($user->roles) && is_array($user->roles)){
-			if(in_array('member', $user->roles)){
-				//die($redirect_to);
-				return $redirect_to;
-				//return 'https://www.google.com';
-			}
-		}
 		
-		return $redirect_to;
-	}
-	
 	public function endpoints_init(){
 				
 		register_rest_route('ofrc/v1', '/member-directory/members', array(
@@ -51,39 +36,109 @@ class OFRC_Member_Profiles{
 		
 	}
 	
-	public function save_member_profile(){
-		$prefix = filter_input(INPUT_POST, 'prefix');
-		$first_name = filter_input(INPUT_POST, 'first_name');
-		$last_name = filter_input(INPUT_POST, 'last_name');
-		$suffix = filter_input(INPUT_POST, 'suffix');
-		$birthday = filter_input(INPUT_POST, 'birthday');
-		$gender = filter_input(INPUT_POST, 'gender');
-		$mobile_phone = filter_input(INPUT_POST, 'mobile_phone');
-		$home_phone = filter_input(INPUT_POST, 'home_phone');
-		$work_phone = filter_input(INPUT_POST, 'work_phone');
-		$email_address = filter_input(INPUT_POST, 'email');
-		$biography = filter_input(INPUT_POST, 'biography');
-		$user_id = filter_input(INPUT_POST, 'current_user');
+	/**
+	 * Sign the current user out 
+	 */ 
+	public function member_signout(){
+		wp_logout();
 		
-		$response = array(
-			'success'	=> true, 
-		);
-				
-		// Set the ACF field values 
-		if(!update_field('prefix', $prefix, 'user_' . $user_id)){
+		return wp_send_json_success();
+	}
+	
+	
+	/**
+	 * Handle the member login request 
+	 * 
+	 * @params void 
+	 * @returns boolean 
+	 */
+	public function member_login(){
+		$user_login = filter_input(INPUT_POST, 'user_login');
+		$user_password = filter_input(INPUT_POST, 'user_password');
+		$remember = filter_input(INPUT_POST, 'rememberme');
+		
+		$is_logged_in = array('success' => false);
+		
+		if($user_login && $user_password){
 			
-			$response['success'] = false;
-			$response['field'] = 'prefix';
-			$response['value'] = $prefix;
-			
+			$user = get_user_by('login', $user_login);
+						
+			if($user && wp_check_password( $user_password, $user->data->user_pass, $user->ID )){ // If the user and password are both correct 
+				// Authenticate the user
+				$is_logged_in['success'] = $this->authenticate_user($user_login, $user_password, $remember);
+			}elseif(!$user){ // If the user doesn't exist 
+				$is_logged_in['error'] = 'user';
+			}else{ // If the password is wrong 
+				$is_logged_in['error'] = 'password';
+			}
 		}
-		if(!update_field('first_name', $first_name, 'user_' . $user_id)){
-			
-			$response['success'] = false;
-			$response['field'] = 'prefix';
-			$response['value'] = $prefix;
-			
+		
+		wp_send_json_success( $is_logged_in );
+	}
+	
+	private function authenticate_user($username, $password, $remember){
+		$user = wp_signon( array(
+			'user_login' 	=> $username, 
+			'user_password'	=> $password, 
+			'remember'		=> $remember, 
+		) );
+		
+		return set_current_user($user->ID);
+	}
+	
+	
+	public function member_failed_login($username){
+		$referrer = $_SERVER['HTTP_REFERER'];
+		if ( !empty($referrer) && !strstr($referrer,'wp-login') && !strstr($referrer,'wp-admin')     ) {
+			wp_redirect( $referrer . '?login=failed&username=' . $username );
+			exit;
 		}
+	}
+	
+	public function member_login_redirect($redirect_to, $request,$user){	
+		if(isset($user->roles) && is_array($user->roles)){
+			if(in_array('member', $user->roles)){
+				//die($redirect_to);
+				return $redirect_to;
+				//return 'https://www.google.com';
+			}
+		}
+		
+		return $redirect_to;
+	}
+
+	/*
+	 * Save the member profile fields 
+	 * 
+	 * @params WP_Rest_Request
+	 * 
+	 * @returns json
+	 */
+	public function save_member_profile(WP_REST_Request $request){
+		
+		if(!$request->get_params()){
+			return wp_send_json_error();
+		}
+		
+		$prefix = $request->get_param('prefix');
+		$first_name = $request->get_param('first_name');
+		$last_name = $request->get_param('last_name');
+		$suffix = $request->get_param('suffix');
+		$birthday = $request->get_param('birthday');
+		$gender = $request->get_param('gender');
+		$mobile_phone = $request->get_param('mobile_phone');
+		$home_phone = $request->get_param('home_phone');
+		$work_phone = $request->get_param('work_phone');
+		$email_address = $request->get_param('email');
+		$biography = $request->get_param('biography');
+		$user_id = $request->get_param('current_user');
+		
+		$response = array();
+		
+		$has_error = false;
+		
+		update_field('prefix', $prefix, 'user_' . $user_id);
+		update_field('first_name', $first_name, 'user_' . $user_id);
 		update_field('last_name', $last_name, 'user_' . $user_id);
 		update_field('suffix', $suffix, 'user_' . $user_id);
 		update_field('birthday', $birthday, 'user_' . $user_id);
@@ -94,7 +149,8 @@ class OFRC_Member_Profiles{
 		update_field('email_address', $email_address, 'user_' . $user_id);
 		update_field('biography', $biography, 'user_' . $user_id);
 		
-		return $response;
+		
+		return wp_send_json_success();	
 	}
 	
 	/**

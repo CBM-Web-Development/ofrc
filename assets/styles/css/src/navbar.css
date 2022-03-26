@@ -9,19 +9,13 @@
 	.navbar-brand img{
 		width:100%;
 		max-width:300px;
-		position:absolute;
-		top:-25%;
-		transform: translateY(-25%);
+		max-height:150px;
 	}
 	
 	.navbar-brand h1{
 		text-align: center;
 	}
-	
-	.navbar-brand{
-		margin-right:0px !important;
-	}
-	
+		
 }
 
 @media(max-width:786px){

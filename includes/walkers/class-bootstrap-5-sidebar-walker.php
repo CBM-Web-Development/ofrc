@@ -1,6 +1,6 @@
 <?php
 // bootstrap 5 wp_nav_menu walker
-class bootstrap_5_wp_nav_menu_walker extends Walker_Nav_menu
+class bootstrap_5_wp_nav_menu_sidebar_walker extends Walker_Nav_menu
 {
   private $current_item;
   private $dropdown_menu_alignment_values = [
@@ -68,7 +68,12 @@ class bootstrap_5_wp_nav_menu_walker extends Walker_Nav_menu
 
     $item_output = $args->before;
     $item_output .= '<a' . $attributes . '>';
-    $item_output .= '<span class="nav-item--text">';
+      
+    if(get_field('icon', $item->ID)){
+      $item_output .= get_field('icon', $item->ID) . ' ';
+    }
+    
+    $item_output .= '<span class="nav-item--text d-md-inline d-none">';
     $item_output .= $args->link_before . apply_filters('the_title', $item->title, $item->ID) . $args->link_after;
     $item_output .= '</span>';
     $item_output .= '</a>';

@@ -68,6 +68,11 @@ class bootstrap_5_wp_nav_menu_walker extends Walker_Nav_menu
 
 	$item_output = $args->before;
 	$item_output .= '<a' . $attributes . '>';
+	
+	if(get_field('icon', $item->ID)){
+		$item_output .= get_field('icon', $item->ID);
+	}
+	
 	$item_output .= $args->link_before . apply_filters('the_title', $item->title, $item->ID) . $args->link_after;
 	$item_output .= '</a>';
 	$item_output .= $args->after;
