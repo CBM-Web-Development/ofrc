@@ -7385,7 +7385,6 @@ function get_member_directory() {
 }
 
 function build_directory_html(members) {
-  console.log(members);
   var options = {
     page: 10,
     pagination: {
