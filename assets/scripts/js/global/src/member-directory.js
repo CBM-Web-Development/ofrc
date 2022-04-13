@@ -148,6 +148,7 @@ window.update_member_profile = function(){
 		
 	return false;
 }
+
 function showToastMessage(type, title, message){
 	var toastDiv = $('.toast');
 	$('.toast-header--text').text(title);
@@ -167,7 +168,7 @@ function get_member_directory(){
 }
 
 function build_directory_html(members){
-	console.log(members);	
+
 	var options = {
 		page: 10, 
 		pagination: {
