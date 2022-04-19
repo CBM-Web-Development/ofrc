@@ -6,11 +6,11 @@ name: Publish Theme to Website FTP
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ dev ]
+    branches: [ master ]
 
   pull_request: 
     types: [merged]
-    branches: [dev]
+    branches: [master]
     
 
   # Allows you to run this workflow manually from the Actions tab
