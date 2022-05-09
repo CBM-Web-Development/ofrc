@@ -1,5 +1,3 @@
-<br />
-<b>Warning</b>:  call_user_func_array() expects parameter 1 to be a valid callback, class 'OFRC_Member_Profiles' does not have a method 'member_profile_post_type' in <b>/Applications/MAMP/htdocs/ofrc/wp-includes/class-wp-hook.php</b> on line <b>303</b><br />
 [
     {
         "key": "group_61cc95dce0c8c",
