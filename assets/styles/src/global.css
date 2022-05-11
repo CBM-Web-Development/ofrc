@@ -1,0 +1,43 @@
+.wp-block-cover a{
+	color:inherit !important;
+	text-decoration: none;
+}
+
+.wp-block-cover a:hover{
+	color:inherit;
+}
+
+.wp-block-group img{
+	height: auto !important;
+}
+
+@media(max-width:786px){
+	.wp-block-column{
+		margin-bottom:1.5rem;
+	}
+}
+
+/* Notification Banner */
+.notification-banner{
+	display:flex;
+	justify-content:center;
+	min-height:50px; 
+	align-items: center;
+	color: #ffffff;
+}
+
+
+.notification-banner--normal, .notification-banner--normal a{
+	background-color: #4BB543;
+	color:#000000;
+}
+
+.notification-banner--warning, .notification-banner--warning a{
+	background-color:#D0342C;
+	color: #ffffff;
+}
+
+.notification-banner--alert, .notification-banner--alert a{
+	background-color:#ffCC00;
+	color:#000000;
+}

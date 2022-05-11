@@ -9,3 +9,6 @@ import '@fortawesome/fontawesome-free/js/regular'
 
 import './src/archives.js';
 import './src/member-directory.js';
+
+// React 
+import './src/app/MemberLogin.jsx';

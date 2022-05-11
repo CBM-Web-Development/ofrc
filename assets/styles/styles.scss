@@ -1,11 +1,10 @@
-@import "bootstrap";
-//@import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
+@import '../node_modules/bootstrap/scss/bootstrap'; 
 
 
-
-@import "./css/src/navbar.css";
-@import "./css/src/global.css";
-@import "./css/src/footer.css";
-@import "./css/src/page.css";
-@import "./css/src/directory.css";
-@import "./css/src/homepage-template.css";
+@import "./src/navbar"; 
+@import "./src/global";
+@import "./src/footer";
+@import "./src/page";
+@import "./src/directory";
+@import "./src/homepage-template"; 
+@import "./src/member-login";

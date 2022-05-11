@@ -11,13 +11,21 @@ class OFRC_Member_Profiles{
 		add_action('wp_ajax_signout', array($this, 'member_signout'));
 		add_action('wp_ajax_nopriv_signout', array($this, 'member_signout'));
 		add_action('init', array($this, 'register_member_profile_cpt'));
+		add_action('init', array($this, 'memberships_options_page'));
 		
 	}
 	
+	public function memberships_options_page(){
+		acf_add_options_sub_page( array( 
+			'page_title'	=> 'Memberships', 
+			'menu_title'	=> 'Memberships', 
+			'parent_slug'	=> 'edit.php?post_type=member'
+		 ) );
+	}
 	
 	
 	// Register Custom Post Type
-	function register_member_profile_cpt() {
+	public function register_member_profile_cpt() {
 	
 		$labels = array(
 			'name'                  => _x( 'Members', 'Post Type General Name', OFRC_TEXTDOMAIN ),
@@ -100,7 +108,153 @@ class OFRC_Member_Profiles{
 			'permission_callback'	=> '__return_true',
 		));
 		
+		register_rest_route('ofrc/v1', '/members/sign-up', array(
+			'methods'	=> array('GET', 'POST'), 
+			'callback'	=> array($this, 'member_sign_up'), 
+			'permission_callback'	=> '__return_true'
+		));
+	}
+	
+	
+	/** 
+	 * Member sign up function 
+	 * 
+	 * @param WP_REST_Request object 
+	 * @return JSON  
+	 */
+	public function member_sign_up(WP_REST_Request $request){
 		
+		$response = array(
+			'response'	=> false,
+		);
+		
+		if(!$request->get_params()){
+			$response['reason'] = 'No Data';
+			return wp_send_json_error($response);
+		}
+		
+		$username = $request->get_param('email');
+		$first_name = $request->get_param('first_name');
+		$last_name = $request->get_param('last_name');
+		$password = $request->get_param('password');
+		$membership_id = $request->get_param('membership_id');
+		
+		if(get_user_by_email( $username )){
+			
+			$response['reason'] = 'Username already exists';
+			return wp_send_json_error($response);
+
+		}
+								
+		if(!$this->check_membership_id($request->get_param('membership_id'))){
+			$response['reason'] = 'Invalid membership ID';
+			return wp_send_json_error($response);	
+		}
+		
+		if($this->check_member_exists($membership_id)){
+			$response['reason'] = 'Member profile already exists';
+			return wp_send_json_error($response);
+		}
+		
+		
+		// Create the post 
+		$member_args = array(
+			'post_title' 	=> $last_name . ' - ' . $request->get_param('membership_id'), 
+			'post_content'	=> '', 
+			'post_status'	=> 'publish', 
+			'post_type'		=> 'member',
+			'ID'			=> 0,
+		);
+		
+		$member = wp_insert_post($member_args);
+		
+		if(is_wp_error( $member )){
+			$response['reason'] = 'Failed to create member';
+			return wp_send_json_error($response);
+		}
+		
+		update_field( 'member_profile', array(
+			'first_name'	=> $first_name, 
+			'last_name'		=> $last_name,
+			'email'			=> $username,
+		), $member );
+		
+		update_field( 'member_access', array(
+			'username'	=> $username, 
+			'membership_id'	=> $membership_id,
+		), $member);
+		
+		$member = wp_insert_user( array(
+			'user_pass'		=> $password,
+			'user_login'	=> $username,
+			'user_email'	=> $username,
+			'role'			=> 'member',
+			'first_name'	=> $first_name, 
+			'last_name'		=> $last_name,
+			'meta_input'	=> array(
+				'membership_id'	=> $membership_id
+			)
+		) ); 
+		
+		$response['member_id'] = $member;
+		
+		$this->send_confirmation_email($username, $first_name, $last_name);
+		
+		return wp_send_json_success($response);	
+	}
+	
+	/** 
+	 * Send a confirmation email after signing up 
+	 * 
+	 * @param String: email
+	 * @param String: first_name
+	* @param String: last_name
+	 */ 
+	private function send_confirmation_email($email, $first_name, $last_name){
+		$subject = "New User Registration - Olde Forest Racquet Club";
+		
+		$message = $first_name . ' ' . $last_name . ', <br/><br/>Thank you for registering. Your username is: ' . $email .'. You can access your account <a href="https://www.oldeforest.com/account">here</a><br/><br/>Sincerely,<br/>The Olde Forest Team' ;
+		
+		$headers = array('Content-Type: text/html; charset=UTF-8; From: Olde Forest Racquet Club <connor.meehan@cbmwebdevelopment.com>');
+		
+		wp_mail($email, $subject, $message, $headers);
+	}
+	
+	/**
+	 * Check to see if a member already exists with that ID 
+	 * 
+	 * @params String: membership_id 
+	 * @returns boolean 
+	 */ 
+	private function check_member_exists($membership_id){
+		$members = get_posts( array(
+			'post_type'		=> 'member', 
+			'post_status'	=> 'publish', 
+			'meta_key'		=> 'member_access_membership_id', 
+			'meta_value'	=> $membership_id
+		 ) );
+		 
+		return $members; 
+	}
+	
+	/**
+	 * Check the membership ID is valid
+	 * 
+	 * @params String: membership_id
+	 */ 
+	private function check_membership_id($membership_id){
+		$memberships = get_field('memberships', 'option');
+		
+		if($memberships){
+			foreach($memberships as $membership){
+				if($membership['membership_id'] == $membership_id){
+					return true;
+				}
+
+			}
+		}
+				
+		return false;
 	}
 	
 	/**
@@ -188,15 +342,15 @@ class OFRC_Member_Profiles{
 		}
 		
 		$prefix = $request->get_param('prefix');
-		$first_name = $request->get_param('first_name');
-		$last_name = $request->get_param('last_name');
+		$first_name = $first_name;
+		$last_name = $last_name;
 		$suffix = $request->get_param('suffix');
 		$birthday = $request->get_param('birthday');
 		$gender = $request->get_param('gender');
 		$mobile_phone = $request->get_param('mobile_phone');
 		$home_phone = $request->get_param('home_phone');
 		$work_phone = $request->get_param('work_phone');
-		$email_address = $request->get_param('email');
+		$email_address = $username;
 		$biography = $request->get_param('biography');
 		$user_id = $request->get_param('current_user');
 		
