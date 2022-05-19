@@ -1,6 +1,176 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./js/src/app/MemberGroup.jsx":
+/*!************************************!*\
+  !*** ./js/src/app/MemberGroup.jsx ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
+/* harmony import */ var _components_TableRow_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/TableRow.jsx */ "./js/src/app/components/TableRow.jsx");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/api-fetch */ "./node_modules/@wordpress/api-fetch/build-module/index.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+
+
+
+var container = document.getElementById('member-group-section');
+
+if (container !== undefined && container !== null) {
+  var root = react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot(container);
+  root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(App, null));
+}
+
+var removeRow = function removeRow(evt) {
+  var row = evt.target.closest('tr');
+  row.remove();
+};
+
+var getMembers = function getMembers(members, setMembers) {
+  var data = {
+    membership_id: localize.current_member_group_id
+  };
+  (0,_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__["default"])({
+    path: localize.rest_get_member_group,
+    data: data,
+    method: 'POST'
+  }).then(function (posts) {
+    console.log(posts.data);
+    setMembers(posts.data);
+  });
+};
+
+var addMemberRow = function addMemberRow(evt, members, setMembers) {
+  setMembers(function (members) {
+    return [].concat(_toConsumableArray(members), [[{
+      data_type: 'image',
+      name: 'profile_picture',
+      value: '',
+      attachment_id: ''
+    }, {
+      data_type: 'text',
+      name: 'first_name',
+      value: ''
+    }, {
+      data_type: 'text',
+      name: 'last_name',
+      value: ''
+    }, {
+      data_type: 'select',
+      name: 'relationship',
+      value: ''
+    }, {
+      data_type: 'switch',
+      name: 'show_in_directory',
+      value: ''
+    }]]);
+  });
+};
+
+function App() {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      members = _useState2[0],
+      setMembers = _useState2[1];
+
+  var columns = [{
+    type: 'image',
+    name: 'profile_picture'
+  }, {
+    type: 'text',
+    name: 'first_name'
+  }, {
+    type: 'text',
+    name: 'last_name'
+  }, {
+    type: 'select',
+    name: 'relationship',
+    options: [{
+      value: 'spouse',
+      label: 'Spouse'
+    }, {
+      value: 'partner',
+      label: 'Partner'
+    }, {
+      value: 'child',
+      label: 'Child'
+    }, {
+      value: 'grandparent',
+      label: 'Grandparent'
+    }, {
+      value: 'babysitter',
+      label: 'Babysitter'
+    }]
+  }, {
+    type: 'switch',
+    name: 'show_in_directory'
+  }];
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    getMembers(members, setMembers);
+  }, []);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
+    className: "member-group-table",
+    width: "100%"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    className: "text-center"
+  }, "Profile Picture"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    className: "text-center"
+  }, "First Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    className: "text-center"
+  }, "Last Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    className: "text-center"
+  }, "Relationship"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    className: "text-center"
+  }, "Show in Directory"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, members.map(function (member, key) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_TableRow_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      key: key,
+      rowData: member,
+      rowColumns: columns,
+      rowKey: key,
+      removeRow: removeRow
+    });
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tfoot", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    colSpan: 5,
+    align: "center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    className: "btn",
+    onClick: function onClick(evt) {
+      return addMemberRow(evt, members, setMembers);
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "fa-solid fa-circle-plus"
+  }))))));
+}
+
+/***/ }),
+
 /***/ "./js/src/app/MemberLogin.jsx":
 /*!************************************!*\
   !*** ./js/src/app/MemberLogin.jsx ***!
@@ -18,6 +188,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Form_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Form.jsx */ "./js/src/app/components/Form.jsx");
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/api-fetch */ "./node_modules/@wordpress/api-fetch/build-module/index.js");
 /* harmony import */ var _components_LoadingIndicator_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/LoadingIndicator.jsx */ "./js/src/app/components/LoadingIndicator.jsx");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -39,7 +211,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var container = document.getElementById("member-login");
 
-if (container !== undefined) {
+if (container !== undefined && container !== null) {
   var root = react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot(container);
   root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(App, null));
 }
@@ -110,7 +282,6 @@ var memberSignUp = function memberSignUp(evt, setIsLoading) {
   jquery__WEBPACK_IMPORTED_MODULE_3___default().post(localize.rest_member_signup, data, function () {}).fail(function (error) {
     console.log(error);
   }).done(function (response) {
-    console.log(response);
     setIsLoading(false);
 
     if (response.success === true) {
@@ -122,16 +293,78 @@ var memberSignUp = function memberSignUp(evt, setIsLoading) {
   });
 };
 
-var forgotPasswordReset = function forgotPasswordReset(evt) {
+var forgotPasswordReset = function forgotPasswordReset(evt, setIsLoading) {
   evt.preventDefault();
+  setIsLoading(true);
+  var form = evt.target;
+  var data = jquery__WEBPACK_IMPORTED_MODULE_3___default()(form).serialize();
+  jquery__WEBPACK_IMPORTED_MODULE_3___default().post(localize.rest_password_reset_request, data).fail(function (error) {
+    console.log(error);
+  }).done(function (response) {
+    setIsLoading(false);
+    showPasswordResetForm(evt);
+  });
 };
 
-var memberSignIn = function memberSignIn(evt) {
+var handleLoginError = function handleLoginError(errors) {
+  errors.forEach(function (error) {
+    if (error.code.toLowerCase().indexOf('password') > -1) {
+      jquery__WEBPACK_IMPORTED_MODULE_3___default()('input[name=password]').addClass('is-invalid');
+      jquery__WEBPACK_IMPORTED_MODULE_3___default()('input[name=password]').after('<div class="invalid-feedback">' + error.message + '</div>');
+    }
+
+    if (error.code.toLowerCase().indexOf('email') > -1) {
+      jquery__WEBPACK_IMPORTED_MODULE_3___default()('input[name=username]').addClass('is-invalid');
+      jquery__WEBPACK_IMPORTED_MODULE_3___default()('input[name=username]').after('<div class="invalid-feedback">' + error.message + '</div>');
+    }
+  });
+};
+
+var resetPassword = function resetPassword(evt, setIsLoading) {
   evt.preventDefault();
+  var form = evt.target;
+  var data = jquery__WEBPACK_IMPORTED_MODULE_3___default()(form).serialize();
+  jquery__WEBPACK_IMPORTED_MODULE_3___default().post(localize.rest_reset_password, data).fail(function (error) {
+    console.log(error);
+  }).done(function (response) {
+    setIsLoading(false);
+
+    if (response.success === true) {
+      showSignInForm(evt);
+    }
+  });
+};
+
+var memberSignIn = function memberSignIn(evt, setIsLoading) {
+  evt.preventDefault();
+  setIsLoading(true);
+  var form = evt.target;
+  var data = jquery__WEBPACK_IMPORTED_MODULE_3___default()(form).serialize();
+  jquery__WEBPACK_IMPORTED_MODULE_3___default().post(localize.rest_member_login, data, function () {}).fail(function (error) {
+    console.log(error);
+  }).done(function (response) {
+    setIsLoading(false);
+    console.log(response);
+
+    if (response.success === false) {
+      if (response.data !== undefined) {
+        handleLoginError(response.data);
+      } else {
+        handleLoginError([{
+          code: 'password',
+          message: 'Password is empty'
+        }, {
+          code: 'email',
+          message: 'Username is empty'
+        }]);
+      }
+    } else {
+      window.location.reload();
+    }
+  });
 };
 
 var showForgotPasswordForm = function showForgotPasswordForm(evt) {
-  console.log(evt);
   evt.preventDefault();
   jquery__WEBPACK_IMPORTED_MODULE_3___default()('.member-sign-in-form').fadeToggle();
   var form = evt.target;
@@ -145,7 +378,15 @@ var showSignUpForm = function showSignUpForm(evt) {
   jquery__WEBPACK_IMPORTED_MODULE_3___default()('.member-sign-up-form').fadeToggle();
 };
 
+var showPasswordResetForm = function showPasswordResetForm(evt) {
+  evt.preventDefault();
+  jquery__WEBPACK_IMPORTED_MODULE_3___default()('.member-forgot-login-form').fadeToggle();
+  jquery__WEBPACK_IMPORTED_MODULE_3___default()('.member-reset-password-form').fadeToggle();
+};
+
 function App() {
+  var _React$createElement;
+
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       isLoading = _useState2[0],
@@ -169,11 +410,15 @@ function App() {
   var signInFields = [{
     name: 'username',
     label: 'Username',
-    type: 'text'
+    type: 'email'
   }, {
     name: 'password',
     label: 'Password',
     type: 'password'
+  }, {
+    name: 'remember',
+    label: 'Remember Me',
+    type: 'checkbox'
   }];
   var forgotPasswordFields = [{
     name: 'username',
@@ -204,7 +449,22 @@ function App() {
     label: 'Last Name',
     type: 'text'
   }];
-  console.log(signUpFields);
+  var resetPasswordFields = [{
+    name: 'reset_key',
+    label: 'Reset Key',
+    type: 'text',
+    required: true
+  }, {
+    name: 'login',
+    label: 'Email',
+    type: 'email',
+    required: true
+  }, {
+    name: 'password',
+    label: 'New Password',
+    type: 'password',
+    required: true
+  }];
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, isLoading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_LoadingIndicator_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Form_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     formTitle: "Log In",
     formName: "member-sign-in-form",
@@ -224,17 +484,56 @@ function App() {
     submitButtonText: "Sign Up",
     showSignInForm: showSignInForm,
     setIsLoading: setIsLoading
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Form_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    formName: "member-forgot-login-form",
-    formClassName: "form member-forgot-login-form",
-    onSubmit: forgotPasswordReset,
-    formFields: forgotPasswordFields,
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Form_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], (_React$createElement = {
+    formName: "Request Password Reset"
+  }, _defineProperty(_React$createElement, "formName", "member-forgot-login-form"), _defineProperty(_React$createElement, "formClassName", "form member-forgot-login-form"), _defineProperty(_React$createElement, "onSubmit", forgotPasswordReset), _defineProperty(_React$createElement, "formFields", forgotPasswordFields), _defineProperty(_React$createElement, "submitButtonText", "Reset Password"), _defineProperty(_React$createElement, "showForgotPasswordForm", showForgotPasswordForm), _defineProperty(_React$createElement, "showSignInForm", showSignInForm), _defineProperty(_React$createElement, "setIsLoading", setIsLoading), _React$createElement)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Form_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    formTitle: "Reset Password",
+    formName: "member-reset-password-form",
+    formClassName: "form member-reset-password-form",
+    onSubmit: resetPassword,
+    formFields: resetPasswordFields,
     submitButtonText: "Reset Password",
-    showForgotPasswordForm: showForgotPasswordForm,
     showSignInForm: showSignInForm,
     setIsLoading: setIsLoading
   }));
 }
+
+/***/ }),
+
+/***/ "./js/src/app/components/CheckboxInput.jsx":
+/*!*************************************************!*\
+  !*** ./js/src/app/components/CheckboxInput.jsx ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function CheckboxInput(props) {
+  var fieldType = props.fieldType,
+      fieldName = props.fieldName,
+      fieldLabel = props.fieldLabel,
+      fieldOptions = props.fieldOptions,
+      required = props.required;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-check"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    className: "form-check-input",
+    type: "checkbox",
+    name: fieldName,
+    required: required
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "form-check-label"
+  }, fieldLabel));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CheckboxInput);
 
 /***/ }),
 
@@ -297,6 +596,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _FloatingInput_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FloatingInput.jsx */ "./js/src/app/components/FloatingInput.jsx");
+/* harmony import */ var _CheckboxInput_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CheckboxInput.jsx */ "./js/src/app/components/CheckboxInput.jsx");
+
 
 
 
@@ -312,7 +613,6 @@ function Form(props) {
       showSignInForm = props.showSignInForm,
       validation = props.validation,
       setIsLoading = props.setIsLoading;
-  console.log(setIsLoading);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     name: formName,
     className: formClassName,
@@ -326,14 +626,21 @@ function Form(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
     className: "fa-solid fa-chevron-left"
   }), " Back"), formTitle !== undefined && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, formTitle), formFields.map(function (field) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_FloatingInput_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, field.type === 'checkbox' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CheckboxInput_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       fieldType: field.type,
       fieldName: field.name,
       fieldLabel: field.label,
       required: field.required,
       fieldOptions: field.options,
       key: field.name
-    });
+    }), field.type !== 'checkbox' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_FloatingInput_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      fieldType: field.type,
+      fieldName: field.name,
+      fieldLabel: field.label,
+      required: field.required,
+      fieldOptions: field.options,
+      key: field.name
+    }));
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "d-grid gap-1 mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
@@ -349,6 +656,158 @@ function Form(props) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Form);
+
+/***/ }),
+
+/***/ "./js/src/app/components/ImageInput.jsx":
+/*!**********************************************!*\
+  !*** ./js/src/app/components/ImageInput.jsx ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+var triggerFileUpload = function triggerFileUpload(evt) {
+  var fileUploadDiv = jquery__WEBPACK_IMPORTED_MODULE_1___default()(evt.target).closest('.profile-picture-form-display');
+  var fileUploadInput = jquery__WEBPACK_IMPORTED_MODULE_1___default()(fileUploadDiv).find('input[name=profile_picture]');
+  jquery__WEBPACK_IMPORTED_MODULE_1___default()(fileUploadInput).trigger('click');
+};
+
+var removeImage = function removeImage(evt, setRemoved) {
+  evt.preventDefault();
+  var deleteButton = evt.target;
+  var container = jquery__WEBPACK_IMPORTED_MODULE_1___default()(deleteButton).closest('.profile-picture-form-display');
+  var placeholderContainer = jquery__WEBPACK_IMPORTED_MODULE_1___default()(container).find('.profile-picture-form-display--placeholder');
+  jquery__WEBPACK_IMPORTED_MODULE_1___default()(placeholderContainer).html("<i class='fas fa-file-upload'></i>");
+  jquery__WEBPACK_IMPORTED_MODULE_1___default()(deleteButton).hide();
+  setRemoved(true);
+};
+
+var imageUpload = function imageUpload(evt) {
+  evt.preventDefault();
+  var file = evt.target.files;
+  var profileImageDisplay = jquery__WEBPACK_IMPORTED_MODULE_1___default()(evt.target).closest('.profile-picture-form-display--img');
+  console.log(file);
+
+  if (file) {
+    var img;
+
+    if (jquery__WEBPACK_IMPORTED_MODULE_1___default()(profileImageDisplay).length > 0) {
+      console.log('yes');
+      img = jquery__WEBPACK_IMPORTED_MODULE_1___default()('.profile-picture-form-display--img');
+      jquery__WEBPACK_IMPORTED_MODULE_1___default()('.profile-picture-form-display--img').attr('src', URL.createObjectURL(file[0]));
+    } else {
+      console.log('no');
+      img = document.createElement('img');
+      img.className = "profile-picture-form-display--img";
+      jquery__WEBPACK_IMPORTED_MODULE_1___default()('.profile-picture-form-display--placeholder').html(img);
+      img.src = URL.createObjectURL(file[0]);
+    }
+  }
+
+  return false;
+};
+
+function ImageInput(props) {
+  var src = props.src,
+      attachmentId = props.attachmentId;
+  console.log(src);
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      removed = _useState2[0],
+      setRemoved = _useState2[1];
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "table-image-input profile-picture-section d-flex justify-content-center flex-column align-items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "profile-picture-form-display d-flex align-items-center justify-content-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "profile-picture-form-display--placeholder"
+  }, (src === '' || src === undefined || src === null) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "fas fa-file-upload"
+  }), src !== '' && src !== undefined && src !== null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+    className: "profile-picture-form-display--img",
+    src: src,
+    alt: "Profile Picture"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "profile-picture-mask",
+    onClick: triggerFileUpload
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Click to upload")), src !== '' && src !== undefined && src !== null && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    className: "remove-image-button",
+    onClick: function onClick(evt) {
+      return removeImage(evt, setRemoved);
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "fa-solid fa-xmark"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "file",
+    accept: "image/*",
+    name: "profile_picture",
+    className: "form-control profile-picture-input",
+    "data-removed": removed,
+    "data-aid": attachmentId,
+    onChange: imageUpload
+  })));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ImageInput);
+
+/***/ }),
+
+/***/ "./js/src/app/components/Input.jsx":
+/*!*****************************************!*\
+  !*** ./js/src/app/components/Input.jsx ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function Input(props) {
+  var name = props.name,
+      value = props.value,
+      required = props.required,
+      type = props.type;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: type,
+    name: name,
+    defaultValue: value,
+    required: required,
+    className: 'form-control'
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Input);
 
 /***/ }),
 
@@ -376,6 +835,182 @@ function LoadingIndicator(props) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingIndicator);
+
+/***/ }),
+
+/***/ "./js/src/app/components/SelectInput.jsx":
+/*!***********************************************!*\
+  !*** ./js/src/app/components/SelectInput.jsx ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function SelectInput(props) {
+  var name = props.name,
+      options = props.options,
+      required = props.required,
+      value = props.value;
+  console.log(value);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    className: "form-select",
+    defaultValue: value,
+    required: required,
+    name: name
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+    value: "",
+    disabled: true
+  }, "Select One"), options.map(function (option) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
+      value: option.value,
+      key: option.value
+    }, option.label);
+  }));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectInput);
+
+/***/ }),
+
+/***/ "./js/src/app/components/TableColumn.jsx":
+/*!***********************************************!*\
+  !*** ./js/src/app/components/TableColumn.jsx ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Input_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Input.jsx */ "./js/src/app/components/Input.jsx");
+/* harmony import */ var _ImageInput_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ImageInput.jsx */ "./js/src/app/components/ImageInput.jsx");
+/* harmony import */ var _SelectInput_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SelectInput.jsx */ "./js/src/app/components/SelectInput.jsx");
+/* harmony import */ var _ToggleSwitch_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ToggleSwitch.jsx */ "./js/src/app/components/ToggleSwitch.jsx");
+
+
+
+
+
+
+function TableColumn(props) {
+  var columnKey = props.columnKey,
+      type = props.type,
+      name = props.name,
+      options = props.options,
+      data = props.data;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    key: columnKey,
+    align: "center"
+  }, type === 'image' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ImageInput_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    src: data.value,
+    attachmentId: data.attachment_id
+  }), type === 'text' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Input_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: type,
+    name: name,
+    required: true,
+    value: data.value
+  }), type === 'select' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SelectInput_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    options: options,
+    value: data.value,
+    name: name
+  }), type === 'switch' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ToggleSwitch_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    checked: data.value,
+    name: name
+  }));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TableColumn);
+
+/***/ }),
+
+/***/ "./js/src/app/components/TableRow.jsx":
+/*!********************************************!*\
+  !*** ./js/src/app/components/TableRow.jsx ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _TableColumn_jsx__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TableColumn.jsx */ "./js/src/app/components/TableColumn.jsx");
+
+
+
+function TableRow(props) {
+  var rowData = props.rowData,
+      rowColumns = props.rowColumns,
+      rowKey = props.rowKey,
+      removeRow = props.removeRow;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
+    key: rowKey
+  }, rowColumns.map(function (column, key) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_TableColumn_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      key: key,
+      type: column.type,
+      name: column.name,
+      data: rowData[key],
+      options: column.options,
+      columnKey: key
+    });
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+    key: "removeRowColumn",
+    align: "center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: removeRow,
+    className: "btn"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("i", {
+    className: "fa-solid fa-circle-minus"
+  }))));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TableRow);
+
+/***/ }),
+
+/***/ "./js/src/app/components/ToggleSwitch.jsx":
+/*!************************************************!*\
+  !*** ./js/src/app/components/ToggleSwitch.jsx ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function ToggleSwitch(props) {
+  var name = props.name,
+      checked = props.checked;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    className: "switch"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "checkbox",
+    name: name,
+    defaultChecked: checked
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "slider"
+  }));
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ToggleSwitch);
 
 /***/ }),
 
@@ -477,15 +1112,22 @@ function set_page_contents(posts, page) {
 /*!************************************!*\
   !*** ./js/src/member-directory.js ***!
   \************************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/api-fetch */ "./node_modules/@wordpress/api-fetch/build-module/index.js");
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 var List = __webpack_require__(/*! list.js */ "./node_modules/list.js/src/index.js");
 
 var bootstrap = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
 
+
 $(document).ready(function () {
+  $('.profile-picture-mask').on('click', function (e) {
+    $('.profile-picture-input').trigger('click');
+  });
   $('.signoutButton').on('click', function (e) {
     e.preventDefault();
     showLoading();
@@ -512,7 +1154,6 @@ $(document).ready(function () {
       var img;
 
       if ($('.profile-picture-form-display--img').length > 0) {
-        console.log('exists');
         img = $('.profile-picture-form-display--img');
         $('.profile-picture-form-display--img').attr('src', URL.createObjectURL(file[0]));
       } else {
@@ -592,21 +1233,75 @@ function upload_member_profile_image(file) {
 
 window.update_member_profile = function () {
   showLoading();
-  var form_data = $('.member-profile').serialize();
-  form_data += "&current_user=" + localize.current_user_id;
-  console.log(form_data);
-  $.post(localize.rest_member_save_profile, form_data, function (response) {
-    console.log(response);
-  }).fail(function (error) {
-    console.log(error);
+  var prefix = $('select[name=prefix]').val();
+  var first_name = $('input[name=first_name]').val();
+  var last_name = $('input[name=last_name]').val();
+  var suffix = $('select[name=suffix]').val();
+  var birthday = $('input[name=birthday]').val();
+  var gender = $('select[name=gender]').val();
+  var mobile_phone = $('input[name=mobile_phone]').val();
+  var home_phone = $('input[name=home_phone]').val();
+  var work_phone = $('input[name=work_phone]').val();
+  var email_address = $('input[name=email]').val();
+  var biography = $('textarea[name=biography]').val();
+  var member_group_table = $('.member-group-table');
+  var member_group_table_rows = $(member_group_table).find('tbody tr');
+  var member_groups = [];
+  var formData = new FormData();
+  member_group_table_rows.each(function (r, v) {
+    var inputs = $(v).find(':input');
+    inputs.each(function (c, v) {
+      var type = $(v).attr('type');
+      var name = $(v).attr('name');
+      var value = $(v).val();
+
+      if (type === 'file') {
+        var removed = $(v).data('removed');
+        var file = $(v).prop('files')[0];
+        var aid = $(v).data('aid');
+
+        if (file !== undefined && file !== '') {
+          formData.append('member_groups_' + name + '_' + r, file);
+        } else if (removed === true) {
+          formData.append('member_groups_' + name + '_' + r, '');
+          formData.append('member_groups_remove_profile_picture_' + r, removed);
+        } else if (aid !== undefined) {
+          formData.append('member_groups_profile_picture_aid' + r, aid);
+        }
+      } else if (name !== undefined && type !== 'file') {
+        formData.append('member_groups_' + name + '_' + r, value);
+      }
+    });
+  });
+  formData.append("current_user_id", localize.current_user_id);
+  formData.append("membership_id", localize.current_member_group_id);
+  formData.append("prefix", prefix);
+  formData.append("first_name", first_name);
+  formData.append("last_name", last_name);
+  formData.append("suffix", suffix);
+  formData.append("birthday", birthday);
+  formData.append("gender", gender);
+  formData.append("mobile_phone", mobile_phone);
+  formData.append("work_phone", work_phone);
+  formData.append("work_phone", home_phone);
+  formData.append("email_address", email_address);
+  formData.append("biography", biography);
+  $.ajax({
+    url: localize.rest_member_save_profile,
+    type: 'POST',
+    data: formData,
+    cache: false,
+    processData: false,
+    contentType: false,
+    success: function success(_success2) {},
+    error: function error(_error2) {
+      console.log('error');
+      console.log(_error2);
+      hideLoading();
+    }
   }).done(function (response) {
     hideLoading();
-
-    if (response.success === true) {
-      showToastMessage('success', 'Profile Updated', 'Your profile has been updated successfully.');
-    } else {
-      showToastMessage('fail', 'Failed to Save', 'Your profile failed to save. Please try again.');
-    }
+    showToastMessage('success', 'Profile Saved', 'Your changes have been saved');
   });
   return false;
 };
@@ -63802,8 +64497,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_archives_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./src/archives.js */ "./js/src/archives.js");
 /* harmony import */ var _src_archives_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_src_archives_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _src_member_directory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/member-directory.js */ "./js/src/member-directory.js");
-/* harmony import */ var _src_member_directory_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_src_member_directory_js__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _src_app_MemberLogin_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./src/app/MemberLogin.jsx */ "./js/src/app/MemberLogin.jsx");
+/* harmony import */ var _src_app_MemberGroup_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/app/MemberGroup.jsx */ "./js/src/app/MemberGroup.jsx");
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 
@@ -63814,6 +64509,7 @@ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"
 
 
  // React 
+
 
 
 })();

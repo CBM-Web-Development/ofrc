@@ -9,7 +9,7 @@ import LoadingIndicator from './components/LoadingIndicator.jsx';
 
 const container = document.getElementById("member-login");
 
-if ( container !== undefined ){
+if ( container !== undefined && container !== null){
 	const root = ReactDOMClient.createRoot(container);
 	root.render(<App />)
 }
@@ -94,7 +94,6 @@ const memberSignUp = (evt, setIsLoading) => {
 		console.log(error);
 	})
 	.done(function(response){
-		console.log(response);
 		setIsLoading(false);
 		if(response.success === true){
 			showSignInForm(evt);
@@ -106,18 +105,99 @@ const memberSignUp = (evt, setIsLoading) => {
 }
 
 
-const forgotPasswordReset = (evt) => {
-	evt.preventDefault();
-}
-
-const memberSignIn = (evt) => {
+const forgotPasswordReset = (evt, setIsLoading) => {
 	evt.preventDefault();
 	
+	setIsLoading(true);
+	
+	var form = evt.target;
+	
+	
+	var data = $(form).serialize();
+	
+	$.post(localize.rest_password_reset_request, data)
+	.fail(function(error){
+		console.log(error);
+	})
+	.done(function(response){
+		setIsLoading(false);
+		showPasswordResetForm(evt);
+	});
+	
+	
+}
+
+
+const handleLoginError = (errors) => {
+
+	errors.forEach(function(error){
+
+		if(error.code.toLowerCase().indexOf('password') > -1){
+			$('input[name=password]').addClass('is-invalid');
+			$('input[name=password]').after('<div class="invalid-feedback">' + error.message + '</div>');
+		}
+		
+		if(error.code.toLowerCase().indexOf('email') > -1){
+			
+			$('input[name=username]').addClass('is-invalid');
+			$('input[name=username]').after('<div class="invalid-feedback">' + error.message + '</div>');
+		}
+	});
+}
+
+const resetPassword = (evt, setIsLoading) => {
+	evt.preventDefault();
+	
+	var form = evt.target;
+	
+	var data = $(form).serialize();
+	
+	$.post(localize.rest_reset_password, data)
+	.fail(function(error){
+		console.log(error);
+	})
+	.done(function(response){
+		setIsLoading(false);
+		if(response.success === true){
+			showSignInForm(evt);
+		}
+	})
+}
+
+const memberSignIn = (evt, setIsLoading) => {
+	evt.preventDefault();
+	
+	setIsLoading(true);
+	
+	var form = evt.target;
+	
+	var data = $(form).serialize();
+	
+	$.post(localize.rest_member_login, data, function(){})
+	.fail(function(error){
+		console.log(error);
+	})
+	.done(function(response){
+		setIsLoading(false);
+		console.log(response);
+		if(response.success === false){
+			if(response.data !== undefined){
+				handleLoginError(response.data);
+			}else{
+				handleLoginError([
+					{code: 'password', message: 'Password is empty'},
+					{code: 'email', message: 'Username is empty'}
+				]);
+			}	
+		}else{
+			window.location.reload();
+		}
+		
+	});
 	
 }
 
 const showForgotPasswordForm = (evt) => {
-	console.log(evt);
 	evt.preventDefault();
 	
 	$('.member-sign-in-form').fadeToggle();
@@ -134,6 +214,13 @@ const showSignUpForm = (evt) => {
 	$('.member-sign-up-form').fadeToggle();
 }
 
+const showPasswordResetForm = (evt) => {
+	evt.preventDefault();
+	$('.member-forgot-login-form').fadeToggle();
+	$('.member-reset-password-form').fadeToggle();
+}
+
+
 function App(){
 	
 	const[isLoading, setIsLoading] = useState(false);
@@ -141,8 +228,9 @@ function App(){
 	const[isForgotLoginForm, setIsForgotLoginForm] = useState(false);
 	const[isLoginForm, setIsLoginForm] = useState(true);
 	const signInFields = [
-		{name: 'username', label: 'Username', type: 'text'},
-		{name: 'password', label: 'Password', type: 'password'}
+		{name: 'username', label: 'Username', type: 'email'},
+		{name: 'password', label: 'Password', type: 'password'},
+		{name: 'remember', label: 'Remember Me', type: 'checkbox'}
 	];
 	
 	const forgotPasswordFields = [
@@ -155,10 +243,15 @@ function App(){
 		{name: 'membership_id', label: 'Membership ID', type: 'text', required: true}, 
 		{name: 'first_name', label: 'First Name', type: 'text'},
 		{name: 'last_name', label: 'Last Name', type: 'text'},
+	];
+	
+	const resetPasswordFields = [
+		{name: 'reset_key', label: 'Reset Key', type: 'text', required: true},
+		{name: 'login', label: 'Email', type: 'email', required: true},
+		{name: 'password', label: 'New Password', type: 'password', required: true},
+		
 	]
-	
-	console.log(signUpFields);
-	
+		
 	return (
 		<div>
 			{isLoading && 
@@ -190,6 +283,7 @@ function App(){
 			
 			
 			<Form 
+				formName={"Request Password Reset"}
 				formName={"member-forgot-login-form"}
 				formClassName={"form member-forgot-login-form"}
 				onSubmit={forgotPasswordReset}
@@ -199,6 +293,16 @@ function App(){
 				showSignInForm={showSignInForm}
 				setIsLoading={setIsLoading}
 			/>
+			
+			<Form 
+				formTitle={"Reset Password"}
+				formName={"member-reset-password-form"}
+				formClassName={"form member-reset-password-form"}
+				onSubmit={resetPassword}
+				formFields={resetPasswordFields}
+				submitButtonText={"Reset Password"}
+				showSignInForm={showSignInForm}
+				setIsLoading={setIsLoading} />
 		</div>
 		
 	)

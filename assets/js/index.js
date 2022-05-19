@@ -12,3 +12,4 @@ import './src/member-directory.js';
 
 // React 
 import './src/app/MemberLogin.jsx';
+import './src/app/MemberGroup.jsx';

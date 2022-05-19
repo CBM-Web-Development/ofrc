@@ -19,6 +19,7 @@
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@popperjs/core": "^2.11.5",
     "@wordpress/api-fetch": "^6.5.0",
+    "@wordpress/components": "^19.10.0",
     "angular-route": "^1.8.3",
     "angular-router-loader": "^0.8.5",
     "angular2-template-loader": "^0.6.2",

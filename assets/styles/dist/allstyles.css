@@ -11321,16 +11321,116 @@ textarea.form-control-lg {
 }
 
 /* Account Styles */
+.profile-picture-input {
+  display: none;
+}
+
+.profile-picture-mask {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  cursor: pointer;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-picture-form-display:hover .profile-picture-mask {
+  display: flex;
+}
+
+.profile-picture-form-display:hover .remove-image-button {
+  display: block;
+}
+
 .profile-picture-form-display {
   width: 300px;
   height: 300px;
-  margin-bottom: 24px;
+  position: relative;
 }
 
 .profile-picture-form-display--img {
-  height: 100%;
-  max-width: 100%;
-  max-height: inherit;
+  width: inherit;
+  height: inherit;
+}
+
+table .profile-picture-form-display--img {
+  height: 150px;
+  width: 150px;
+}
+
+.table-image-input, .table-image-input .profile-picture-form-display {
+  max-height: 150px;
+  max-width: 150px;
+  height: 150px;
+  width: 150px;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border: none;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 50px;
+  font-size: 14px;
+  display: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 /* Members Menu */
@@ -11387,7 +11487,7 @@ textarea.form-control-lg {
   margin-right: 1.5rem !important;
 }
 
-.member-forgot-login-form, .member-sign-up-form {
+.member-forgot-login-form, .member-sign-up-form, .member-reset-password-form {
   display: none;
 }
 

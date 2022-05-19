@@ -1,4 +1,4 @@
-.member-forgot-login-form, .member-sign-up-form{
+.member-forgot-login-form, .member-sign-up-form, .member-reset-password-form{
 	display:none;
 }
 
@@ -20,3 +20,4 @@
 	justify-content:center;
 	border-radius:5px;
 }
+

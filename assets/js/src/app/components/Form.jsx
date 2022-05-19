@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import FloatingInput from './FloatingInput.jsx';
-
+import CheckboxInput from './CheckboxInput.jsx';
 function Form( props ) {
 	const { formName, formTitle, formClassName, onSubmit, formFields, submitButtonText, showSignUpForm, showForgotPasswordForm, showSignInForm, validation, setIsLoading} = props;
 		
-	console.log(setIsLoading);		
 	return (
 
 		<form 
@@ -24,15 +23,30 @@ function Form( props ) {
 		}
 		
 		{formFields.map((field) => (
-			
-			<FloatingInput
+			<span>
+			{field.type === 'checkbox' && 
+				<CheckboxInput
 				fieldType={field.type}
 				fieldName={field.name}
 				fieldLabel={field.label}
 				required={field.required}
 				fieldOptions={field.options}
 				key={field.name}
-			/>
+				/>
+			}
+			
+			{field.type !== 'checkbox' && 
+				<FloatingInput
+					fieldType={field.type}
+					fieldName={field.name}
+					fieldLabel={field.label}
+					required={field.required}
+					fieldOptions={field.options}
+					key={field.name}
+				/>
+			}
+			
+			</span>
 		
 		))}
 		<div className="d-grid gap-1 mb-3">
