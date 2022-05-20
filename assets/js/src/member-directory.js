@@ -134,17 +134,7 @@ function upload_member_profile_image(file){
 window.update_member_profile = function(){
 	showLoading();
 	
-	var prefix = $('select[name=prefix]').val();
-	var first_name = $('input[name=first_name]').val();
-	var last_name = $('input[name=last_name]').val();
-	var suffix = $('select[name=suffix]').val();
-	var birthday = $('input[name=birthday]').val();
-	var gender = $('select[name=gender]').val();
-	var mobile_phone = $('input[name=mobile_phone]').val();
-	var home_phone = $('input[name=home_phone]').val();
-	var work_phone = $('input[name=work_phone]').val();
-	var email_address = $('input[name=email]').val();
-	var biography = $('textarea[name=biography]').val();
+	
 	var member_group_table = $('.member-group-table');
 	var member_group_table_rows = $(member_group_table).find('tbody tr');
 		
@@ -179,25 +169,13 @@ window.update_member_profile = function(){
 			}else if(name !== undefined && type !== 'file'){	
 				formData.append('member_groups_' + name + '_' + r, value);	
 			}
-			
-			console.log(name);
 		});
 		
 	});	
 	
 	formData.append("current_user_id", localize.current_user_id);
 	formData.append("membership_id", localize.current_member_group_id);
-	formData.append("prefix", prefix); 
-	formData.append("first_name", first_name); 
-	formData.append("last_name", last_name); 
-	formData.append("suffix", suffix); 
-	formData.append("birthday", birthday); 
-	formData.append("gender", gender); 
-	formData.append("mobile_phone", mobile_phone); 
-	formData.append("work_phone", work_phone); 
-	formData.append("work_phone", home_phone); 
-	formData.append("email_address", email_address); 
-	formData.append("biography", biography);			
+	
 	
 	$.ajax({
 		url: localize.rest_member_save_profile, 

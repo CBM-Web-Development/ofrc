@@ -710,22 +710,23 @@ var removeImage = function removeImage(evt, setRemoved) {
 
 var imageUpload = function imageUpload(evt) {
   evt.preventDefault();
+  console.log(evt.target);
   var file = evt.target.files;
-  var profileImageDisplay = jquery__WEBPACK_IMPORTED_MODULE_1___default()(evt.target).closest('.profile-picture-form-display--img');
-  console.log(file);
+  var parent = evt.target.parentNode;
+  var profileImageDisplay = jquery__WEBPACK_IMPORTED_MODULE_1___default()(parent).find('.profile-picture-form-display--img');
+  var profileImagePlaceholder = jquery__WEBPACK_IMPORTED_MODULE_1___default()(parent).find('.profile-picture-form-display--placeholder');
 
   if (file) {
     var img;
 
     if (jquery__WEBPACK_IMPORTED_MODULE_1___default()(profileImageDisplay).length > 0) {
-      console.log('yes');
       img = jquery__WEBPACK_IMPORTED_MODULE_1___default()('.profile-picture-form-display--img');
       jquery__WEBPACK_IMPORTED_MODULE_1___default()('.profile-picture-form-display--img').attr('src', URL.createObjectURL(file[0]));
     } else {
       console.log('no');
       img = document.createElement('img');
       img.className = "profile-picture-form-display--img";
-      jquery__WEBPACK_IMPORTED_MODULE_1___default()('.profile-picture-form-display--placeholder').html(img);
+      jquery__WEBPACK_IMPORTED_MODULE_1___default()(profileImagePlaceholder).html(img);
       img.src = URL.createObjectURL(file[0]);
     }
   }
@@ -801,7 +802,6 @@ function Input(props) {
       value = props.value,
       required = props.required,
       type = props.type;
-  console.log(value);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: type,
     name: name,
@@ -1269,17 +1269,6 @@ function upload_member_profile_image(file) {
 
 window.update_member_profile = function () {
   showLoading();
-  var prefix = $('select[name=prefix]').val();
-  var first_name = $('input[name=first_name]').val();
-  var last_name = $('input[name=last_name]').val();
-  var suffix = $('select[name=suffix]').val();
-  var birthday = $('input[name=birthday]').val();
-  var gender = $('select[name=gender]').val();
-  var mobile_phone = $('input[name=mobile_phone]').val();
-  var home_phone = $('input[name=home_phone]').val();
-  var work_phone = $('input[name=work_phone]').val();
-  var email_address = $('input[name=email]').val();
-  var biography = $('textarea[name=biography]').val();
   var member_group_table = $('.member-group-table');
   var member_group_table_rows = $(member_group_table).find('tbody tr');
   var member_groups = [];
@@ -1307,23 +1296,10 @@ window.update_member_profile = function () {
       } else if (name !== undefined && type !== 'file') {
         formData.append('member_groups_' + name + '_' + r, value);
       }
-
-      console.log(name);
     });
   });
   formData.append("current_user_id", localize.current_user_id);
   formData.append("membership_id", localize.current_member_group_id);
-  formData.append("prefix", prefix);
-  formData.append("first_name", first_name);
-  formData.append("last_name", last_name);
-  formData.append("suffix", suffix);
-  formData.append("birthday", birthday);
-  formData.append("gender", gender);
-  formData.append("mobile_phone", mobile_phone);
-  formData.append("work_phone", work_phone);
-  formData.append("work_phone", home_phone);
-  formData.append("email_address", email_address);
-  formData.append("biography", biography);
   $.ajax({
     url: localize.rest_member_save_profile,
     type: 'POST',

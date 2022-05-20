@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function Input ( props ) {
 	const {name, value, required, type} = props;
-	console.log(value);
+
 	return (
 		<input 
 			type={type}

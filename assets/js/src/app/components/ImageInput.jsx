@@ -26,22 +26,27 @@ const removeImage = (evt, setRemoved) => {
 const imageUpload = (evt) => {
 	evt.preventDefault();
 	
+	
+	console.log(evt.target);
+	
 	var file = evt.target.files;
-	var profileImageDisplay = $(evt.target).closest('.profile-picture-form-display--img');
-	
-	console.log(file);
-	
+	var parent = evt.target.parentNode;
+
+	var profileImageDisplay = $(parent).find('.profile-picture-form-display--img');
+	var profileImagePlaceholder = $(parent).find('.profile-picture-form-display--placeholder');
+
+
 	if(file){
 		var img;
 		if($(profileImageDisplay).length > 0){
-			console.log('yes');
+
 			img = $('.profile-picture-form-display--img');
 			$('.profile-picture-form-display--img').attr('src', URL.createObjectURL(file[0]));
 		}else{
 			console.log('no');
 			img = document.createElement('img');
 			img.className = "profile-picture-form-display--img";
-			$('.profile-picture-form-display--placeholder').html(img);
+			$(profileImagePlaceholder).html(img);
 			
 			img.src = URL.createObjectURL(file[0]);
 			
