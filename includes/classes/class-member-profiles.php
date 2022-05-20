@@ -206,9 +206,19 @@ class OFRC_Member_Profiles{
 							'value'	=> $group['last_name']
 						),
 						array(
-							'data_type'	=> 'select', 
-							'name'	=> 'relationship',
-							'value'	=> $group['relationship']
+							'data_type'	=> 'email', 
+							'name'	=> 'email_address',
+							'value'	=> $group['email_address']
+						),
+						array(
+							'data_type'	=> 'text', 
+							'name'	=> 'phone_number',
+							'value'	=> $group['phone_number']
+						),
+						array(
+							'data_type'	=> 'date', 
+							'name'	=> 'birthday',
+							'value'	=> $group['birthday']
 						),
 						array(
 							'data_type'	=> 'switch', 
@@ -559,6 +569,15 @@ class OFRC_Member_Profiles{
 			case str_contains($key, 'profile_picture_aid'): 
 				$key = 'profile_picture';
 				break;
+			case str_contains($key, 'email_address'): 
+				$key = 'email_address';
+				break;
+			case str_contains($key, 'phone_number'): 
+				$key = 'phone_number';
+				break;
+			case str_contains($key, 'birthday'):
+				$key = 'birthday'; 
+				break;
 			default: break;
 		}
 		return $key;
@@ -579,8 +598,11 @@ class OFRC_Member_Profiles{
 			foreach($_POST as $key => $value){
 				if(str_contains($key, 'member_groups')){
 					preg_match('/\d/', $key, $group_number); 
-					
 					$key = $this->member_group_key($key);
+					
+					if($key == 'show_in_directory'){
+						$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+					}
 					
 					$member_groups[$group_number[0]][$key] = $value;	
 				}
@@ -593,7 +615,6 @@ class OFRC_Member_Profiles{
 					preg_match('/\d/', $key, $group_number); 
 					$key = $this->member_group_key($key);
 					
-					
 					$member_groups[$group_number[0]][$key] = $this->upload_image($value);
 				}
 			}
@@ -605,32 +626,10 @@ class OFRC_Member_Profiles{
 			wp_send_json_error();
 		}
 		
-		$prefix = filter_input(INPUT_POST, 'prefix');
-		$first_name = filter_input(INPUT_POST, 'first_name');
-		$last_name = filter_input(INPUT_POST, 'last_name');
-		$suffix = filter_input(INPUT_POST, 'suffix');
-		$birthday = filter_input(INPUT_POST, 'birthday');
-		$gender = filter_input(INPUT_POST, 'gender');
-		$mobile_phone = filter_input(INPUT_POST, 'mobile_phone');
-		$home_phone = filter_input(INPUT_POST, 'home_phone');
-		$work_phone = filter_input(INPUT_POST, 'work_phone');
-		$email_address = filter_input(INPUT_POST, 'email_address');
-		$biography = filter_input(INPUT_POST, 'biography');
 		$user_id = filter_input(INPUT_POST, 'current_user');						
 		$post_id = $this->get_member($membership_id)->ID;
 
-		update_field('member_profile_prefix', $prefix, $post_id);
-		update_field('member_profile_first_name', $first_name,  $post_id);
-		update_field('member_profile_last_name', $last_name, $post_id);
-		update_field('member_profile_suffix', $suffix, $post_id);
-		update_field('member_profile_birthday', $birthday, $post_id);
-		update_field('member_profile_gender', $gender, $post_id);
-		update_field('member_profile_mobile_phone', $mobile_phone, $post_id);
-		update_field('member_profile_home_phone', $home_phone, $post_id);
-		update_field('member_profile_work_phone', $work_phone, $post_id);
-		update_field('member_profile_email_address', $email_address, $post_id);
-		update_field('member_profile_biography', $biography, $post_id);
-		update_field('member_group_authorized_users', $member_groups, $post_id);
+		update_field('member_group_authorized_users', $member_groups, $post_id);		
 		update_user_meta( $user_id, 'membership_id', $membership_id );
 		
 		wp_send_json_success($member_groups);	
@@ -644,6 +643,8 @@ class OFRC_Member_Profiles{
 	public function upload_member_profile_picture(){
 		$img = $_FILES['profile_image'];
 		$user_id = filter_input(INPUT_POST, 'user_id');
+		$membership_id = get_user_meta($user_id, 'membership_id');
+		$member_post_id = $this->get_member($membership_id)->ID;
 		$attach_id = $this->upload_image($img);
 
 		if(!$attach_id){
@@ -651,6 +652,7 @@ class OFRC_Member_Profiles{
 		}
 		
 		$update_profile_image = update_field('profile_picture', $attach_id, 'user_' . $user_id);	
+		update_field('profile_picture', $attach_id, $member_post_id);
 		
 		return $update_profile_image;
 	}
@@ -707,62 +709,77 @@ class OFRC_Member_Profiles{
 	
 	
 	public function get_member_directory(){
-		$users_args = array(
-			'role' => 'Member',
+		
+		$directory_args = array(
+			'post_type'		=> 'member', 
+			'post_status'	=> 'publish', 
+			'posts_per_page'	=> -1, 
 		);
-		$members = get_users( $users_args );
-				
+		
+		$members = get_posts($directory_args);
+		
 		$directory = array();
 		
 		
 		if($members){
-	
+			
 			foreach($members as $member){
-	
-	
-				'user_' . $ID = $member->ID;
-				
+			
+				$id = $member->ID;
 				$name = "";
+				$name = implode( ' ', array(
+					get_field('member_profile_prefix', $id), 
+					get_field('member_profile_first_name', $id), 
+					get_field('member_profile_last_name', $id), 
+					get_field('member_profile_suffix', $id)
+				) );
 				
-				if(get_field('prefix', 'user_' . $ID)){
-					$name .= get_field('prefix', 'user_' . $ID) . ' ';
+				$authorized_users = get_field('member_group_authorized_users', $id);
+				
+				if($authorized_users){
+					foreach($authorized_users as $user){
+												
+						if($user['show_in_directory'] == true){
+							$directory[] = array(
+								'post_id'			=> $id, 
+								'last_name'			=> $user['last_name'],
+								'first_name'		=> $user['first_name'],
+								'name' 				=> implode(' ', array($user['first_name'], $user['last_name'])),
+								'profile_picture' 	=> $user['profile_picture'] ? $user['profile_picture']['url'] : OFRC_URI . '/assets/static/img/profile_placeholder.png',
+								'permalink'			=> get_permalink($id),
+							);
+						}
+					}
 				}
-				
-				$name .= get_field('first_name', 'user_' . $ID) . ' ' . get_field('last_name', 'user_' . $ID);
-				
-				if(get_field('suffix', 'user_' . $ID)){
-					$name .= ', ' . get_field('suffix', 'user_' . $ID);
-				}
-				
-				$phone_number = null;
-				
-				if(get_field('mobile_phone', 'user_' . $ID)){
-					$phone_number = get_field('mobile_phone', 'user_' . $ID);
-				}elseif(get_field('home_phone', 'user_' . $ID)){
-					$phone_number = get_field('home_phone', 'user_' . $ID);
-				}elseif(get_field('work_phone', 'user_' . $ID)){
-					$phone_number = get_field('work_phone', 'user_' . $ID);
-				}
-				
-				$phone_number_display = preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', $phone_number);
 				
 				$directory[] = array(
-					'post_id'	=> $ID,
-					'name'		=> $name,
-					'profile_picture'	=> get_field('profile_picture',  'user_' . $ID )['url'],
-					'phone_number'	=> $phone_number,
-					'phone_number_display'	=> $phone_number_display,
-					'phone_number_link'	=> 'tel:' . $phone_number,
-					'email_link'	=> 'mailto:' . get_field('email_address', 'user_' . $ID),
-					'email'		=> get_field('email_address', 'user_' . $ID),
-					'biography'	=> get_field('biography', 'user_' . $ID),
+					'post_id'			=> $id,
+					'last_name'			=> get_field('member_profile_last_name', $id), 
+					'first_name'		=> get_field('member_profile_first_name', $id),
+					'name'				=> $name,
+					'profile_picture'	=> get_field('profile_picture',  $id ) ? get_field('profile_picture', $id)['url'] : OFRC_URI . '/assets/static/img/profile_placeholder.png',
+					'permalink'			=> get_permalink($id),
 				);
 			}
 		}
-		
-		return $directory;
+		usort($directory, array($this, 'organize_directory'));
+		wp_send_json($directory);
 	}
 	
+	private function organize_directory($a, $b){
+		if($a['last_name'] === $b['last_name']){
+			return strcmp($a['first_name'], $b['first_name']);
+		}else{
+			return strcmp($a['last_name'], $b['last_name']);
+		}
+	}
+	
+	/**
+	 * Get the directory member group
+	 */
+	public function get_directory_member_group($id){
+	
+	}
 	
 	public function custom_member_role(){
 		if(get_option('ofrc_custom_roles_version') < 1){

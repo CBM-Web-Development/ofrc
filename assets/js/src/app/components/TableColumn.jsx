@@ -7,7 +7,7 @@ import ToggleSwitch from './ToggleSwitch.jsx';
 function TableColumn ( props ) {
 	
 	const { columnKey, type, name, options, data } = props;
-	
+		
 	return (
 		<td key={columnKey} align="center">
 			
@@ -23,7 +23,15 @@ function TableColumn ( props ) {
 					type={type}
 					name={name}
 					required={true}
-					value={data.value} />
+					value={data.value !== undefined ? data.value : ''} />
+			}
+			
+			{ (type === 'email' || type === 'datetime-local' || type === "tel" || type === 'date') && 
+				<Input 
+					type={type}
+					name={name}
+					required={false}
+					value={data.value !== undefined ? data.value : ''} />
 			}
 			{ type === 'select' && 
 				<SelectInput 
@@ -34,7 +42,7 @@ function TableColumn ( props ) {
 			
 			{ type === 'switch' && 
 				<ToggleSwitch
-					checked={data.value}
+					checked={data.value !== undefined ? data.value : false}
 					name={name}
 					/>
 			}

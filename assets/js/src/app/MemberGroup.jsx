@@ -41,7 +41,9 @@ const addMemberRow = (evt, members, setMembers) => {
 		{data_type: 'image', name: 'profile_picture', value: '', attachment_id: ''},
 		{data_type: 'text', name: 'first_name', value: ''},
 		{data_type: 'text', name: 'last_name', value: ''},
-		{data_type: 'select', name: 'relationship', value: ''},
+		{data_type: 'text', name: 'phone_number', value: ''},
+		{data_type: 'email', name: 'email_address', value: ''},
+		{data_type: 'datetime-local', name: 'birthday', value: ''},
 		{data_type: 'switch', name: 'show_in_directory', value: ''},
 	]]);
 	
@@ -55,8 +57,10 @@ function App() {
 		{type: 'image', name: 'profile_picture'},
 		{type: 'text', name: 'first_name'},
 		{type: 'text', name: 'last_name'},
-		{type: 'select', name: 'relationship', options: [{value: 'spouse', label: 'Spouse'}, {value: 'partner', label: 'Partner'}, {value: 'child', label: 'Child'}, {value: 'grandparent', label: 'Grandparent'}, {value: 'babysitter', label: 'Babysitter'}]},
-		{type: 'switch', name: 'show_in_directory'},
+		{type: 'email', name: 'email_address'},
+		{type: 'tel', name: 'phone_number'},
+		{type: 'date', name: 'birthday'},
+		{type: 'switch', name: 'show_in_directory', value: ''},
 	]
 	
 	useEffect(() => {
@@ -70,9 +74,10 @@ function App() {
 					<th className="text-center">Profile Picture</th>
 					<th className="text-center">First Name</th>
 					<th className="text-center">Last Name</th>
-					<th className="text-center">Relationship</th>
+					<th className="text-center">Email</th>
+					<th className="text-center">Phone Number</th>
+					<th className="text-center">Birthday</th>
 					<th className="text-center">Show in Directory</th>	
-					<th></th>		
 				</tr>
 			</thead>
 			<tbody>
@@ -88,7 +93,7 @@ function App() {
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colSpan={5} align={"center"}>
+					<td colSpan={7} align={"center"}>
 						<button type="button" className="btn" onClick={(evt) => addMemberRow(evt, members, setMembers)}><i className="fa-solid fa-circle-plus"></i></button>
 					</td>
 				</tr>

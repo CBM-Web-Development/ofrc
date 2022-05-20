@@ -145,7 +145,6 @@ window.update_member_profile = function(){
 	var work_phone = $('input[name=work_phone]').val();
 	var email_address = $('input[name=email]').val();
 	var biography = $('textarea[name=biography]').val();
-	
 	var member_group_table = $('.member-group-table');
 	var member_group_table_rows = $(member_group_table).find('tbody tr');
 		
@@ -180,6 +179,8 @@ window.update_member_profile = function(){
 			}else if(name !== undefined && type !== 'file'){	
 				formData.append('member_groups_' + name + '_' + r, value);	
 			}
+			
+			console.log(name);
 		});
 		
 	});	
@@ -213,6 +214,7 @@ window.update_member_profile = function(){
 		}, 
 	}).done(function(response){
 		hideLoading();
+		console.log(response);
 		showToastMessage('success', 'Profile Saved', 'Your changes have been saved');
 	});
 	
@@ -240,21 +242,16 @@ function get_member_directory(){
 function build_directory_html(members){
 
 	var options = {
-		page: 10, 
+		page: 25, 
 		pagination: {
 			item: '<li class="page-item"><a class="page page-link" href="#"></a></li>'
 		},
 		valueNames: [
 			'name',
-			'biography',
 			{attr: 'src', name: 'profile_picture'},
-			{attr: 'href', name: 'phone_number_link'},
-			{attr: 'href', name: 'email_link'},
-			'phone_number', 
-			'email',
-			'phone_number_display',
+			{attr: 'href', name:'permalink'}
 		],
-		item: '<li class="member-profile--item"><img class="profile_picture" alt="" src=""><div class="directory-body"><h3 class="name"></h3><a class="phone_number_link"><span class="phone_number_display"></span></a><a class="email_link" href=""><span class="email"></span></a><p class="biography"></p></div></li>'
+		item: '<li class="member-profile--item"><img class="profile_picture" alt="" src=""><div class="directory-body"><h3 class="name"></h3><a class="permalink btn btn-outline-secondary member-profile--item-link">View Profile</a></div></li>'
 	};
 		
 	var directoryList = new List('member-profile-list', options, members);

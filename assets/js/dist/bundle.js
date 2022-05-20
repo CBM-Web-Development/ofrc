@@ -82,8 +82,16 @@ var addMemberRow = function addMemberRow(evt, members, setMembers) {
       name: 'last_name',
       value: ''
     }, {
-      data_type: 'select',
-      name: 'relationship',
+      data_type: 'text',
+      name: 'phone_number',
+      value: ''
+    }, {
+      data_type: 'email',
+      name: 'email_address',
+      value: ''
+    }, {
+      data_type: 'datetime-local',
+      name: 'birthday',
       value: ''
     }, {
       data_type: 'switch',
@@ -109,27 +117,18 @@ function App() {
     type: 'text',
     name: 'last_name'
   }, {
-    type: 'select',
-    name: 'relationship',
-    options: [{
-      value: 'spouse',
-      label: 'Spouse'
-    }, {
-      value: 'partner',
-      label: 'Partner'
-    }, {
-      value: 'child',
-      label: 'Child'
-    }, {
-      value: 'grandparent',
-      label: 'Grandparent'
-    }, {
-      value: 'babysitter',
-      label: 'Babysitter'
-    }]
+    type: 'email',
+    name: 'email_address'
+  }, {
+    type: 'tel',
+    name: 'phone_number'
+  }, {
+    type: 'date',
+    name: 'birthday'
   }, {
     type: 'switch',
-    name: 'show_in_directory'
+    name: 'show_in_directory',
+    value: ''
   }];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getMembers(members, setMembers);
@@ -145,9 +144,13 @@ function App() {
     className: "text-center"
   }, "Last Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
     className: "text-center"
-  }, "Relationship"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+  }, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
     className: "text-center"
-  }, "Show in Directory"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, members.map(function (member, key) {
+  }, "Phone Number"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    className: "text-center"
+  }, "Birthday"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    className: "text-center"
+  }, "Show in Directory"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, members.map(function (member, key) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_TableRow_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
       key: key,
       rowData: member,
@@ -156,7 +159,7 @@ function App() {
       removeRow: removeRow
     });
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tfoot", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    colSpan: 5,
+    colSpan: 7,
     align: "center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "button",
@@ -798,6 +801,7 @@ function Input(props) {
       value = props.value,
       required = props.required,
       type = props.type;
+  console.log(value);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: type,
     name: name,
@@ -858,7 +862,6 @@ function SelectInput(props) {
       options = props.options,
       required = props.required,
       value = props.value;
-  console.log(value);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
     className: "form-select",
     defaultValue: value,
@@ -918,13 +921,18 @@ function TableColumn(props) {
     type: type,
     name: name,
     required: true,
-    value: data.value
+    value: data.value !== undefined ? data.value : ''
+  }), (type === 'email' || type === 'datetime-local' || type === "tel" || type === 'date') && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Input_jsx__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: type,
+    name: name,
+    required: false,
+    value: data.value !== undefined ? data.value : ''
   }), type === 'select' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SelectInput_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], {
     options: options,
     value: data.value,
     name: name
   }), type === 'switch' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ToggleSwitch_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    checked: data.value,
+    checked: data.value !== undefined ? data.value : false,
     name: name
   }));
 }
@@ -994,17 +1002,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+var changeSlider = function changeSlider(evt, checked, setIsChecked) {
+  var input = evt.target;
+  setIsChecked(input.checked);
+};
 
 function ToggleSwitch(props) {
   var name = props.name,
-      checked = props.checked;
+      checked = props.checked,
+      setChecked = props.setChecked;
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(checked),
+      _useState2 = _slicedToArray(_useState, 2),
+      isChecked = _useState2[0],
+      setIsChecked = _useState2[1];
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     className: "switch"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "checkbox",
     name: name,
-    defaultChecked: checked
+    value: isChecked,
+    defaultChecked: isChecked,
+    onChange: function onChange(evt) {
+      return changeSlider(evt, isChecked, setIsChecked);
+    }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "slider"
   }));
@@ -1271,6 +1307,8 @@ window.update_member_profile = function () {
       } else if (name !== undefined && type !== 'file') {
         formData.append('member_groups_' + name + '_' + r, value);
       }
+
+      console.log(name);
     });
   });
   formData.append("current_user_id", localize.current_user_id);
@@ -1301,6 +1339,7 @@ window.update_member_profile = function () {
     }
   }).done(function (response) {
     hideLoading();
+    console.log(response);
     showToastMessage('success', 'Profile Saved', 'Your changes have been saved');
   });
   return false;
@@ -1324,21 +1363,18 @@ function get_member_directory() {
 
 function build_directory_html(members) {
   var options = {
-    page: 10,
+    page: 25,
     pagination: {
       item: '<li class="page-item"><a class="page page-link" href="#"></a></li>'
     },
-    valueNames: ['name', 'biography', {
+    valueNames: ['name', {
       attr: 'src',
       name: 'profile_picture'
     }, {
       attr: 'href',
-      name: 'phone_number_link'
-    }, {
-      attr: 'href',
-      name: 'email_link'
-    }, 'phone_number', 'email', 'phone_number_display'],
-    item: '<li class="member-profile--item"><img class="profile_picture" alt="" src=""><div class="directory-body"><h3 class="name"></h3><a class="phone_number_link"><span class="phone_number_display"></span></a><a class="email_link" href=""><span class="email"></span></a><p class="biography"></p></div></li>'
+      name: 'permalink'
+    }],
+    item: '<li class="member-profile--item"><img class="profile_picture" alt="" src=""><div class="directory-body"><h3 class="name"></h3><a class="permalink btn btn-outline-secondary member-profile--item-link">View Profile</a></div></li>'
   };
   var directoryList = new List('member-profile-list', options, members);
   $('.fa-spinner').hide();
