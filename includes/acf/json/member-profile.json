@@ -1,208 +1,13 @@
-<br />
-<b>Warning</b>:  call_user_func_array() expects parameter 1 to be a valid callback, class 'OFRC_Member_Profiles' does not have a method 'member_profile_post_type' in <b>/Applications/MAMP/htdocs/ofrc/wp-includes/class-wp-hook.php</b> on line <b>303</b><br />
 [
     {
         "key": "group_61cc95dce0c8c",
         "title": "Member Profile",
         "fields": [
             {
-                "key": "field_61cc9754153fa",
-                "label": "Prefix",
-                "name": "prefix",
-                "type": "select",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "25",
-                    "class": "",
-                    "id": ""
-                },
-                "choices": {
-                    "Mr.": "Mr.",
-                    "Mrs.": "Mrs.",
-                    "Ms.": "Ms.",
-                    "Dr.": "Dr."
-                },
-                "default_value": false,
-                "allow_null": 1,
-                "multiple": 0,
-                "ui": 0,
-                "return_format": "value",
-                "ajax": 0,
-                "placeholder": ""
-            },
-            {
-                "key": "field_61cc973d153f8",
-                "label": "First Name",
-                "name": "first_name",
-                "type": "text",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "25",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "maxlength": ""
-            },
-            {
-                "key": "field_61cc974c153f9",
-                "label": "Last Name",
-                "name": "last_name",
-                "type": "text",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "25",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "maxlength": ""
-            },
-            {
-                "key": "field_61cc976c153fb",
-                "label": "Suffix",
-                "name": "suffix",
-                "type": "select",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "25",
-                    "class": "",
-                    "id": ""
-                },
-                "choices": {
-                    "Jr.": "Jr.",
-                    "II": "II",
-                    "III": "III",
-                    "IV": "IV",
-                    "MD": "MD",
-                    "PhD": "PhD"
-                },
-                "default_value": false,
-                "allow_null": 1,
-                "multiple": 0,
-                "ui": 0,
-                "return_format": "value",
-                "ajax": 0,
-                "placeholder": ""
-            },
-            {
-                "key": "field_61cc97ba4965f",
-                "label": "Birthday",
-                "name": "birthday",
-                "type": "date_picker",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "50",
-                    "class": "",
-                    "id": ""
-                },
-                "display_format": "F j, Y",
-                "return_format": "Y-m-d",
-                "first_day": 0
-            },
-            {
-                "key": "field_61cc97e149660",
-                "label": "Gender",
-                "name": "gender",
-                "type": "select",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "50",
-                    "class": "",
-                    "id": ""
-                },
-                "choices": {
-                    "Male": "Male",
-                    "Female": "Female"
-                },
-                "default_value": false,
-                "allow_null": 0,
-                "multiple": 0,
-                "ui": 0,
-                "return_format": "value",
-                "ajax": 0,
-                "placeholder": ""
-            },
-            {
-                "key": "field_61cc983ea7c86",
-                "label": "Home Phone",
-                "name": "home_phone",
-                "type": "text",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "33",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "maxlength": ""
-            },
-            {
-                "key": "field_61cc984ea7c87",
-                "label": "Mobile Phone",
-                "name": "mobile_phone",
-                "type": "text",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "33",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "maxlength": ""
-            },
-            {
-                "key": "field_61cc9867a7c88",
-                "label": "Work Phone",
-                "name": "work_phone",
-                "type": "text",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "33",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": "",
-                "prepend": "",
-                "append": "",
-                "maxlength": ""
-            },
-            {
-                "key": "field_61cc9881db14e",
-                "label": "Email Address",
-                "name": "email_address",
-                "type": "email",
+                "key": "field_627d00501c0f2",
+                "label": "Member Group",
+                "name": "member_group",
+                "type": "group",
                 "instructions": "",
                 "required": 0,
                 "conditional_logic": 0,
@@ -211,16 +16,288 @@
                     "class": "",
                     "id": ""
                 },
-                "default_value": "",
-                "placeholder": "",
-                "prepend": "",
-                "append": ""
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "key": "field_627d00841c0f3",
+                        "label": "Authorized Users",
+                        "name": "authorized_users",
+                        "type": "repeater",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "collapsed": "",
+                        "min": 0,
+                        "max": 0,
+                        "layout": "block",
+                        "button_label": "",
+                        "sub_fields": [
+                            {
+                                "key": "field_6287d72649915",
+                                "label": "Primary Member",
+                                "name": "primary_member",
+                                "type": "true_false",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "100",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "message": "Selecting this option sets this member as the primary on the account.",
+                                "default_value": 0,
+                                "ui": 1,
+                                "ui_on_text": "",
+                                "ui_off_text": ""
+                            },
+                            {
+                                "key": "field_627d03a71c0f8",
+                                "label": "Show In Directory",
+                                "name": "show_in_directory",
+                                "type": "true_false",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_627d011c1c0f7",
+                                            "operator": "!=",
+                                            "value": "babysitter"
+                                        },
+                                        {
+                                            "field": "field_627d011c1c0f7",
+                                            "operator": "!=",
+                                            "value": "grandparent"
+                                        }
+                                    ]
+                                ],
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "message": "",
+                                "default_value": 1,
+                                "ui": 1,
+                                "ui_on_text": "",
+                                "ui_off_text": ""
+                            },
+                            {
+                                "key": "field_627d00b11c0f4",
+                                "label": "Profile Picture",
+                                "name": "profile_picture",
+                                "type": "image",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "100",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "preview_size": "medium",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": ""
+                            },
+                            {
+                                "key": "field_6287d6bb49913",
+                                "label": "Prefix",
+                                "name": "prefix",
+                                "type": "select",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "Mr.": "Mr.",
+                                    "Mrs.": "Mrs.",
+                                    "Ms.": "Ms.",
+                                    "Dr.": "Dr."
+                                },
+                                "default_value": false,
+                                "allow_null": 0,
+                                "multiple": 0,
+                                "ui": 0,
+                                "return_format": "value",
+                                "ajax": 0,
+                                "placeholder": ""
+                            },
+                            {
+                                "key": "field_627d010f1c0f5",
+                                "label": "First Name",
+                                "name": "first_name",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_627d01151c0f6",
+                                "label": "Last Name",
+                                "name": "last_name",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_6287d6d849914",
+                                "label": "Suffix",
+                                "name": "suffix",
+                                "type": "select",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "25",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "Sr.": "Sr.",
+                                    "Jr.": "Jr.",
+                                    "II": "II",
+                                    "III": "III",
+                                    "IV": "IV",
+                                    "V": "V",
+                                    "Esq.": "Esq."
+                                },
+                                "default_value": false,
+                                "allow_null": 0,
+                                "multiple": 0,
+                                "ui": 0,
+                                "return_format": "value",
+                                "ajax": 0,
+                                "placeholder": ""
+                            },
+                            {
+                                "key": "field_627d011c1c0f7",
+                                "label": "Relationship to Primary",
+                                "name": "relationship",
+                                "type": "select",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "spouse": "Spouse",
+                                    "partner": "Partner",
+                                    "child": "Child",
+                                    "grandparent": "Grandparent",
+                                    "babysitter: Babysitter": "babysitter: Babysitter"
+                                },
+                                "default_value": false,
+                                "allow_null": 0,
+                                "multiple": 0,
+                                "ui": 0,
+                                "return_format": "value",
+                                "ajax": 0,
+                                "placeholder": ""
+                            },
+                            {
+                                "key": "field_6287d74c49916",
+                                "label": "Phone Number",
+                                "name": "phone_number",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_6287d75649917",
+                                "label": "Email Address",
+                                "name": "email_address",
+                                "type": "email",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_6287d78049918",
+                                "label": "Birthday",
+                                "name": "birthday",
+                                "type": "date_picker",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "display_format": "Y-m-d",
+                                "return_format": "Y-m-d",
+                                "first_day": 1
+                            }
+                        ]
+                    }
+                ]
             },
             {
-                "key": "field_61ccd55c832c7",
-                "label": "Profile Picture",
-                "name": "profile_picture",
-                "type": "image",
+                "key": "field_62792737c7435",
+                "label": "Member Access",
+                "name": "member_access",
+                "type": "group",
                 "instructions": "",
                 "required": 0,
                 "conditional_logic": 0,
@@ -229,41 +306,53 @@
                     "class": "",
                     "id": ""
                 },
-                "return_format": "array",
-                "preview_size": "medium",
-                "library": "all",
-                "min_width": "",
-                "min_height": "",
-                "min_size": "",
-                "max_width": "",
-                "max_height": "",
-                "max_size": "",
-                "mime_types": ""
-            },
-            {
-                "key": "field_61cc989fa076b",
-                "label": "Biography",
-                "name": "biography",
-                "type": "textarea",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "placeholder": "",
-                "maxlength": "",
-                "rows": "",
-                "new_lines": ""
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "key": "field_62792748c7436",
+                        "label": "Username",
+                        "name": "username",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_62792851c7e1c",
+                        "label": "Membership ID",
+                        "name": "membership_id",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    }
+                ]
             }
         ],
         "location": [
             [
                 {
-                    "param": "user_role",
+                    "param": "post_type",
                     "operator": "==",
                     "value": "member"
                 }
@@ -283,7 +372,7 @@
             "slug",
             "author",
             "format",
-            "page_attributes",
+            "featured_image",
             "categories",
             "tags",
             "send-trackbacks"

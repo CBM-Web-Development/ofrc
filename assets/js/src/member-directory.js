@@ -1,8 +1,13 @@
 var $ = require('jquery');
 var List = require('list.js');
 var bootstrap = require('bootstrap');
+import apiFetch from '@wordpress/api-fetch';
 
 $(document).ready(function(){
+	
+	$('.profile-picture-mask').on('click', function (e){
+		$('.profile-picture-input').trigger('click');
+	});
 	
 	$('.signoutButton').on('click', function(e){
 		e.preventDefault();
@@ -34,7 +39,6 @@ $(document).ready(function(){
 		if(file){
 			var img;
 			if($('.profile-picture-form-display--img').length > 0){
-				console.log('exists');
 				img = $('.profile-picture-form-display--img');
 				$('.profile-picture-form-display--img').attr('src', URL.createObjectURL(file[0]));
 			}else{
@@ -129,23 +133,69 @@ function upload_member_profile_image(file){
 
 window.update_member_profile = function(){
 	showLoading();
-	var form_data = $('.member-profile').serialize();
-	form_data += "&current_user=" + localize.current_user_id;
 	
-	console.log(form_data);
-	$.post(localize.rest_member_save_profile, form_data, function(response){
-		console.log(response);
-	}).fail(function(error){
-		console.log(error);
+	
+	var member_group_table = $('.member-group-table');
+	var member_group_table_rows = $(member_group_table).find('tbody tr');
+		
+	var member_groups = [];
+	
+	const formData = new FormData();	
+	
+	member_group_table_rows.each(function(r, v){
+		
+		let inputs = $(v).find(':input');
+				
+		inputs.each(function(c, v){
+			
+			let type = $(v).attr('type');
+			let name = $(v).attr('name');
+			var value = $(v).val();
+			
+			if(type === 'file'){			
+				let removed = $(v).data('removed');
+				let file = $(v).prop('files')[0];
+				let aid = $(v).data('aid');
+				
+				if(file !== undefined && file !== ''){
+					formData.append('member_groups_' + name + '_' + r, file);
+				}else if(removed === true){
+					formData.append('member_groups_' + name + '_' + r, '');
+					formData.append('member_groups_remove_profile_picture_' + r, removed);
+					
+				}else if(aid !== undefined){
+					formData.append('member_groups_profile_picture_aid' + r, aid);
+				}
+			}else if(name !== undefined && type !== 'file'){	
+				formData.append('member_groups_' + name + '_' + r, value);	
+			}
+		});
+		
+	});	
+	
+	formData.append("current_user_id", localize.current_user_id);
+	formData.append("membership_id", localize.current_member_group_id);
+	
+	
+	$.ajax({
+		url: localize.rest_member_save_profile, 
+		type: 'POST', 
+		data: formData, 
+		cache: false,
+		processData: false, 
+		contentType: false, 
+		success: function(success){},
+		error: function(error){
+			console.log('error');
+			console.log(error);
+			hideLoading();
+		}, 
 	}).done(function(response){
 		hideLoading();
-		if(response.success === true){
-			showToastMessage('success', 'Profile Updated', 'Your profile has been updated successfully.');
-		}else{
-			showToastMessage('fail', 'Failed to Save', 'Your profile failed to save. Please try again.');
-		}
+		console.log(response);
+		showToastMessage('success', 'Profile Saved', 'Your changes have been saved');
 	});
-		
+	
 	return false;
 }
 
@@ -170,21 +220,16 @@ function get_member_directory(){
 function build_directory_html(members){
 
 	var options = {
-		page: 10, 
+		page: 25, 
 		pagination: {
 			item: '<li class="page-item"><a class="page page-link" href="#"></a></li>'
 		},
 		valueNames: [
 			'name',
-			'biography',
 			{attr: 'src', name: 'profile_picture'},
-			{attr: 'href', name: 'phone_number_link'},
-			{attr: 'href', name: 'email_link'},
-			'phone_number', 
-			'email',
-			'phone_number_display',
+			{attr: 'href', name:'permalink'}
 		],
-		item: '<li class="member-profile--item"><img class="profile_picture" alt="" src=""><div class="directory-body"><h3 class="name"></h3><a class="phone_number_link"><span class="phone_number_display"></span></a><a class="email_link" href=""><span class="email"></span></a><p class="biography"></p></div></li>'
+		item: '<li class="member-profile--item"><img class="profile_picture" alt="" src=""><div class="directory-body"><h3 class="name"></h3><a class="permalink btn btn-outline-secondary member-profile--item-link">View Profile</a></div></li>'
 	};
 		
 	var directoryList = new List('member-profile-list', options, members);
