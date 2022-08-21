@@ -11529,4 +11529,91 @@ input:checked + .slider:before {
 .landing-page .woocommerce--bg-dark a:hover {
   text-decoration: underline;
 }
+
+.woocommerce {
+  margin-top: 1.2em;
+}
+
+.left-shop-sidebar--list li.widget {
+  border-bottom: 1px solid grey;
+}
+
+.left-shop-sidebar--list li.widget:last-of-type {
+  border-bottom: none;
+}
+
+.left-shop-sidebar--list, .right-shop-sidebar--list, .left-shop-sidebar--list ul, .right-shop-sidebar--list ul {
+  list-style-type: none;
+  padding-left: 0px !important;
+  width: 100%;
+}
+
+.left-shop-sidebar--list ul li a, .right-shop-sidebar--list ul li a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.left-shop-sidebar--list ul.wc-block-product-categories-list--depth-0 li a {
+  font-weight: bold;
+}
+
+ul.wc-block-product-categories-list--depth-1 li a {
+  font-weight: 400 !important;
+  padding-left: 5px;
+}
+
+.widget_recently_viewed_products .product_list_widget li, .widget_recently_viewed_products .product_list_widget li a {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.widget_recently_viewed_products .size-woocommerce_thumbnail {
+  width: 100% !important;
+}
+
+.product-title {
+  text-align: center;
+}
+
+.woocommerce-Price-amount {
+  text-align: center;
+}
+
+.wp-block-woocommerce-mini-cart {
+  color: #f1f1f1 !important;
+}
+
+.products .product {
+  text-align: center;
+}
+
+.products .woocommerce-loop-product__title {
+  color: #000000;
+}
+
+.woocommerce a.button.alt, .woocommerce .button.button.alt, .product a.button {
+  color: #014421 !important;
+  background: transparent;
+  border: 1px solid #014421;
+  border-radius: 2px;
+}
+
+.woocommerce a.button.alt:hover, .woocommerce .button.button.alt:hover, .product a.button:hover {
+  color: #f1f1f1 !important;
+  background-color: #014421;
+}
+
+.woocommerce input {
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  padding: 10px;
+}
+
+ol.flex-control-thumbs li {
+  margin: 5px 5px 0px 0px !important;
+}
+
+ol.flex-controler-thrumbs li:last-child {
+  margin: 0 !important;
+}
 /*# sourceMappingURL=allstyles.css.map */
