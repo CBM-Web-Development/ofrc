@@ -57,8 +57,7 @@
 				wp_nav_menu($primary_navigation_args);
 				
 				?>
-				<!--Right Navigation-->
-				?>
+				
 			</div>		
 			
 		</nav>
