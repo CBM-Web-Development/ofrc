@@ -1,0 +1,17 @@
+.landing-page .primary-navbar{
+	display:none;
+	max-height:150px;
+}
+
+.landing-page>.has-background>.tribe-compatibility-container{
+	width:100%;
+}
+
+.landing-page .woocommerce--bg-dark a, .landing-page .woocommerce--bg-dark{
+	color: #f1f1f1;
+	text-decoration: none;
+}
+
+.landing-page .woocommerce--bg-dark a:hover{
+	text-decoration: underline;
+}

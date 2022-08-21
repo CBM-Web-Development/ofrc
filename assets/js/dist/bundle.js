@@ -1144,6 +1144,54 @@ function set_page_contents(posts, page) {
 
 /***/ }),
 
+/***/ "./js/src/landing-page.js":
+/*!********************************!*\
+  !*** ./js/src/landing-page.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
+  if (jquery__WEBPACK_IMPORTED_MODULE_0___default()('.landing-page').length > 0) {
+    var position = jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).scrollTop();
+    var isNavbarVisible = false;
+    var heroHeight = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.landing-hero').height();
+    console.log(heroHeight);
+
+    if (position > heroHeight && isNavbarVisible === false) {
+      setNavbarVisible(true);
+    }
+
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).scroll(function () {
+      position = jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).scrollTop();
+
+      if (position > heroHeight && isNavbarVisible === false) {
+        setNavbarVisible(true);
+        isNavbarVisible = true;
+      } else if (position < heroHeight && isNavbarVisible === true) {
+        setNavbarVisible(false);
+        isNavbarVisible = false;
+      }
+    });
+  }
+});
+
+function setNavbarVisible(setVisible) {
+  console.log('change-visibility');
+
+  if (setVisible === true) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.primary-navbar').fadeIn();
+  } else {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.primary-navbar').fadeOut();
+  }
+}
+
+/***/ }),
+
 /***/ "./js/src/member-directory.js":
 /*!************************************!*\
   !*** ./js/src/member-directory.js ***!
@@ -60410,36 +60458,26 @@ if (
 ) {
   __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
 }
-          var ReactVersion = '18.1.0';
-
-// -----------------------------------------------------------------------------
-
-var enableScopeAPI = false; // Experimental Create Event Handle API.
-var enableCacheElement = false;
-var enableTransitionTracing = false; // No known bugs, but needs performance testing
-
-var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
-// stuff. Intended to enable React core members to more easily debug scheduling
-// issues in DEV builds.
-
-var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
+          var ReactVersion = '18.2.0';
 
 // ATTENTION
-
-var REACT_ELEMENT_TYPE =  Symbol.for('react.element');
-var REACT_PORTAL_TYPE =  Symbol.for('react.portal');
-var REACT_FRAGMENT_TYPE =  Symbol.for('react.fragment');
-var REACT_STRICT_MODE_TYPE =  Symbol.for('react.strict_mode');
-var REACT_PROFILER_TYPE =  Symbol.for('react.profiler');
-var REACT_PROVIDER_TYPE =  Symbol.for('react.provider');
-var REACT_CONTEXT_TYPE =  Symbol.for('react.context');
-var REACT_FORWARD_REF_TYPE =  Symbol.for('react.forward_ref');
-var REACT_SUSPENSE_TYPE =  Symbol.for('react.suspense');
-var REACT_SUSPENSE_LIST_TYPE =  Symbol.for('react.suspense_list');
-var REACT_MEMO_TYPE =  Symbol.for('react.memo');
-var REACT_LAZY_TYPE =  Symbol.for('react.lazy');
-var REACT_OFFSCREEN_TYPE =  Symbol.for('react.offscreen');
-var MAYBE_ITERATOR_SYMBOL =  Symbol.iterator;
+// When adding new symbols to this file,
+// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+// The Symbol used to tag the ReactElement-like types.
+var REACT_ELEMENT_TYPE = Symbol.for('react.element');
+var REACT_PORTAL_TYPE = Symbol.for('react.portal');
+var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
+var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
+var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
+var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
+var REACT_CONTEXT_TYPE = Symbol.for('react.context');
+var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
+var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
+var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
+var REACT_MEMO_TYPE = Symbol.for('react.memo');
+var REACT_LAZY_TYPE = Symbol.for('react.lazy');
+var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
+var MAYBE_ITERATOR_SYMBOL = Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL = '@@iterator';
 function getIteratorFn(maybeIterable) {
   if (maybeIterable === null || typeof maybeIterable !== 'object') {
@@ -60530,6 +60568,18 @@ function setExtraStackFrame(stack) {
     return stack;
   };
 }
+
+// -----------------------------------------------------------------------------
+
+var enableScopeAPI = false; // Experimental Create Event Handle API.
+var enableCacheElement = false;
+var enableTransitionTracing = false; // No known bugs, but needs performance testing
+
+var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
+// stuff. Intended to enable React core members to more easily debug scheduling
+// issues in DEV builds.
+
+var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
 
 var ReactSharedInternals = {
   ReactCurrentDispatcher: ReactCurrentDispatcher,
@@ -64509,9 +64559,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_archives_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./src/archives.js */ "./js/src/archives.js");
 /* harmony import */ var _src_archives_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_src_archives_js__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _src_member_directory_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/member-directory.js */ "./js/src/member-directory.js");
-/* harmony import */ var _src_app_MemberLogin_jsx__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./src/app/MemberLogin.jsx */ "./js/src/app/MemberLogin.jsx");
-/* harmony import */ var _src_app_MemberGroup_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/app/MemberGroup.jsx */ "./js/src/app/MemberGroup.jsx");
+/* harmony import */ var _src_landing_page_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./src/landing-page.js */ "./js/src/landing-page.js");
+/* harmony import */ var _src_app_MemberLogin_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/app/MemberLogin.jsx */ "./js/src/app/MemberLogin.jsx");
+/* harmony import */ var _src_app_MemberGroup_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./src/app/MemberGroup.jsx */ "./js/src/app/MemberGroup.jsx");
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
 
 
 
