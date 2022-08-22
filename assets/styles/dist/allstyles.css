@@ -11530,6 +11530,14 @@ input:checked + .slider:before {
   text-decoration: underline;
 }
 
+.landing-page .navbar-brand img {
+  width: 150px;
+}
+
+.landing-page .navbar .container-fluid, .landing-page .navbar .container-sm, .landing-page .navbar .container-md, .landing-page .navbar .container-lg, .landing-page .navbar .container-xl, .landing-page .navbar .container-xxl {
+  background-color: #014421;
+}
+
 .woocommerce {
   margin-top: 1.2em;
 }

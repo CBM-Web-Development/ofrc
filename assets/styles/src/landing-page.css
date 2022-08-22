@@ -15,3 +15,11 @@
 .landing-page .woocommerce--bg-dark a:hover{
 	text-decoration: underline;
 }
+
+.landing-page .navbar-brand img{
+	width:150px;
+}
+
+.landing-page .navbar .container-fluid{
+	background-color:#014421;
+}
