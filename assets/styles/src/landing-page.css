@@ -16,8 +16,12 @@
 	text-decoration: underline;
 }
 
-.landing-page .navbar-brand img{
-	width:150px;
+@media(max-width:786px){
+	
+	.landing-page .navbar-brand img{
+		max-width:75px;
+		height:auto;
+	}
 }
 
 .landing-page .navbar .container-fluid{

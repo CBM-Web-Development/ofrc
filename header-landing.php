@@ -11,6 +11,10 @@
 		<?php wp_head(); ?>
 	</head>
 	<body class="landing-page">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJZVVFJ"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top primary-navbar">
 
 			<div class="container-fluid">
