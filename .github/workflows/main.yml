@@ -32,9 +32,9 @@ jobs:
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
-        server: ns8139.hostgator.com
-        username: cmeehan_git@utterfare.com	
+        server: ns8399.hostgator.com
+        username: admin@oldeforest.com	
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /cbmwebdevelopment.com/wp-content/themes/ofrc/
+        server-dir: /public_html/wp-content/themes/ofrc/
     
  
