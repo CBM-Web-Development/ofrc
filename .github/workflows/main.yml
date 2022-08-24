@@ -35,6 +35,6 @@ jobs:
         server: ns8399.hostgator.com
         username: admin@oldeforest.com	
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /public_html/wp-content/themes/ofrc/
+        server-dir: /wp-content/themes/ofrc/
     
  
