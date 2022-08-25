@@ -3,6 +3,7 @@
 .bg-dark.primary-navbar{
 	background-color: #014421 !important; 
 	min-height:75px; 
+	box-shadow: 4px 0 2px -2px darkslategray;
 }
 
 @media(min-width:786px){
