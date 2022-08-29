@@ -6,7 +6,7 @@
 		<?php get_template_part('partials/head', 'tags'); ?>
 		
 		
-		<title><?php wp_title('|', true, 'right'); echo get_bloginfo('title');  ?></title>
+		<title><?php wp_title();  ?></title>
 		
 		<?php wp_head(); ?>
 	</head>
