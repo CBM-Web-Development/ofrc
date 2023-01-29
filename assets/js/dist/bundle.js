@@ -345,21 +345,13 @@ function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArra
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
 
@@ -372,16 +364,36 @@ if (container !== undefined && container !== null) {
   root.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(App, null));
 }
 
-var removeRow = function removeRow(evt) {
-  var row = evt.target.closest('tr');
-  row.remove();
+var saveProfileChanges = function saveProfileChanges(e) {
+  e.preventDefault();
+  var form = e.target;
+  var data = {
+    'first_name': form.firstName.value,
+    'last_name': form.lastName.value,
+    'birthday': form.birthday.value,
+    'homePhone': form.homePhone.value,
+    'cellPhone': form.cellPhone.value,
+    'workPhone': form.workPhone.value
+  };
+  (0,_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3__["default"])({
+    headers: {
+      'X-WP-Nonce': localize.rest_nonce
+    },
+    credentials: 'include',
+    path: localize.rest_member_save_profile,
+    data: data,
+    method: 'POST'
+  }).then(function (response) {
+    console.log(response);
+  })["catch"](function (error) {
+    console.log(error);
+  });
 };
 
 var getMember = function getMember(setMember) {
   var data = {
     user_id: localize.current_user_id
   };
-  console.log(localize.rest_get_member);
   (0,_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3__["default"])({
     path: localize.rest_get_member,
     data: data,
@@ -394,39 +406,21 @@ var getMember = function getMember(setMember) {
   });
 };
 
-var addMemberRow = function addMemberRow(evt, members, setMembers) {
-  setMembers(function (members) {
-    return [].concat(_toConsumableArray(members), [[{
-      data_type: 'image',
-      name: 'profile_picture',
-      value: '',
-      attachment_id: ''
-    }, {
-      data_type: 'text',
-      name: 'first_name',
-      value: ''
-    }, {
-      data_type: 'text',
-      name: 'last_name',
-      value: ''
-    }, {
-      data_type: 'text',
-      name: 'phone_number',
-      value: ''
-    }, {
-      data_type: 'email',
-      name: 'email_address',
-      value: ''
-    }, {
-      data_type: 'datetime-local',
-      name: 'birthday',
-      value: ''
-    }, {
-      data_type: 'switch',
-      name: 'show_in_directory',
-      value: ''
-    }]]);
-  });
+var formatPhoneNumber = function formatPhoneNumber(e, setFormattedPhoneNumber) {
+  var input = e.target.value;
+  var phoneNumber = input.replace(/[^\d]/g, '');
+  var phoneNumberLength = phoneNumber.length;
+  var formattedPhoneNumber = '';
+
+  if (phoneNumberLength < 4) {
+    return phoneNumber;
+  }
+
+  if (phoneNumberLength < 7) {
+    return "(".concat(phoneNumber.slice(0, 3), ") ").concat(phoneNumber.slice(3));
+  }
+
+  return "(".concat(phoneNumber.slice(0, 3), ") ").concat(phoneNumber.slice(3, 6), "-").concat(phoneNumber.slice(6, 10));
 };
 
 function App() {
@@ -434,6 +428,21 @@ function App() {
       _useState2 = _slicedToArray(_useState, 2),
       member = _useState2[0],
       setMember = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+      _useState4 = _slicedToArray(_useState3, 2),
+      formattedPhoneNumber = _useState4[0],
+      setFormattedPhoneNumber = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+      _useState6 = _slicedToArray(_useState5, 2),
+      formattedWorkPhoneNumber = _useState6[0],
+      setFormattedWorkPhoneNumber = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+      _useState8 = _slicedToArray(_useState7, 2),
+      formattedCellPhoneNumber = _useState8[0],
+      setFormattedCellPhoneNumber = _useState8[1];
 
   var columns = [{
     type: 'image',
@@ -461,7 +470,12 @@ function App() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getMember(setMember);
   }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    className: "membershipInformationForm",
+    onSubmit: saveProfileChanges
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "nonce"
+  }, localize.rest_nonce), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "membershipInformation"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "d-flex flex-column align-items-center mb-3"
@@ -485,7 +499,7 @@ function App() {
     type: "text",
     className: "form-control",
     id: "floatingInput",
-    placeholder: "Membership ID",
+    placeholder: "Member User ID",
     defaultValue: member.user_id,
     disabled: true
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
@@ -509,7 +523,7 @@ function App() {
     id: "floatingInput",
     placeholder: "First Name",
     defaultValue: member.first_name,
-    disabled: true
+    name: "firstName"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     htmlFor: "floatingInput"
   }, "First Name")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -520,7 +534,7 @@ function App() {
     id: "floatingInput",
     placeholder: "Last Name",
     defaultValue: member.last_name,
-    disabled: true
+    name: "lastName"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     htmlFor: "floatingInput"
   }, "Last Name")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -531,7 +545,7 @@ function App() {
     id: "floatingInput",
     placeholder: "Birthday",
     defaultValue: member.birthday,
-    disabled: true
+    name: "birthday"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     htmlFor: "floatingInput"
   }, "Birthday")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -542,7 +556,11 @@ function App() {
     id: "floatingInput",
     placeholder: "Home Phone",
     defaultValue: member.home_phone,
-    disabled: true
+    name: "homePhone",
+    onChange: function onChange(e) {
+      return setFormattedPhoneNumber(formatPhoneNumber(e, setFormattedPhoneNumber));
+    },
+    value: formattedPhoneNumber
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     htmlFor: "floatingInput"
   }, "Home Phone")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -553,7 +571,11 @@ function App() {
     id: "floatingInput",
     placeholder: "Cell Phone",
     defaultValue: member.cell_phone,
-    disabled: true
+    name: "cellPhone",
+    onChange: function onChange(e) {
+      return setFormattedCellPhoneNumber(formatPhoneNumber(e, setFormattedPhoneNumber));
+    },
+    value: formattedCellPhoneNumber
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     htmlFor: "floatingInput"
   }, "Cell Phone")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -563,11 +585,20 @@ function App() {
     className: "form-control",
     id: "floatingInput",
     placeholder: "Work Phone ID",
+    name: "workPhone",
     defaultValue: member.work_phone,
-    disabled: true
+    onChange: function onChange(e) {
+      return setFormattedWorkPhoneNumber(formatPhoneNumber(e, setFormattedPhoneNumber));
+    },
+    value: formattedWorkPhoneNumber
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     htmlFor: "floatingInput"
-  }, "Work Phone")));
+  }, "Work Phone"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "row ms-5 mb-5"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    className: "btn btn-outline-primary",
+    type: "submit"
+  }, "Save Changes")));
 }
 
 /***/ }),

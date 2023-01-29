@@ -15,11 +15,6 @@
 						<div class="row">
 							<div class="col-md-10 mx-auto member-profile-section" id="member-profile-section"></div>
 						</div>
-						<div class="row">
-							<div class="col-md-10 mx-auto">
-								<p class="form-text">To update your information, please contact Stacey Higgins <a href="mailto:clubmanager@oldeforest.com?subject=Member Profile Change Request">clubmanager@oldeforest.com</a>.</p>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

@@ -128,7 +128,9 @@ class OFRC_Member_Profiles{
 		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/save-profile', array(
 			'methods' 	=> array('GET', 'POST'),
 			'callback'	=> array($this, 'save_member_profile'),
-			'permission_callback'	=> '__return_true',
+			'permission_callback'	=> function(){
+				return current_user_can('read');
+			}
 		));
 		
 		register_rest_route('ofrc/v1', '/members/member-profile/get-member-group', array( 
@@ -248,7 +250,7 @@ class OFRC_Member_Profiles{
 			'home_phone'	=> get_field('home_phone', $member_id), 
 			'cell_phone'	=> get_field('cell_phone', $member_id), 
 			'work_phone'	=> get_field('work_phone', $member_id),
-			'profile_picture'	=> get_the_post_thumbnail_url( $member_id ),
+			'profile_picture'	=> get_the_post_thumbnail_url( $member_id ) ? get_the_post_thumbnail_url : OFRC_URI . '/assets/static/img/profile_placeholder.png',
 		);
 		
 		return $response;
@@ -347,7 +349,6 @@ class OFRC_Member_Profiles{
 			return wp_send_json_error($user);
 		}
 				
-		
 		wp_set_password($password, $user->ID);
 		
 		wp_send_json_success();
@@ -361,21 +362,23 @@ class OFRC_Member_Profiles{
 			return wp_send_json_error();
 		}
 		
-		$email = $request->get_param('email');
-		
+		$username = $request->get_param('username');
+
 		// Check the username 
-		if(!email_exists( $email )){
+		if(!email_exists( $username )){
 			return wp_send_json_error();
 		}
-		$user = get_user_by_email( $email );
+		$user = get_user_by_email( $username );
 		
 		$password_reset_key = get_password_reset_key( $user );
 		
 		if( !is_wp_error($password_reset_key) ){
 			$this->send_password_reset_key($user, $password_reset_key);		
 		}
+		
+		
 				
-		wp_send_json_success();
+		wp_send_json_success($password_reset_key);
 	}
 	
 	/** 
@@ -683,8 +686,16 @@ class OFRC_Member_Profiles{
 	 * @returns json
 	 */
 	public function save_member_profile(WP_REST_Request $request){
+
+		if(!$request->get_params()) {
+			wp_send_json_error();
+		}
+		
+		wp_send_json_success($request->get_params());
 		
 		$member_groups = array();
+		
+		
 		
 		if($_POST){
 			foreach($_POST as $key => $value){
