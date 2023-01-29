@@ -11513,6 +11513,12 @@ input:checked + .slider:before {
   border-radius: 5px;
 }
 
+.member-profile-section .profile-picture {
+  width: 300px;
+  height: 300px;
+  background-color: lightgrey;
+}
+
 .landing-page .primary-navbar {
   display: none;
   max-height: 150px;

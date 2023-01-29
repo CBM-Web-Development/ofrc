@@ -20,25 +20,6 @@
 				<div class="row">
 					<div class="col-md-10 mx-auto">
 						<?php 
-							$members = array();
-							
-							$member_group = get_field('member_group_authorized_users');
-							
-							if($member_group){
-								foreach($member_group as $member){
-									if($member['show_in_directory']){
-										$members[] = array(
-											'name'	=> implode(' ', array(
-												$member['prefix'], 
-												$member['first_name'], 
-												$member['last_name'],
-												$member['suffix']
-											) ),
-											'profile_picture'	=> $member['profile_picture'] ? $member['profile_picture']['url'] : OFRC_URI . '/assets/static/img/profile_placeholder.png',
-										);
-									}
-								}
-							}
 							
 						?>
 						
