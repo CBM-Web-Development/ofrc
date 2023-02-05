@@ -1,7 +1,21 @@
+<?php 
+$member_id_args = array(
+	'post_type' 	=> 'member', 
+	'status'	=> 'publish', 
+	'meta_key'		=> 'user_id', 
+	'meta_value'	=> get_current_user_id()
+);
 
-
+$member = get_posts($member_id_args);
+$member_id = null;
+if($member){
+	
+	$member_id = $member[0]->ID;
+	
+}
+?>
 <div class="member-internal d-flex flex-md-row flex-column">
-	<?php get_template_part('template-parts/template', 'member-navigation');?>
+	<?php get_template_part('template-parts/template', 'member-navigation', array('member_id'=> $member_id));?>
 	<div class="container-fluid gy-2 gx-0 member-profile-archives-page">
 		<div class="container-fluid">
 			<div class="page-hero--no-image">

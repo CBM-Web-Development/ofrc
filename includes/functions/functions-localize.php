@@ -21,6 +21,7 @@ function ofrc_localize_scripts(){
 		'upload_memberships'					=> get_rest_url (get_current_blog_id(), 'ofrc/v1/members/upload-memberships'),
 		'rest_nonce'							=> wp_create_nonce('wp_rest'),
 		
+		
 	) );
 	
 }

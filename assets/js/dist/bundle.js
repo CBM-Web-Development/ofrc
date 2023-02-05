@@ -341,6 +341,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/api-fetch */ "./node_modules/@wordpress/api-fetch/build-module/index.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_4__);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -352,6 +354,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -368,13 +377,15 @@ var saveProfileChanges = function saveProfileChanges(e) {
   e.preventDefault();
   var form = e.target;
   var data = {
+    'email_address': form.emailAddress.value,
     'first_name': form.firstName.value,
     'last_name': form.lastName.value,
     'birthday': form.birthday.value,
-    'homePhone': form.homePhone.value,
-    'cellPhone': form.cellPhone.value,
-    'workPhone': form.workPhone.value
+    'home_phone': form.homePhone.value,
+    'cell_phone': form.cellPhone.value,
+    'work_phone': form.workPhone.value
   };
+  console.log(data);
   (0,_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3__["default"])({
     headers: {
       'X-WP-Nonce': localize.rest_nonce
@@ -400,7 +411,7 @@ var getMember = function getMember(setMember) {
     method: 'POST'
   }).then(function (response) {
     console.log(response);
-    setMember(response);
+    setMember(response.data);
   })["catch"](function (error) {
     console.log(error);
   });
@@ -422,28 +433,65 @@ var formatPhoneNumber = function formatPhoneNumber(e, setFormattedPhoneNumber) {
 
   return "(".concat(phoneNumber.slice(0, 3), ") ").concat(phoneNumber.slice(3, 6), "-").concat(phoneNumber.slice(6, 10));
 };
+/** 
+ * Profile Picture Upload
+ */
+
+
+var onPictureClick = function onPictureClick(e) {
+  e.current.click();
+  console.log(e);
+  console.log(e.target);
+};
+
+var uploadProfilePicture = function uploadProfilePicture(e, setMember, member) {
+  var file = e.target.files[0];
+  var objUrl = URL.createObjectURL(file);
+  var formData = new FormData();
+  formData.append("profile_picture", file);
+  jquery__WEBPACK_IMPORTED_MODULE_4___default().ajax({
+    headers: {
+      'X-WP-Nonce': localize.rest_nonce
+    },
+    processData: false,
+    contentType: false,
+    type: 'POST',
+    url: localize.rest_member_upload_profile_image,
+    data: formData,
+    success: function success(data) {
+      console.log(data);
+    },
+    error: function error(_error) {
+      console.log(_error);
+    }
+  });
+  setMember(_objectSpread(_objectSpread({}, member), {}, {
+    profile_picture: objUrl
+  }));
+};
 
 function App() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
       _useState2 = _slicedToArray(_useState, 2),
       member = _useState2[0],
       setMember = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
       _useState4 = _slicedToArray(_useState3, 2),
       formattedPhoneNumber = _useState4[0],
       setFormattedPhoneNumber = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
       _useState6 = _slicedToArray(_useState5, 2),
       formattedWorkPhoneNumber = _useState6[0],
       setFormattedWorkPhoneNumber = _useState6[1];
 
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(),
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
       _useState8 = _slicedToArray(_useState7, 2),
       formattedCellPhoneNumber = _useState8[0],
       setFormattedCellPhoneNumber = _useState8[1];
 
+  var profilePictureInput = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   var columns = [{
     type: 'image',
     name: 'profile_picture'
@@ -470,18 +518,35 @@ function App() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getMember(setMember);
   }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setFormattedPhoneNumber(member.home_phone);
+    setFormattedCellPhoneNumber(member.cell_phone);
+    setFormattedWorkPhoneNumber(member.work_phone);
+  }, [member]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     className: "membershipInformationForm",
     onSubmit: saveProfileChanges
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "nonce"
-  }, localize.rest_nonce), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "membershipInformation"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "d-flex flex-column align-items-center mb-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Profile Picture")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+    className: "d-flex flex-column align-items-center mb-3 profile-picture-section ",
+    onClick: function onClick(e) {
+      return onPictureClick(profilePictureInput);
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
     src: member.profile_picture,
     className: "profile-picture"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    className: "mask-notification"
+  }, "Click To Update"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "mask"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "file",
+    className: "file-upload",
+    ref: profilePictureInput,
+    onChange: function onChange(e) {
+      return uploadProfilePicture(e, setMember, member);
+    }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "form-floating mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
@@ -512,10 +577,15 @@ function App() {
     id: "floatingInput",
     placeholder: "name@example.com",
     defaultValue: member.email_address,
+    name: "emailAddress",
     disabled: true
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     htmlFor: "floatingInput"
-  }, "Email Address/Username")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "Email Address/Username"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-text"
+  }, "To update your email address please contact the ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
+    href: "mailto:clubmanager@oldeforest.com?subject=Account Email Change Request"
+  }, "Club Manager"), " to request the change.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "form-floating mb-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "text",
@@ -555,7 +625,6 @@ function App() {
     className: "form-control",
     id: "floatingInput",
     placeholder: "Home Phone",
-    defaultValue: member.home_phone,
     name: "homePhone",
     onChange: function onChange(e) {
       return setFormattedPhoneNumber(formatPhoneNumber(e, setFormattedPhoneNumber));
@@ -570,12 +639,11 @@ function App() {
     className: "form-control",
     id: "floatingInput",
     placeholder: "Cell Phone",
-    defaultValue: member.cell_phone,
     name: "cellPhone",
+    value: formattedCellPhoneNumber,
     onChange: function onChange(e) {
       return setFormattedCellPhoneNumber(formatPhoneNumber(e, setFormattedPhoneNumber));
-    },
-    value: formattedCellPhoneNumber
+    }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     htmlFor: "floatingInput"
   }, "Cell Phone")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -586,7 +654,6 @@ function App() {
     id: "floatingInput",
     placeholder: "Work Phone ID",
     name: "workPhone",
-    defaultValue: member.work_phone,
     onChange: function onChange(e) {
       return setFormattedWorkPhoneNumber(formatPhoneNumber(e, setFormattedPhoneNumber));
     },

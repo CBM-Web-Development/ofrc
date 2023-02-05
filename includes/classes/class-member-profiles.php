@@ -122,7 +122,9 @@ class OFRC_Member_Profiles{
 		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/image-upload', array(
 			'methods' 	=> array('GET', 'POST'),
 			'callback'	=> array($this, 'upload_member_profile_picture'),
-			'permission_callback'	=> '__return_true',
+			'permission_callback'	=> function(){
+				return current_user_can('read');
+			}
 		));
 		
 		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/save-profile', array(
@@ -216,7 +218,6 @@ class OFRC_Member_Profiles{
 		$total_items = count($memberships);
 		
 		wp_send_json_success($total_items);
-		
 	
 	}
 	
@@ -239,7 +240,7 @@ class OFRC_Member_Profiles{
 		$member = get_posts($member_args)[0];
 	
 		$member_id = $member->ID;
-		
+					
 		$response = array(
 			'membership_id'	=> get_field('membership_id', $member_id),
 			'user_id'		=> get_field('user_id', $member_id),
@@ -250,10 +251,13 @@ class OFRC_Member_Profiles{
 			'home_phone'	=> get_field('home_phone', $member_id), 
 			'cell_phone'	=> get_field('cell_phone', $member_id), 
 			'work_phone'	=> get_field('work_phone', $member_id),
-			'profile_picture'	=> get_the_post_thumbnail_url( $member_id ) ? get_the_post_thumbnail_url : OFRC_URI . '/assets/static/img/profile_placeholder.png',
+			'profile_picture'	=> get_field( 'profile_picture', $member_id ) ? get_field('profile_picture', $member_id)['url'] : OFRC_URI . '/assets/static/img/profile_placeholder.png',
+			'is_board_member'	=> get_field('is_board_member', $member_id)
 		);
 		
-		return $response;
+		
+		
+		wp_send_json_success($response);
 		
 	}
 	
@@ -678,6 +682,19 @@ class OFRC_Member_Profiles{
 		return $key;
 	}
 
+	private function get_post_id($username) {
+		$args = array(
+			'post_type'		=> 'member', 
+			'meta_key'		=> 'username', 
+			'meta_value'	=> $username,
+			'numberposts'	=> 1
+		);
+		
+		$posts = get_posts($args);
+		
+		return $posts[0]->ID;
+	}
+
 	/*
 	 * Save the member profile fields 
 	 * 
@@ -691,51 +708,19 @@ class OFRC_Member_Profiles{
 			wp_send_json_error();
 		}
 		
-		wp_send_json_success($request->get_params());
+		$username = $request->get_param('email_address');
 		
-		$member_groups = array();
+		$post_id = $this->get_post_id($username);
 		
+		update_field('first_name', $request->get_param('first_name'), $post_id);
+		update_field('last_name', $request->get_param('last_name'), $post_id);
+		update_field('birthday', $request->get_param('birthday'), $post_id);
+		update_field('home_phone', $request->get_param('home_phone'), $post_id);
+		update_field('cell_phone', $request->get_param('cell_phone'), $post_id);
+		update_field('work_phone', $request->get_param('work_phone'), $post_id);
 		
+		wp_send_json_success();
 		
-		if($_POST){
-			foreach($_POST as $key => $value){
-				if(str_contains($key, 'member_groups')){
-					preg_match('/\d/', $key, $group_number); 
-					$key = $this->member_group_key($key);
-					
-					if($key == 'show_in_directory'){
-						$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-					}
-					
-					$member_groups[$group_number[0]][$key] = $value;	
-				}
-			}
-		}
-		
-		if($_FILES){
-			foreach($_FILES as $key => $value){
-				if(str_contains($key, 'member_groups')){
-					preg_match('/\d/', $key, $group_number); 
-					$key = $this->member_group_key($key);
-					
-					$member_groups[$group_number[0]][$key] = $this->upload_image($value);
-				}
-			}
-		}	
-		
-		$membership_id = filter_input(INPUT_POST, 'membership_id');
-		
-		if(!$membership_id){
-			wp_send_json_error();
-		}
-		
-		$user_id = filter_input(INPUT_POST, 'current_user');						
-		$post_id = $this->get_member($membership_id)->ID;
-
-		update_field('member_group_authorized_users', $member_groups, $post_id);		
-		update_user_meta( $user_id, 'membership_id', $membership_id );
-		
-		wp_send_json_success($member_groups);	
 	}
 	
 	
@@ -743,21 +728,22 @@ class OFRC_Member_Profiles{
 	/**
 	 * Upload the member profile image 
 	 */
-	public function upload_member_profile_picture(){
-		$img = $_FILES['profile_image'];
-		$user_id = filter_input(INPUT_POST, 'user_id');
-		$membership_id = get_user_meta($user_id, 'membership_id');
-		$member_post_id = $this->get_member($membership_id)->ID;
+	public function upload_member_profile_picture(WP_Rest_Request $request){
+		$img = $_FILES['profile_picture'];
+		
+		
+		$user_id = get_current_user_id();
+		$membership_id = $this->get_post_id(wp_get_current_user()->user_login);
 		$attach_id = $this->upload_image($img);
 
 		if(!$attach_id){
-			return false;
+			wp_send_json_error($attach_id);
 		}
 		
-		$update_profile_image = update_field('profile_picture', $attach_id, 'user_' . $user_id);	
-		update_field('profile_picture', $attach_id, $member_post_id);
+		//$update_profile_image = update_field('profile_picture', $attach_id, 'user_' . $user_id);	
+		$update_profile_image = update_field('profile_picture', $attach_id, $membership_id);
 		
-		return $update_profile_image;
+		wp_send_json_success($update_profile_image);
 	}
 	
 	private function upload_image($img){
@@ -766,13 +752,11 @@ class OFRC_Member_Profiles{
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 			require_once( ABSPATH . 'wp-admin/includes/media.php' ); 
 		}
-				
-		
 		$upload_overrides = array('test_form'	=> false);
 		
 		$move_file = wp_handle_upload($img, $upload_overrides);
-		
-		if($move_file){
+
+		if(!is_wp_error($move_file)){
 			$img_url = $move_file['url'];
 			
 			$upload_dir = wp_upload_dir();

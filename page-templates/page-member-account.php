@@ -3,11 +3,7 @@
  * Template Name: Member Account 
  */ 
  get_header(); 
- ?>
- 
- <?php 
-    var_dump(current_user_can('read'));
-    var_dump(get_role('member')->capabilities)
+
  ?>
  
  <div class="member-profile-container">
