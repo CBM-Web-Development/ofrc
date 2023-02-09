@@ -1,5 +1,7 @@
 <?php 
 class OFRC_Member_Profiles{
+	private $memberships_slug;
+	
 	function __construct(){
 		//add_action('init', array($this, 'member_profile_admin_page'));
 		add_action('init', array($this, 'custom_member_role'));		
@@ -9,9 +11,33 @@ class OFRC_Member_Profiles{
 		add_action('init', array($this, 'register_member_profile_cpt'));
 		add_action('init', array($this, 'memberships_options_page'));
 		add_action('admin_menu', array($this, 'register_menu_pages'));
-		
+		add_action( 'admin_init', array($this, 'add_delete_memberships_meta_box') );
+		if(current_user_can('administer')){
+			add_action('add_meta_boxes', array($this, 'add_delete_memberships_meta_box') );
+		}
 		// Filters 
 		//add_filter('display_post_states', array($this, 'add_display_post_states'), 10, 2);
+	}
+	
+	/**
+	 * 
+	 */
+	public function add_delete_memberships_meta_box($post_type){
+		add_meta_box(
+			'delete_memberships_meta_box', 
+			'Delete ALL Memberships',
+			array($this, 'delete_all_memberships'), 
+			'member_page_memberhips-uploader',
+			'normal',
+			'high'
+		);
+	
+	}
+	
+	public function delete_all_memberships(){
+		//wp_nonce_field( basename(__FILE__), 'ofrc_nonce'); 
+		//echo "Delete";
+		//echo '<button type="button">Delete All Memberships</button>';
 	}
 	
 	public function register_menu_pages(){
@@ -27,7 +53,7 @@ class OFRC_Member_Profiles{
 	}
 	
 	public function memberships_options_page(){
-		acf_add_options_sub_page( array( 
+		$this->memberships_slug = acf_add_options_sub_page( array( 
 			'page_title'	=> 'Memberships', 
 			'menu_title'	=> 'Memberships', 
 			'parent_slug'	=> 'edit.php?post_type=member'
@@ -38,12 +64,13 @@ class OFRC_Member_Profiles{
 			 'menu_title'	=> 'Settings', 
 			 'parent_slug'	=> 'edit.php?post_type=member',
 		 ) );
-		 
-		 acf_add_options_sub_page( array(
+		/*
+		acf_add_options_sub_page( array(
 			 'page_title'	=> 'Uploader', 
 			 'menu_title'	=> 'Uploader', 
 			 'parent_slug'	=> 'edit.php?post_type=member',
 		 ) );
+		 */
 	}
 	
 	
@@ -116,7 +143,7 @@ class OFRC_Member_Profiles{
 		register_rest_route('ofrc/v1', '/member-directory/members', array(
 			'methods'	=> array('GET', 'POST'),
 			'callback'	=> array($this, 'get_member_directory'),
-			'permission_callback'	=> '__return_true'
+			'permission_callback'	=>  '__return_true'
 		));
 		
 		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/image-upload', array(
@@ -153,7 +180,7 @@ class OFRC_Member_Profiles{
 			'permission_callback'	=> '__return_true'
 		));
 		
-		register_rest_route('ofrc/v1', 'members/log-in', array(
+		register_rest_route('ofrc/v1', '/members/log-in', array(
 			'methods'	=> array('GET', 'POST'), 
 			'callback'	=> array($this, 'member_log_in'), 
 			'permission_callback'	=> '__return_true',
@@ -191,6 +218,20 @@ class OFRC_Member_Profiles{
 		exit;
 	}
 	
+	private function delete_existing_memberships(){
+		$rows = get_field('memberships', 'option');
+		if(!empty($rows)){
+			$count = count($rows);
+			for($x = $count; $x > 0; $x--){
+				delete_row('memberships', $x, 'option');
+			}
+		}
+		
+		$rows = get_field('memberships', 'option');
+		
+		echo $row == false ? 0 : count($rows);
+	}
+	
 	/**
 	*
 	*/
@@ -199,10 +240,16 @@ class OFRC_Member_Profiles{
 			wp_send_json_error();
 		}
 		
+		// Delete the existing 		
+		$delete_existing = $this->delete_existing_memberships();
 		
+		if($delete_existing != 0){
+			wp_send_json_error($delete_existing);
+		}
 		$memberships = $request->get_param('memberships');
 		
 		foreach($memberships as $membership){
+		
 			$row = array(
 				'membership_id' 	=> $membership['account_number'], 
 				'membership_name'	=> $membership['membership_name'], 
@@ -215,10 +262,12 @@ class OFRC_Member_Profiles{
 		
 		$memberships = get_field('memberships', 'option');
 		
+		
 		$total_items = count($memberships);
 		
-		wp_send_json_success($total_items);
-	
+		wp_send_json_success();
+		
+		
 	}
 	
 	/**
@@ -424,9 +473,15 @@ class OFRC_Member_Profiles{
 		
 		$sign_on = wp_signon($creds, true);
 		
-		wp_set_current_user( $sign_on->ID );
+		$current_user = wp_set_current_user( $sign_on->ID );
+		//$current_user['data'][] = array(wp_create_nonce( 'wp_rest' );
 		
-		return wp_send_json_success();
+		
+		
+		return wp_send_json_success(array(
+			'nonce'	=> 	wp_create_nonce('wp_rest'),
+			'user_id'	=> $current_user->ID
+		) );
 	}
 	
 	/** 

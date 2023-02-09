@@ -70,7 +70,7 @@ function App(){
 					disabled={disabled} >
 					Upload
 				</button>
-				
+				<strong><i>This uploader <strong>REPLACES</strong>all existing data. Proceed with caution.</i></strong>
 				{isUploading && 
 					<Spinner />
 				}
