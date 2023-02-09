@@ -13,4 +13,4 @@ import './src/landing-page.js';
 
 // React 
 import './src/app/MemberLogin.jsx';
-import './src/app/MemberGroup.jsx';
+import './src/app/MemberProfile.jsx';

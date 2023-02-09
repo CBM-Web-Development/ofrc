@@ -14,7 +14,14 @@ function ofrc_localize_scripts(){
 		'rest_member_login'						=> get_rest_url(get_current_blog_id(), 'ofrc/v1/members/log-in'),
 		'rest_password_reset_request'			=> get_rest_url(get_current_blog_id(), 'ofrc/v1/members/password-reset-request'),
 		'rest_reset_password'					=> get_rest_url(get_current_blog_id(), 'ofrc/v1/members/password-reset'),
+		'rest_get_member'						=> get_rest_url(get_current_blog_id(), 'ofrc/v1/members/member-profile/get-member'),
 		'rest_get_member_group'					=> get_rest_url(get_current_blog_id(), 'ofrc/v1/members/member-profile/get-member-group'),
-		'current_member_group_id'				=> get_user_meta(get_current_user_id(), 'membership_id', true)
+		'current_member_group_id'				=> get_user_meta(get_current_user_id(), 'membership_id', true),
+		'current_user_id'						=> get_current_user_id(),
+		'upload_memberships'					=> get_rest_url (get_current_blog_id(), 'ofrc/v1/members/upload-memberships'),
+		'rest_nonce'							=> wp_create_nonce('wp_rest'),
+		
+		
 	) );
+	
 }

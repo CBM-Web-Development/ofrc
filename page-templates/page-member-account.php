@@ -3,7 +3,9 @@
  * Template Name: Member Account 
  */ 
  get_header(); 
+
  ?>
+ 
  <div class="member-profile-container">
  
      <?php 

@@ -1,26 +1,76 @@
 <?php 
 class OFRC_Member_Profiles{
+	private $memberships_slug;
+	
 	function __construct(){
-		add_action('init', array($this, 'member_profile_admin_page'));
+		//add_action('init', array($this, 'member_profile_admin_page'));
 		add_action('init', array($this, 'custom_member_role'));		
 		add_action('rest_api_init', array($this,'endpoints_init'));
-		//add_action('login_redirect', array($this, 'member_login_redirect'), 10, 3);
-		//add_action('wp_login_failed', array($this, 'member_failed_login'));
-		//add_action('wp_ajax_member_login', array($this, 'member_login'));
-		//add_action('wp_ajax_nopriv_member_login', array($this, 'member_login'));
 		add_action('wp_ajax_signout', array($this, 'member_signout'));
 		add_action('wp_ajax_nopriv_signout', array($this, 'member_signout'));
 		add_action('init', array($this, 'register_member_profile_cpt'));
 		add_action('init', array($this, 'memberships_options_page'));
+		add_action('admin_menu', array($this, 'register_menu_pages'));
+		add_action( 'admin_init', array($this, 'add_delete_memberships_meta_box') );
+		if(current_user_can('administer')){
+			add_action('add_meta_boxes', array($this, 'add_delete_memberships_meta_box') );
+		}
+		// Filters 
+		//add_filter('display_post_states', array($this, 'add_display_post_states'), 10, 2);
+	}
+	
+	/**
+	 * 
+	 */
+	public function add_delete_memberships_meta_box($post_type){
+		add_meta_box(
+			'delete_memberships_meta_box', 
+			'Delete ALL Memberships',
+			array($this, 'delete_all_memberships'), 
+			'member_page_memberhips-uploader',
+			'normal',
+			'high'
+		);
+	
+	}
+	
+	public function delete_all_memberships(){
+		//wp_nonce_field( basename(__FILE__), 'ofrc_nonce'); 
+		//echo "Delete";
+		//echo '<button type="button">Delete All Memberships</button>';
+	}
+	
+	public function register_menu_pages(){
+		add_submenu_page( 'edit.php?post_type=member', 'Uploader', 'Uploader', 'manage_options', 'memberhips-uploader', array($this, 'memberships_uploader_cb') );
+	}
+	
+	public function memberships_uploader_cb(){
+		?>
 		
+		<h1>Memberships Uploader</h1>
+		<div class="memberships-uploader" id="memberships-uploader"></div>
+		<?php
 	}
 	
 	public function memberships_options_page(){
-		acf_add_options_sub_page( array( 
+		$this->memberships_slug = acf_add_options_sub_page( array( 
 			'page_title'	=> 'Memberships', 
 			'menu_title'	=> 'Memberships', 
 			'parent_slug'	=> 'edit.php?post_type=member'
 		 ) );
+		 
+		 acf_add_options_sub_page( array(
+			 'page_title'	=> 'Member Dashboard Settings', 
+			 'menu_title'	=> 'Settings', 
+			 'parent_slug'	=> 'edit.php?post_type=member',
+		 ) );
+		/*
+		acf_add_options_sub_page( array(
+			 'page_title'	=> 'Uploader', 
+			 'menu_title'	=> 'Uploader', 
+			 'parent_slug'	=> 'edit.php?post_type=member',
+		 ) );
+		 */
 	}
 	
 	
@@ -66,7 +116,7 @@ class OFRC_Member_Profiles{
 			'label'                 => __( 'Member', OFRC_TEXTDOMAIN ),
 			'description'           => __( 'Post Type Description', OFRC_TEXTDOMAIN ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes' ),
+			'supports'              => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes', 'thumbnail' ),
 			'hierarchical'          => false,
 			'public'                => true,
 			'show_ui'               => true,
@@ -93,24 +143,34 @@ class OFRC_Member_Profiles{
 		register_rest_route('ofrc/v1', '/member-directory/members', array(
 			'methods'	=> array('GET', 'POST'),
 			'callback'	=> array($this, 'get_member_directory'),
-			'permission_callback'	=> '__return_true'
+			'permission_callback'	=>  '__return_true'
 		));
 		
 		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/image-upload', array(
 			'methods' 	=> array('GET', 'POST'),
 			'callback'	=> array($this, 'upload_member_profile_picture'),
-			'permission_callback'	=> '__return_true',
+			'permission_callback'	=> function(){
+				return current_user_can('read');
+			}
 		));
 		
 		register_rest_route('ofrc/v1', '/member-directory/members/member-profile/save-profile', array(
 			'methods' 	=> array('GET', 'POST'),
 			'callback'	=> array($this, 'save_member_profile'),
-			'permission_callback'	=> '__return_true',
+			'permission_callback'	=> function(){
+				return current_user_can('read');
+			}
 		));
 		
 		register_rest_route('ofrc/v1', '/members/member-profile/get-member-group', array( 
 			'methods'	=> array('GET','POST'), 
 			'callback'	=> array($this, 'get_member_group'), 
+			'permission_callback'	=> '__return_true',
+		) );
+	
+		register_rest_route('ofrc/v1', '/members/member-profile/get-member', array( 
+			'methods'	=> array('GET','POST'), 
+			'callback'	=> array($this, 'get_member'), 
 			'permission_callback'	=> '__return_true',
 		) );
 		
@@ -120,7 +180,7 @@ class OFRC_Member_Profiles{
 			'permission_callback'	=> '__return_true'
 		));
 		
-		register_rest_route('ofrc/v1', 'members/log-in', array(
+		register_rest_route('ofrc/v1', '/members/log-in', array(
 			'methods'	=> array('GET', 'POST'), 
 			'callback'	=> array($this, 'member_log_in'), 
 			'permission_callback'	=> '__return_true',
@@ -138,26 +198,115 @@ class OFRC_Member_Profiles{
 			'permission_callback'	=> '__return_true',
 		) );
 		
+		register_rest_route('ofrc/v1', 'members/upload-memberships', array(
+			'methods'				=> 'POST', 
+			'callback'				=> array($this, 'upload_memberships'),
+			'permission_callback'	=> '__return_true',
+		));
+		
+		register_rest_route('ofrc/v1', 'members/logout', array(
+			'methods'				=> 'GET', 
+			'callback'				=> array($this, 'wp_oauth_server_logout'),
+			'permission_callback'	=> '__return_true',
+		));
+		
+	}
+	
+	public function wp_oauth_server_logout(){
+		wp_logout();
+		wp_redirect(bloginfo('url'));
+		exit;
+	}
+	
+	private function delete_existing_memberships(){
+		$rows = get_field('memberships', 'option');
+		if(!empty($rows)){
+			$count = count($rows);
+			for($x = $count; $x > 0; $x--){
+				delete_row('memberships', $x, 'option');
+			}
+		}
+		
+		$rows = get_field('memberships', 'option');
+		
+		echo $row == false ? 0 : count($rows);
 	}
 	
 	/**
-	 * Get the member post type by the membership ID 
+	*
+	*/
+	public function upload_memberships(WP_REST_Request $request) {
+		if(!$request->get_params() && !$request->get_param('memberships')){
+			wp_send_json_error();
+		}
+		
+		// Delete the existing 		
+		$delete_existing = $this->delete_existing_memberships();
+		
+		if($delete_existing != 0){
+			wp_send_json_error($delete_existing);
+		}
+		$memberships = $request->get_param('memberships');
+		
+		foreach($memberships as $membership){
+		
+			$row = array(
+				'membership_id' 	=> $membership['account_number'], 
+				'membership_name'	=> $membership['membership_name'], 
+				'telephone'			=> $membership['phone'], 
+				'email'				=> $membership['email']
+			);
+			
+			add_row('memberships', $row, 'option');
+		}
+		
+		$memberships = get_field('memberships', 'option');
+		
+		
+		$total_items = count($memberships);
+		
+		wp_send_json_success();
+		
+		
+	}
+	
+	/**
+	 * Get the member post type by the user ID
 	 * 
 	 * @params int: membership_id 
 	 * @returns object: member 
 	 */
-	public function get_member($membership_id){
-				
+	public function get_member(WP_REST_Request $request){	
+		$user_id = $request->get_param('user_id');
+		
 		$member_args = array(
 			'post_type'			=> 'member', 
-			'meta_key'			=> 'member_access_membership_id',
-			'meta_value'		=> $membership_id, 
+			'meta_key'			=> 'user_id',
+			'meta_value'		=> $user_id, 
 			'posts_per_page'	=> 1,
 		);
 		
-		$member = get_posts($member_args);
+		$member = get_posts($member_args)[0];
+	
+		$member_id = $member->ID;
+					
+		$response = array(
+			'membership_id'	=> get_field('membership_id', $member_id),
+			'user_id'		=> get_field('user_id', $member_id),
+			'email_address'	=> get_field('email_address', $member_id),
+			'first_name'	=> get_field('first_name', $member_id), 
+			'last_name'		=> get_field('last_name', $member_id), 
+			'birthday'		=> get_field('birthday', $member_id), 
+			'home_phone'	=> get_field('home_phone', $member_id), 
+			'cell_phone'	=> get_field('cell_phone', $member_id), 
+			'work_phone'	=> get_field('work_phone', $member_id),
+			'profile_picture'	=> get_field( 'profile_picture', $member_id ) ? get_field('profile_picture', $member_id)['url'] : OFRC_URI . '/assets/static/img/profile_placeholder.png',
+			'is_board_member'	=> get_field('is_board_member', $member_id)
+		);
 		
-		return $member[0];
+		
+		
+		wp_send_json_success($response);
 		
 	}
 	
@@ -169,7 +318,7 @@ class OFRC_Member_Profiles{
 	 * @returns json_array 
 	 */	
 	public function get_member_group(WP_REST_Request $request){
-		
+
 		if(!$request->get_params() || !$request->get_param('membership_id')){
 			wp_send_json_error();
 		}
@@ -177,7 +326,7 @@ class OFRC_Member_Profiles{
 		// Get the member by the membership id 
 		$membership_id = $request->get_param('membership_id');
 		
-		$member = $this->get_member($membership_id);
+		//$member = $this->get_member($membership_id);
 		
 		if($member){ // We only want the first result
 			
@@ -253,10 +402,9 @@ class OFRC_Member_Profiles{
 			return wp_send_json_error($user);
 		}
 				
-		
 		wp_set_password($password, $user->ID);
 		
-		return wp_send_json_success();
+		wp_send_json_success();
 	}
 	
 	/** 
@@ -267,13 +415,13 @@ class OFRC_Member_Profiles{
 			return wp_send_json_error();
 		}
 		
-		$email = $request->get_param('email');
-		
+		$username = $request->get_param('username');
+
 		// Check the username 
-		if(!email_exists( $email )){
+		if(!email_exists( $username )){
 			return wp_send_json_error();
 		}
-		$user = get_user_by_email( $email );
+		$user = get_user_by_email( $username );
 		
 		$password_reset_key = get_password_reset_key( $user );
 		
@@ -281,9 +429,9 @@ class OFRC_Member_Profiles{
 			$this->send_password_reset_key($user, $password_reset_key);		
 		}
 		
-		wp_die($password_reset_key);
 		
-		return wp_send_json_success();
+				
+		wp_send_json_success($password_reset_key);
 	}
 	
 	/** 
@@ -325,11 +473,16 @@ class OFRC_Member_Profiles{
 		
 		$sign_on = wp_signon($creds, true);
 		
-		wp_set_current_user( $sign_on->ID );
+		$current_user = wp_set_current_user( $sign_on->ID );
+		//$current_user['data'][] = array(wp_create_nonce( 'wp_rest' );
 		
-		return wp_send_json_success();
+		
+		
+		return wp_send_json_success(array(
+			'nonce'	=> 	wp_create_nonce('wp_rest'),
+			'user_id'	=> $current_user->ID
+		) );
 	}
-	
 	
 	/** 
 	 * Member sign up function 
@@ -366,7 +519,7 @@ class OFRC_Member_Profiles{
 			return wp_send_json_error($response);	
 		}
 		
-		if($this->check_member_exists($membership_id)){
+		if($this->check_member_exists($membership_id, $username)){
 			$response['reason'] = 'Member profile already exists';
 			return wp_send_json_error($response);
 		}
@@ -374,7 +527,7 @@ class OFRC_Member_Profiles{
 		
 		// Create the post 
 		$member_args = array(
-			'post_title' 	=> $last_name . ' - ' . $request->get_param('membership_id'), 
+			'post_title' 	=> $last_name . ', ' . $first_name . ' - ' . $request->get_param('membership_id'), 
 			'post_content'	=> '', 
 			'post_status'	=> 'publish', 
 			'post_type'		=> 'member',
@@ -388,18 +541,8 @@ class OFRC_Member_Profiles{
 			return wp_send_json_error($response);
 		}
 		
-		update_field( 'member_profile', array(
-			'first_name'	=> $first_name, 
-			'last_name'		=> $last_name,
-			'email'			=> $username,
-		), $member );
 		
-		update_field( 'member_access', array(
-			'username'	=> $username, 
-			'membership_id'	=> $membership_id,
-		), $member);
-		
-		$member = wp_insert_user( array(
+		$member_user = wp_insert_user( array(
 			'user_pass'		=> $password,
 			'user_login'	=> $username,
 			'user_email'	=> $username,
@@ -411,11 +554,22 @@ class OFRC_Member_Profiles{
 			)
 		) ); 
 		
-		$response['member_id'] = $member;
+		$this->insertNewMember($username, $first_name, $last_name, $membership_id, $member, $member_user);
+		
+		$response['member_id'] = $member_user;
 		
 		$this->send_confirmation_email($username, $first_name, $last_name);
 		
 		return wp_send_json_success($response);	
+	}
+	
+	private function insertNewMember($username, $first_name, $last_name, $membership_id, $member, $member_user){
+		update_field('membership_id', $membership_id, $member);
+		update_field('user_id', $member_user, $member);
+		update_field('username', $username, $member);
+		update_field('email_address', $username, $member);
+		update_field('first_name', $first_name, $member);
+		update_field('last_name', $last_name, $member);
 	}
 	
 	/** 
@@ -441,7 +595,7 @@ class OFRC_Member_Profiles{
 	 * @params String: membership_id 
 	 * @returns boolean 
 	 */ 
-	private function check_member_exists($membership_id){
+	private function check_member_exists($membership_id, $username){
 		$members = get_posts( array(
 			'post_type'		=> 'member', 
 			'post_status'	=> 'publish', 
@@ -583,6 +737,19 @@ class OFRC_Member_Profiles{
 		return $key;
 	}
 
+	private function get_post_id($username) {
+		$args = array(
+			'post_type'		=> 'member', 
+			'meta_key'		=> 'username', 
+			'meta_value'	=> $username,
+			'numberposts'	=> 1
+		);
+		
+		$posts = get_posts($args);
+		
+		return $posts[0]->ID;
+	}
+
 	/*
 	 * Save the member profile fields 
 	 * 
@@ -591,48 +758,24 @@ class OFRC_Member_Profiles{
 	 * @returns json
 	 */
 	public function save_member_profile(WP_REST_Request $request){
-		
-		$member_groups = array();
-		
-		if($_POST){
-			foreach($_POST as $key => $value){
-				if(str_contains($key, 'member_groups')){
-					preg_match('/\d/', $key, $group_number); 
-					$key = $this->member_group_key($key);
-					
-					if($key == 'show_in_directory'){
-						$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-					}
-					
-					$member_groups[$group_number[0]][$key] = $value;	
-				}
-			}
-		}
-		
-		if($_FILES){
-			foreach($_FILES as $key => $value){
-				if(str_contains($key, 'member_groups')){
-					preg_match('/\d/', $key, $group_number); 
-					$key = $this->member_group_key($key);
-					
-					$member_groups[$group_number[0]][$key] = $this->upload_image($value);
-				}
-			}
-		}	
-		
-		$membership_id = filter_input(INPUT_POST, 'membership_id');
-		
-		if(!$membership_id){
+
+		if(!$request->get_params()) {
 			wp_send_json_error();
 		}
 		
-		$user_id = filter_input(INPUT_POST, 'current_user');						
-		$post_id = $this->get_member($membership_id)->ID;
-
-		update_field('member_group_authorized_users', $member_groups, $post_id);		
-		update_user_meta( $user_id, 'membership_id', $membership_id );
+		$username = $request->get_param('email_address');
 		
-		wp_send_json_success($member_groups);	
+		$post_id = $this->get_post_id($username);
+		
+		update_field('first_name', $request->get_param('first_name'), $post_id);
+		update_field('last_name', $request->get_param('last_name'), $post_id);
+		update_field('birthday', $request->get_param('birthday'), $post_id);
+		update_field('home_phone', $request->get_param('home_phone'), $post_id);
+		update_field('cell_phone', $request->get_param('cell_phone'), $post_id);
+		update_field('work_phone', $request->get_param('work_phone'), $post_id);
+		
+		wp_send_json_success();
+		
 	}
 	
 	
@@ -640,21 +783,22 @@ class OFRC_Member_Profiles{
 	/**
 	 * Upload the member profile image 
 	 */
-	public function upload_member_profile_picture(){
-		$img = $_FILES['profile_image'];
-		$user_id = filter_input(INPUT_POST, 'user_id');
-		$membership_id = get_user_meta($user_id, 'membership_id');
-		$member_post_id = $this->get_member($membership_id)->ID;
+	public function upload_member_profile_picture(WP_Rest_Request $request){
+		$img = $_FILES['profile_picture'];
+		
+		
+		$user_id = get_current_user_id();
+		$membership_id = $this->get_post_id(wp_get_current_user()->user_login);
 		$attach_id = $this->upload_image($img);
 
 		if(!$attach_id){
-			return false;
+			wp_send_json_error($attach_id);
 		}
 		
-		$update_profile_image = update_field('profile_picture', $attach_id, 'user_' . $user_id);	
-		update_field('profile_picture', $attach_id, $member_post_id);
+		//$update_profile_image = update_field('profile_picture', $attach_id, 'user_' . $user_id);	
+		$update_profile_image = update_field('profile_picture', $attach_id, $membership_id);
 		
-		return $update_profile_image;
+		wp_send_json_success($update_profile_image);
 	}
 	
 	private function upload_image($img){
@@ -663,13 +807,11 @@ class OFRC_Member_Profiles{
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 			require_once( ABSPATH . 'wp-admin/includes/media.php' ); 
 		}
-				
-		
 		$upload_overrides = array('test_form'	=> false);
 		
 		$move_file = wp_handle_upload($img, $upload_overrides);
-		
-		if($move_file){
+
+		if(!is_wp_error($move_file)){
 			$img_url = $move_file['url'];
 			
 			$upload_dir = wp_upload_dir();
@@ -728,10 +870,8 @@ class OFRC_Member_Profiles{
 				$id = $member->ID;
 				$name = "";
 				$name = implode( ' ', array(
-					get_field('member_profile_prefix', $id), 
-					get_field('member_profile_first_name', $id), 
-					get_field('member_profile_last_name', $id), 
-					get_field('member_profile_suffix', $id)
+					get_field('first_name', $id), 
+					get_field('last_name', $id), 
 				) );
 				
 				$authorized_users = get_field('member_group_authorized_users', $id);
@@ -774,13 +914,6 @@ class OFRC_Member_Profiles{
 		}
 	}
 	
-	/**
-	 * Get the directory member group
-	 */
-	public function get_directory_member_group($id){
-	
-	}
-	
 	public function custom_member_role(){
 		if(get_option('ofrc_custom_roles_version') < 1){
 			add_role('member', 'Member', array('read'	=> true, 'level_0' => true));
@@ -790,11 +923,17 @@ class OFRC_Member_Profiles{
 	
 	public function member_profile_admin_page(){
 		if(function_exists('acf_add_options_page')){
-			acf_add_options_sub_page(array(
+			acf_add_options_sub_page( array(
 				'page_title'	=> 'Member Dashboard Settings', 
 				'menu_title'	=> 'Settings', 
-				'parent_slug'	=> 'edit.php?post_type=member_profile',
-			));
+				'parent_slug'	=> 'edit.php?post_type=member',
+			) );
+			
+			acf_add_options_sub_page( array(
+				'page_title'	=> 'Memberships Updater', 
+				'menu_title'	=> 'Memberships Updater', 
+				'parent_slug'	=> 'edit.php?post_type=member',
+			) );
 		}
 	}
 	
