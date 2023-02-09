@@ -15,9 +15,7 @@ if ( container !== undefined && container !== null){
 }
 
 const showError = (message) => {
-	
-	console.log(message)
-	
+		
 	if(message.toLowerCase().indexOf('username') > -1 ){
 		$('input[name=email]').addClass('is-invalid');
 		$('input[name=email]').after('<div class="invalid-feedback">' + message + '</div>');
@@ -238,9 +236,9 @@ function App(){
 	]
 	
 	const signUpFields = [
+		{name: 'membership_id', label: 'Membership ID', type: 'text', required: true}, 
 		{name: 'email', label: 'Email', type: 'email', required: true},
 		{name: 'password', label: 'Password', type: 'password', required: true},
-		{name: 'membership_id', label: 'Membership ID', type: 'text', required: true}, 
 		{name: 'first_name', label: 'First Name', type: 'text'},
 		{name: 'last_name', label: 'Last Name', type: 'text'},
 	];

@@ -57,4 +57,22 @@ function ofrc_theme_widgets(){
 		'before_title'  => '<h2 class="widgettitle">',
 		'after_title'   => '</h2>',
 	));
+	register_sidebar(array(
+		'name'          => __( 'Left Shop Sidebar', OFRC_TEXTDOMAIN ),
+		'id'            => 'left-shop-sidebar',
+		'description'   => __( 'Widgets in this area will be shown on all posts and pages.', OFRC_TEXTDOMAIN ),
+		'before_widget' => '<li id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</li>',
+		'before_title'  => '<h2 class="widgettitle">',
+		'after_title'   => '</h2>',
+	));
+	register_sidebar(array(
+		'name'          => __( 'Right Shop Sidebar', OFRC_TEXTDOMAIN ),
+		'id'            => 'right-shop-sidebar',
+		'description'   => __( 'Widgets in this area will be shown on all posts and pages.', OFRC_TEXTDOMAIN ),
+		'before_widget' => '<li id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</li>',
+		'before_title'  => '<h2 class="widgettitle">',
+		'after_title'   => '</h2>',
+	));
 }

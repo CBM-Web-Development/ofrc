@@ -11122,6 +11122,7 @@ textarea.form-control-lg {
 .bg-dark.primary-navbar {
   background-color: #014421 !important;
   min-height: 75px;
+  box-shadow: 4px 0 2px -2px darkslategray;
 }
 
 @media (min-width: 786px) {
@@ -11147,7 +11148,7 @@ textarea.form-control-lg {
 
   .navbar-brand img {
     width: 100%;
-    max-width: 50vw;
+    max-width: 75px;
   }
 }
 /* Secondary Navigation Styles */
@@ -11484,6 +11485,27 @@ input:checked + .slider:before {
   display: none;
 }
 
+/* Member Profile Page */
+.member-profile--image {
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+  background-position: center center;
+  background-size: cover;
+  min-width: 300px;
+  max-width: 300px;
+  min-height: 300px;
+  max-height: 300px;
+}
+
+.member-profile--info {
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .has-gutters {
   margin-left: 1.5rem !important;
   margin-right: 1.5rem !important;
@@ -11510,5 +11532,225 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: center;
   border-radius: 5px;
+}
+
+.member-profile-section .profile-picture {
+  width: 300px;
+  height: 300px;
+  background-color: lightgrey;
+}
+
+.profile-picture-section {
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-picture-section .mask-notification {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  z-index: 1;
+}
+
+.profile-picture-section .mask {
+  display: none;
+  background-color: #000000;
+  opacity: 33%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.profile-picture-section:hover .mask, .profile-picture-section:hover .mask-notificaiton {
+  display: block;
+}
+
+.profile-picture-section .file-upload {
+  display: none;
+}
+
+.landing-page .primary-navbar {
+  display: none;
+  max-height: 150px;
+}
+
+.landing-page > .has-background > .tribe-compatibility-container {
+  width: 100%;
+}
+
+.landing-page .woocommerce--bg-dark a, .landing-page .woocommerce--bg-dark {
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+.landing-page .woocommerce--bg-dark a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 786px) {
+  .landing-page .navbar-brand img {
+    max-width: 75px;
+    height: auto;
+  }
+}
+.landing-page .navbar .container-fluid, .landing-page .navbar .container-sm, .landing-page .navbar .container-md, .landing-page .navbar .container-lg, .landing-page .navbar .container-xl, .landing-page .navbar .container-xxl {
+  background-color: #014421;
+}
+
+.woocommerce {
+  margin-top: 1.2em;
+}
+
+.left-shop-sidebar--list li.widget {
+  border-bottom: 1px solid grey;
+}
+
+.left-shop-sidebar--list li.widget:last-of-type {
+  border-bottom: none;
+}
+
+.left-shop-sidebar--list, .right-shop-sidebar--list, .left-shop-sidebar--list ul, .right-shop-sidebar--list ul {
+  list-style-type: none;
+  padding-left: 0px !important;
+  width: 100%;
+}
+
+.left-shop-sidebar--list ul li a, .right-shop-sidebar--list ul li a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.left-shop-sidebar--list ul.wc-block-product-categories-list--depth-0 li a {
+  font-weight: bold;
+}
+
+ul.wc-block-product-categories-list--depth-1 li a {
+  font-weight: 400 !important;
+  padding-left: 5px;
+}
+
+.widget_recently_viewed_products .product_list_widget li, .widget_recently_viewed_products .product_list_widget li a {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.widget_recently_viewed_products .size-woocommerce_thumbnail {
+  width: 100% !important;
+}
+
+.product-title {
+  text-align: center;
+}
+
+.woocommerce-Price-amount {
+  text-align: center;
+}
+
+.wp-block-woocommerce-mini-cart {
+  color: #f1f1f1 !important;
+}
+
+.products .product {
+  text-align: center;
+}
+
+.products .woocommerce-loop-product__title {
+  color: #000000;
+}
+
+.woocommerce a.button.alt, .woocommerce .button.button.alt, .product a.button {
+  color: #014421 !important;
+  background: transparent;
+  border: 1px solid #014421;
+  border-radius: 2px;
+}
+
+.woocommerce a.button.alt:hover, .woocommerce .button.button.alt:hover, .product a.button:hover {
+  color: #f1f1f1 !important;
+  background-color: #014421;
+}
+
+.woocommerce input {
+  border-radius: 5px;
+  border: 1px solid lightgrey;
+  padding: 10px;
+}
+
+ol.flex-control-thumbs li {
+  margin: 5px 5px 0px 0px !important;
+}
+
+ol.flex-controler-thrumbs li:last-child {
+  margin: 0 !important;
+}
+
+.woocommerce-MyAccount .woocommerce {
+  display: flex;
+  flex-direction: row;
+}
+
+.woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation {
+  width: fit-content;
+}
+
+.woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation ul {
+  list-style-type: none;
+  padding-left: 0px !important;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation ul li {
+  width: 100%;
+  border-bottom: 1px solid lightgrey;
+  padding: 5px;
+}
+
+.woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation ul li:last-child {
+  border-bottom: none;
+}
+
+.woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation ul li:hover, .woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation ul li.is-active {
+  cursor: pointer;
+  background-color: #014421;
+}
+
+.woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation ul li:hover a, .woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation ul li.is-active a {
+  color: #f1f1f1;
+}
+
+.woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation ul li a {
+  color: #000000;
+  text-decoration: none;
+  padding-top: 15px;
+  font-size: 1.2em;
+  white-space: nowrap;
+}
+
+.woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-content {
+  width: 100%;
+}
+
+@media (max-width: 786px) {
+  .woocommerce-MyAccount .woocommerce {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-navigation {
+    order: 2;
+  }
+
+  .woocommerce-MyAccount .woocommerce .woocommerce-MyAccount-content {
+    order: 1;
+  }
 }
 /*# sourceMappingURL=allstyles.css.map */
