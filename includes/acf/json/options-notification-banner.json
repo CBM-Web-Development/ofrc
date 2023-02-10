@@ -73,7 +73,7 @@
                 {
                     "param": "options_page",
                     "operator": "==",
-                    "value": "notification-banner"
+                    "value": "acf-options-notification-banner"
                 }
             ]
         ],

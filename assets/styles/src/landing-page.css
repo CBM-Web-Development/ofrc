@@ -1,0 +1,29 @@
+.landing-page .primary-navbar{
+	display:none;
+	max-height:150px;
+}
+
+.landing-page>.has-background>.tribe-compatibility-container{
+	width:100%;
+}
+
+.landing-page .woocommerce--bg-dark a, .landing-page .woocommerce--bg-dark{
+	color: #f1f1f1;
+	text-decoration: none;
+}
+
+.landing-page .woocommerce--bg-dark a:hover{
+	text-decoration: underline;
+}
+
+@media(max-width:786px){
+	
+	.landing-page .navbar-brand img{
+		max-width:75px;
+		height:auto;
+	}
+}
+
+.landing-page .navbar .container-fluid{
+	background-color:#014421;
+}
