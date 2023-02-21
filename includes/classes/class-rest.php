@@ -16,24 +16,35 @@ class OFRC_REST{
 		));	
 	}
 	
-	public function get_archives(){
+	public function get_archives(WP_Rest_Request $request){
+		
+		if( empty($request->get_params()) ){
+			wp_send_json_error( 'no parameters' );
+		}
 		
 		
-		$category = isset($_GET['category']) ? $_GET['category'] : filter_input(INPUT_POST, 'category');
+		$category = $request->get_param('category');
 		
-		$page = isset($_GET['page']) ? $_GET['page'] : filter_input(INPUT_POST, 'page');
+		$page = $request->get_param('page');
 				
 		$archives_args = array(
 			'post_type'			=> 'post',
-			'cat'				=> $category, 
 			'post_status'		=> 'publish', 
-			'posts_per_page' 	=> 2, 
-			'paged'				=> isset($page) ? $page : 1,
+			'posts_per_page' 	=> 12, 
+			'paged'				=> $page,
 		);
+		
+		if($category){
+			$archives_args['cat'] = $category;
+		}
+		
+		
 				
 		$archives_query = new WP_Query($archives_args);
 		
 		$all_posts = array();
+		
+		
 		
 		if($archives_query->have_posts()){
 			while($archives_query->have_posts()){
