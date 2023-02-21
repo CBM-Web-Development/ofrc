@@ -11151,6 +11151,48 @@ textarea.form-control-lg {
     max-width: 75px;
   }
 }
+li.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+li.dropdown:hover .dropdown-menu > li.dropdown {
+  display: block;
+  position: relative;
+  border: none;
+}
+
+li.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+ul.dropdown-menu {
+  border-radius: 0px;
+  border: none;
+  transition: display 5s ease-in;
+}
+
+li.dropdown:hover .dropdown-menu > li.dropdown {
+  display: block;
+  position: relative;
+  border: none;
+}
+
+li.dropdown:hover .dropdown-menu > li.dropdown:hover .sub-menu {
+  display: block;
+  left: 100%;
+  top: 0%;
+  height: inherit;
+}
+
+@media (min-width: 768px) {
+  a.dropdown-item::after {
+    transform: rotate(-90deg);
+  }
+
+  ul.dropdown-menu {
+    box-shadow: 0px 2px 15px -15px #000000;
+  }
+}
 /* Secondary Navigation Styles */
 .bg-dark.secondary-navbar {
   background: linear-gradient(90deg, #014421, #014421, #014421, #023118) !important;

@@ -53,6 +53,7 @@
 			    $primary_navigation_args = array(
 					'menu_class'		=> 'navbar-nav', 
 					'menu_id'			=> '', 
+					'depth'				=> 3,
 					'container'			=> 'div', 
 					'container_class'	=> 'collapse navbar-collapse',
 					'container_id'		=> 'navbarSupportedContent',
