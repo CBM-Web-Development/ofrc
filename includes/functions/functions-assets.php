@@ -10,7 +10,7 @@ function ofrc_scripts(){
 	wp_enqueue_script('allscripts', OFRC_URI . '/assets/js/dist/bundle.js', array(), OFRC_VERSION, true);
 }
 
-add_action('admin_enqueue_scripts', 'ofrc_admin_scripts');
+//add_action('admin_enqueue_scripts', 'ofrc_admin_scripts');
 function ofrc_admin_scripts(){
 	wp_enqueue_script('ofrc-admin-scripts', OFRC_URI . '/assets/admin/js/dist/bundle.js', array(), OFRC_VERSION, true);
 	

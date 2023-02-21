@@ -866,7 +866,6 @@ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"
 
 $(document).ready(function () {
   if ($('.archives-page')[0]) {
-    console.log('archive');
     get_archive_posts();
   }
 });
@@ -894,9 +893,9 @@ function set_page_contents(posts, page) {
   if (posts.posts) {
     $(posts.posts).each(function (index, value) {
       card += '<div class="col d-flex align-items-stretch">';
-      card += '<div class="card">';
+      card += '<div class="card w-100 text-center mb-3">';
 
-      if (value.thumbnail !== "") {
+      if (value.thumbnail !== false) {
         card += '<img src="';
         card += value.thumbnail;
         card += '" class="card-img-top" alt="';

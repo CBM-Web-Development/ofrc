@@ -3,21 +3,22 @@ var $ = require('jquery');
 $(document).ready(function(){
 
 	if($('.archives-page')[0]){
-		console.log('archive');
+
 		get_archive_posts();	
 	}
 });
 
 
 window.get_archive_posts = function(page_number = null){
-
+	
 	var page = page_number == null ? $('.cards-section').data('page') : page_number;
 	var archive = $('.cards-section').data('archive');
-	
+
 	var data = {
 		"page" : page, 
 		"category" : archive,
 	};
+	
 	$.post(localize.rest_archives, data, function(success){})
 	.fail(function(error){
 		console.log(error);
@@ -28,6 +29,7 @@ window.get_archive_posts = function(page_number = null){
 }
 
 function set_page_contents(posts, page){
+
 	var cards_section = $('.cards-section');
 	
 	var card = "";
@@ -39,9 +41,9 @@ function set_page_contents(posts, page){
 			
 			card += '<div class="col d-flex align-items-stretch">';
 			
-			card += '<div class="card">';
+			card += '<div class="card w-100 text-center mb-3">';
 			
-			if(value.thumbnail !== ""){
+			if(value.thumbnail !== false){
 				card += '<img src="';
 				card += value.thumbnail;
 				card += '" class="card-img-top" alt="';
