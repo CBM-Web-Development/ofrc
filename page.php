@@ -1,7 +1,7 @@
 <?php 
 get_header();
 ?>
-<div class="container-fluid g-0 <?php if(is_account_page()): echo "woocommerce-MyAccount"; endif; ?>">
+<div class="container-fluid g-0">
 		<?php if(have_posts()){
 			while(have_posts()){
 				the_post(); ?>
