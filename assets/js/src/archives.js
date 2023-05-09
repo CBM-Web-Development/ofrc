@@ -18,7 +18,7 @@ window.get_archive_posts = function(page_number = null){
 		"page" : page, 
 		"category" : archive,
 	};
-	
+	console.log(localize.rest_archives); 
 	$.post(localize.rest_archives, data, function(success){})
 	.fail(function(error){
 		console.log(error);
