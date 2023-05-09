@@ -3,7 +3,7 @@
 define('OFRC_PATH', get_template_directory());
 define('OFRC_URI', get_template_directory_uri());
 define('OFRC_TEXTDOMAIN', 'ofrc');
-define('OFRC_VERSION', '1.0.0');
+define('OFRC_VERSION', '2.0.0');
 
 // Functions - REQUIRED
 include(OFRC_PATH . '/includes/functions/functions-acf.php');
